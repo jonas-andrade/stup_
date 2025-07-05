@@ -5,8 +5,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stup_ - O Jogo do Desenvolvedor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-primary: #00ff88;
+            --accent-secondary: #ff0080;
+            --accent-blue: #00a8ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --border-medium: rgba(255, 255, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+            --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            --gradient-secondary: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,11 +33,33 @@
         }
 
         body {
-            font-family: 'Roboto Mono', monospace;
-            background: #0a0a0a;
-            color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 168, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 0, 128, 0.05) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
         }
 
         .screen {
@@ -26,293 +67,512 @@
             width: 100%;
             height: 100vh;
             position: relative;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .screen.active {
             display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Title Screen Improvements */
+        .title-screen {
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
         }
 
         .title-screen .logo {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #eee;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            animation: flicker 2s infinite alternate;
-            font-family: monospace, monospace;
-        }
-
-        @keyframes flicker {
-            from {
-                opacity: 1;
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            }
-
-            to {
-                opacity: 0.7;
-                text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-            }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #bbb;
-            opacity: 0.7;
-            margin-bottom: 30px;
-        }
-
-        .start-btn {
-            padding: 12px 30px;
-            font-size: 1rem;
-            background: #222;
-            border: 1px solid #555;
-            border-radius: 5px;
-            color: #f0f0f0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .start-btn:hover {
-            background: #333;
-            border-color: #888;
-        }
-
-        .universe-title,
-        .team-panel h3,
-        .game-header h3 {
-            color: #f0f0f0;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            font-size: 5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+            animation: logoGlow 3s ease-in-out infinite alternate;
             margin-bottom: 20px;
         }
 
+        @keyframes logoGlow {
+            from {
+                filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6));
+            }
+        }
+
+        .underscore {
+            color: var(--accent-secondary);
+            font-weight: bold;
+            animation: blink 1.5s steps(2, start) infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .start-btn {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            letter-spacing: 0.5px;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .start-btn:hover::before {
+            left: 0;
+        }
+
+        .start-btn:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Screen Titles */
+        .universe-title,
+        .team-panel h3,
+        .game-header h3 {
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .universe-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Grid Layouts */
         .universe-grid,
         .team-grid {
             display: grid;
-            gap: 15px;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             width: 90%;
-            max-width: 1000px;
+            max-width: 1200px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
 
+        /* Card Improvements */
         .universe-card,
         .team-member {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px 20px;
             text-align: center;
-            color: #ddd;
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            user-select: none;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .universe-card::before,
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .universe-card:hover::before,
+        .team-member:hover::before {
+            opacity: 0.1;
         }
 
         .universe-card:hover,
         .team-member:hover {
-            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
         }
 
         .universe-card.selected,
         .team-member.selected {
-            border-color: #888;
-            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-primary);
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            transform: scale(1.05);
         }
 
         .universe-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
         }
 
         .member-avatar {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: #111;
-            border: 1px solid #333;
+            background: var(--gradient-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #eee;
-            margin: 0 auto 10px;
+            color: var(--primary-bg);
+            margin: 0 auto 15px;
             font-weight: 700;
-            font-family: monospace, monospace;
-            user-select: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Gameplay Improvements */
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .game-header h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
 
         .code-workspace {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            padding: 15px;
-            border-radius: 8px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 16px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            user-select: none;
+            gap: 12px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-soft);
         }
 
         .code-block {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            padding: 8px 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 12px 16px;
             cursor: grab;
-            user-select: none;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .code-block:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
         }
 
         .code-block:active {
             cursor: grabbing;
-            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.98);
         }
 
         .mvp-area {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 5px;
-            min-height: 120px;
-            color: #ccc;
-            margin-top: 10px;
+            background: var(--glass-bg);
+            border: 2px dashed var(--border-medium);
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 140px;
+            color: var(--text-secondary);
+            margin-top: 20px;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            overflow-y: auto;
-            user-select: none;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .mvp-area.drag-over {
+            border-color: var(--accent-primary);
+            background: rgba(0, 255, 136, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
         .mvp-area .code-block {
-            cursor: default;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid #888;
-            user-select: none;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-primary);
+            cursor: pointer;
+            position: relative;
         }
 
+        .mvp-area .code-block:hover {
+            background: rgba(255, 0, 128, 0.1);
+            border-color: var(--accent-secondary);
+        }
+
+        /* Progress Bar */
         .progress-bar {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            background: var(--glass-bg);
+            border-radius: 12px;
             overflow: hidden;
-            height: 15px;
+            height: 8px;
             width: 100%;
             max-width: 800px;
             margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            position: relative;
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, #555, #999);
+            background: var(--gradient-primary);
             height: 100%;
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Navigation */
         .nav-buttons {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 100;
+            background: var(--glass-bg);
+            padding: 8px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
         }
 
         .nav-btn {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            color: #ddd;
+            padding: 12px 20px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.3s ease;
-            user-select: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative;
         }
 
         .nav-btn.active {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--gradient-primary);
+            color: var(--primary-bg);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
         }
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .nav-btn:hover:not(.active) {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border-color: var(--glass-border);
         }
 
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
+            .title-screen .logo {
+                font-size: 3.5rem;
+            }
+
+            .universe-title,
+            .team-panel h3,
+            .game-header h3 {
+                font-size: 2rem;
+            }
+
+            .universe-grid,
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 15px;
+            }
+
+            .code-workspace {
+                max-width: 100%;
+                padding: 15px;
+            }
+
+            .mvp-area {
+                min-height: 120px;
+            }
+
+            .nav-buttons {
+                bottom: 20px;
+                flex-wrap: wrap;
+                width: 90%;
+                max-width: 400px;
+            }
+
+            .nav-btn {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
             .title-screen .logo {
                 font-size: 2.5rem;
             }
 
             .universe-grid,
             .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: 1fr 1fr;
             }
 
-            .code-workspace {
-                max-width: 100%;
-                flex-direction: column;
-            }
-
-            .mvp-area {
-                min-height: 150px;
+            .start-btn {
+                padding: 14px 30px;
             }
         }
 
-        .logo {
-            font-family: monospace, monospace;
-            font-size: 48px;
-            color: white;
-            /* background-color: black; */
+        /* Loading States */
+        .loading {
+            position: relative;
+            overflow: hidden;
         }
 
-        .underscore {
-            color: red;
-            font-weight: bold;
-            animation: blink 1s steps(2, start) infinite;
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: loading 1.5s infinite;
         }
 
-        /* Animação de piscar para o underscore */
-        @keyframes blink {
-
-            0%,
-            50% {
-                opacity: 1;
-            }
-
-            51%,
-            100% {
-                opacity: 0;
-            }
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
-
-        .logo {
-            font-family: monospace, monospace;
-            font-size: 48px;
-            color: white;
-            /* background-color: black; */
+        /* Tooltip */
+        .tooltip {
+            position: relative;
         }
 
-        .underscore {
-            color: red;
-            font-weight: bold;
-            animation: blink 1s steps(2, start) infinite;
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            white-space: nowrap;
+            margin-bottom: 8px;
         }
 
-        /* Animação de piscar para o underscore */
-        @keyframes blink {
-
-            0%,
-            50% {
-                opacity: 1;
-            }
-
-            51%,
-            100% {
-                opacity: 0;
-            }
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
@@ -324,8 +584,10 @@
             <div class="logo">
                 Stup<span class="underscore">_</span>
             </div>
-            <div class="subtitle">A Jornada do Desenvolvedor</div>
-            <button class="start-btn" onclick="showScreen('universeScreen', event)">Iniciar Jornada</button>
+            <div class="subtitle">A Jornada Épica do Desenvolvedor</div>
+            <button class="start-btn" onclick="showScreen('universeScreen', event)">
+                🚀 Iniciar Jornada
+            </button>
         </div>
     </div>
 
@@ -333,25 +595,30 @@
     <div class="screen" id="universeScreen">
         <h2 class="universe-title">Escolha Seu Universo</h2>
         <div class="universe-grid">
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card tooltip" data-tooltip="Ambiente corporativo estruturado" onclick="selectUniverse(this)">
                 <div class="universe-icon">🏢</div>
-                <div>Corporativo</div>
+                <div><strong>Corporativo</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Estrutura & Processos</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card tooltip" data-tooltip="Ambiente ágil e inovador" onclick="selectUniverse(this)">
                 <div class="universe-icon">🚀</div>
-                <div>Startup</div>
+                <div><strong>Startup</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Agilidade & Inovação</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card tooltip" data-tooltip="Ambiente acadêmico e pesquisa" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎓</div>
-                <div>Academia</div>
+                <div><strong>Academia</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Pesquisa & Ensino</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card tooltip" data-tooltip="Desenvolvimento independente" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎨</div>
-                <div>Indie</div>
+                <div><strong>Indie</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Criatividade & Liberdade</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card tooltip" data-tooltip="Código aberto e colaboração" onclick="selectUniverse(this)">
                 <div class="universe-icon">🌍</div>
-                <div>Open Source</div>
+                <div><strong>Open Source</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Colaboração & Comunidade</div>
             </div>
         </div>
     </div>
@@ -360,25 +627,30 @@
     <div class="screen" id="teamScreen">
         <h2 class="universe-title">Monte Sua Equipe</h2>
         <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">DEV</div>
-                <div>Developer</div>
+            <div class="team-member tooltip" data-tooltip="Especialista em desenvolvimento" onclick="selectTeamMember(this)">
+                <div class="member-avatar">💻</div>
+                <div><strong>Developer</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Código & Lógica</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">QA</div>
-                <div>QA</div>
+            <div class="team-member tooltip" data-tooltip="Garantia de qualidade" onclick="selectTeamMember(this)">
+                <div class="member-avatar">🔍</div>
+                <div><strong>QA</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Testes & Qualidade</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">OPS</div>
-                <div>DevOps</div>
+            <div class="team-member tooltip" data-tooltip="Infraestrutura e deploy" onclick="selectTeamMember(this)">
+                <div class="member-avatar">⚙️</div>
+                <div><strong>DevOps</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Infra & Deploy</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">UX</div>
-                <div>Designer</div>
+            <div class="team-member tooltip" data-tooltip="Experiência do usuário" onclick="selectTeamMember(this)">
+                <div class="member-avatar">🎨</div>
+                <div><strong>Designer</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">UX & Interface</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">PM</div>
-                <div>PM</div>
+            <div class="team-member tooltip" data-tooltip="Gestão de projetos" onclick="selectTeamMember(this)">
+                <div class="member-avatar">📊</div>
+                <div><strong>PM</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Gestão & Estratégia</div>
             </div>
         </div>
     </div>
@@ -386,59 +658,115 @@
     <!-- Gameplay -->
     <div class="screen" id="gameplayScreen">
         <div class="game-header">
-            <h3>Projeto: E-commerce MVP</h3>
+            <h3>🛍️ Projeto: E-commerce MVP</h3>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
         <div class="code-workspace" id="codeWorkspace">
-            <div class="code-block" draggable="true">📦 Setup</div>
-            <div class="code-block" draggable="true">🔐 Auth</div>
-            <div class="code-block" draggable="true">🛒 Cart</div>
-            <div class="code-block" draggable="true">💳 Payment</div>
-            <div class="code-block" draggable="true">📱 Responsive</div>
-            <div class="code-block" draggable="true">🔍 Search</div>
+            <div class="code-block" draggable="true">📦 Setup Inicial</div>
+            <div class="code-block" draggable="true">🔐 Autenticação</div>
+            <div class="code-block" draggable="true">🛒 Carrinho</div>
+            <div class="code-block" draggable="true">💳 Pagamento</div>
+            <div class="code-block" draggable="true">📱 Responsivo</div>
+            <div class="code-block" draggable="true">🔍 Busca</div>
             <div class="code-block" draggable="true">⚡ Performance</div>
-            <div class="mvp-area" id="mvpArea">Arraste os blocos para aqui para montar seu MVP...</div>
+            <div class="code-block" draggable="true">🔔 Notificações</div>
+            <div class="mvp-area" id="mvpArea">
+                ✨ Arraste os blocos para aqui e monte seu MVP perfeito!
+            </div>
         </div>
     </div>
 
     <!-- Navigation Buttons -->
     <div class="nav-buttons">
-        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
-        <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
-        <button class="nav-btn" onclick="showScreen('teamScreen', event)">Equipe</button>
-        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">Gameplay</button>
+        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">🏠 Início</button>
+        <button class="nav-btn" onclick="showScreen('universeScreen', event)">🌌 Universo</button>
+        <button class="nav-btn" onclick="showScreen('teamScreen', event)">👥 Equipe</button>
+        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">🎮 Gameplay</button>
     </div>
 
     <script>
-        // Navegação entre telas
+        // Função aprimorada para navegação entre telas
         function showScreen(id, event) {
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const currentScreen = document.querySelector('.screen.active');
+            const targetScreen = document.getElementById(id);
+            
+            if (currentScreen === targetScreen) return;
+            
+            // Animação de saída
+            if (currentScreen) {
+                currentScreen.style.transform = 'translateY(-20px)';
+                currentScreen.style.opacity = '0';
+                setTimeout(() => {
+                    currentScreen.classList.remove('active');
+                    currentScreen.style.transform = '';
+                    currentScreen.style.opacity = '';
+                }, 300);
+            }
+            
+            // Animação de entrada
+            setTimeout(() => {
+                targetScreen.classList.add('active');
+            }, 300);
 
+            // Atualiza navegação
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if (event && event.target.classList.contains('nav-btn')) {
                 event.target.classList.add('active');
             }
         }
 
-        // Universo selecionado e navega para equipe
+        // Seleção de universo aprimorada
         function selectUniverse(el) {
-            document.querySelectorAll('.universe-card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('.universe-card').forEach(card => {
+                card.classList.remove('selected');
+                card.style.transform = '';
+            });
+            
             el.classList.add('selected');
-            setTimeout(() => showScreen('teamScreen'), 800);
+            el.style.transform = 'scale(1.1)';
+            
+            // Feedback visual
+            el.style.animation = 'pulse 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                el.style.animation = '';
+                showScreen('teamScreen');
+            }, 800);
         }
 
-        // Seleção de membros da equipe
+        // Seleção de equipe aprimorada
         function selectTeamMember(el) {
             el.classList.toggle('selected');
-            if (document.querySelectorAll('.team-member.selected').length >= 3) {
-                setTimeout(() => showScreen('gameplayScreen'), 800);
+            
+            // Animação de seleção
+            if (el.classList.contains('selected')) {
+                el.style.animation = 'bounceIn 0.5s ease-out';
+            } else {
+                el.style.animation = 'bounceOut 0.5s ease-out';
+            }
+            
+            setTimeout(() => {
+                el.style.animation = '';
+            }, 500);
+            
+            const selectedMembers = document.querySelectorAll('.team-member.selected');
+            if (selectedMembers.length >= 3) {
+                // Feedback visual para equipe completa
+                selectedMembers.forEach((member, index) => {
+                    setTimeout(() => {
+                        member.style.animation = 'glow 0.5s ease-in-out';
+                    }, index * 100);
+                });
+                
+                setTimeout(() => {
+                    showScreen('gameplayScreen');
+                }, 1000);
             }
         }
 
-        // Drag & Drop da gameplay
+        // Sistema de drag & drop aprimorado
         const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
         const mvpArea = document.getElementById('mvpArea');
         const progressFill = document.getElementById('progressFill');
@@ -447,39 +775,49 @@
         codeBlocks.forEach(block => {
             block.addEventListener('dragstart', e => {
                 draggedBlock = block;
-                setTimeout(() => block.style.visibility = 'hidden', 0);
+                block.style.opacity = '0.5';
+                block.style.transform = 'scale(0.95)';
             });
+            
             block.addEventListener('dragend', e => {
                 draggedBlock = null;
-                codeBlocks.forEach(b => b.style.visibility = 'visible');
+                block.style.opacity = '';
+                block.style.transform = '';
             });
         });
 
         mvpArea.addEventListener('dragover', e => {
             e.preventDefault();
-            mvpArea.style.borderColor = '#888';
+            mvpArea.classList.add('drag-over');
         });
 
         mvpArea.addEventListener('dragleave', e => {
-            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            mvpArea.classList.remove('drag-over');
         });
 
         mvpArea.addEventListener('drop', e => {
             e.preventDefault();
-            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            mvpArea.classList.remove('drag-over');
+            
             if (!draggedBlock) return;
 
             // Clona o bloco arrastado
             const clone = draggedBlock.cloneNode(true);
             clone.removeAttribute('draggable');
-            clone.style.cursor = 'default';
-            clone.style.background = 'rgba(255, 255, 255, 0.15)';
-            clone.style.border = '1px solid #888';
+            clone.style.cursor = 'pointer';
+            clone.style.opacity = '1';
+            clone.style.transform = 'scale(1)';
+            
+            // Animação de entrada
+            clone.style.animation = 'slideIn 0.5s ease-out';
 
             // Permite remover o bloco clicando nele
             clone.addEventListener('click', () => {
-                clone.remove();
-                updateProgress();
+                clone.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    clone.remove();
+                    updateProgress();
+                }, 300);
             });
 
             // Remove o texto padrão caso tenha blocos
@@ -489,21 +827,111 @@
 
             mvpArea.appendChild(clone);
             updateProgress();
+            
+            // Feedback visual
+            clone.style.animation = 'bounceIn 0.6s ease-out';
         });
 
-        // Atualiza barra de progresso baseada na quantidade de blocos no MVP
+        // Atualiza barra de progresso com animações
         function updateProgress() {
             const totalBlocks = codeBlocks.length;
             const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
             let progress = (selectedBlocks / totalBlocks) * 100;
+            
             if (progress > 100) progress = 100;
+            
             progressFill.style.width = progress + '%';
+            
+            // Animação especial quando completa
+            if (progress === 100) {
+                progressFill.style.animation = 'glow 1s ease-in-out infinite';
+                setTimeout(() => {
+                    alert('🎉 Parabéns! Você completou seu MVP!');
+                }, 500);
+            } else {
+                progressFill.style.animation = '';
+            }
 
             // Se nenhum bloco, exibe o texto padrão
             if (selectedBlocks === 0) {
-                mvpArea.textContent = 'Arraste os blocos para aqui para montar seu MVP...';
+                mvpArea.textContent = '✨ Arraste os blocos para aqui e monte seu MVP perfeito!';
             }
         }
+
+        // Adiciona animações CSS dinâmicas
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+            
+            @keyframes bounceIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(1.1); opacity: 1; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            
+            @keyframes bounceOut {
+                0% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.1); opacity: 0.7; }
+                100% { transform: scale(0.3); opacity: 0; }
+            }
+            
+            @keyframes glow {
+                0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+                50% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.6); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Adiciona efeitos de partículas no background (opcional)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '2px';
+            particle.style.height = '2px';
+            particle.style.background = 'rgba(0, 255, 136, 0.6)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = '100%';
+            particle.style.zIndex = '-1';
+            
+            document.body.appendChild(particle);
+            
+            const duration = Math.random() * 3 + 2;
+            particle.style.animation = `floatUp ${duration}s linear`;
+            
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000);
+        }
+
+        // Adiciona animação de partículas flutuantes
+        const particleStyle = document.createElement('style');
+        particleStyle.textContent = `
+            @keyframes floatUp {
+                from {
+                    transform: translateY(0) translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(particleStyle);
+
+        // Cria partículas ocasionalmente
+        setInterval(createParticle, 3000);
     </script>
 </body>
 
