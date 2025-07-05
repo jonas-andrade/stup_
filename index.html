@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevQuest - O Jogo do Desenvolvedor</title>
+    <title>Stup_ - O Jogo do Desenvolvedor</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -27,13 +27,14 @@
             height: 100vh;
             position: relative;
             background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         .screen.active {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         .title-screen .logo {
@@ -42,6 +43,7 @@
             color: #eee;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             animation: flicker 2s infinite alternate;
+            font-family: monospace, monospace;
         }
 
         @keyframes flicker {
@@ -106,6 +108,7 @@
             color: #ddd;
             transition: all 0.3s ease;
             cursor: pointer;
+            user-select: none;
         }
 
         .universe-card:hover,
@@ -135,6 +138,9 @@
             justify-content: center;
             color: #eee;
             margin: 0 auto 10px;
+            font-weight: 700;
+            font-family: monospace, monospace;
+            user-select: none;
         }
 
         .code-workspace {
@@ -142,6 +148,12 @@
             border: 1px solid #333;
             padding: 15px;
             border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            user-select: none;
         }
 
         .code-block {
@@ -149,9 +161,14 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             padding: 8px 12px;
-            margin: 5px;
-            display: inline-block;
             cursor: grab;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+
+        .code-block:active {
+            cursor: grabbing;
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .mvp-area {
@@ -159,17 +176,22 @@
             border: 1px dashed rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 5px;
-            min-height: 100px;
+            min-height: 120px;
             color: #ccc;
             margin-top: 10px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            overflow-y: auto;
+            user-select: none;
         }
 
-        .team-panel {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            color: #ddd;
+        .mvp-area .code-block {
+            cursor: default;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid #888;
+            user-select: none;
         }
 
         .progress-bar {
@@ -177,12 +199,15 @@
             border-radius: 5px;
             overflow: hidden;
             height: 15px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
         }
 
         .progress-fill {
             background: linear-gradient(90deg, #555, #999);
             height: 100%;
-            width: 35%;
+            width: 0%;
             transition: width 0.5s ease;
         }
 
@@ -193,6 +218,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
+            z-index: 100;
         }
 
         .nav-btn {
@@ -203,6 +229,7 @@
             color: #ddd;
             cursor: pointer;
             transition: all 0.3s ease;
+            user-select: none;
         }
 
         .nav-btn.active {
@@ -214,7 +241,7 @@
         }
 
         @media (max-width: 768px) {
-            .logo {
+            .title-screen .logo {
                 font-size: 2.5rem;
             }
 
@@ -222,30 +249,71 @@
             .team-grid {
                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
+
+            .code-workspace {
+                max-width: 100%;
+                flex-direction: column;
+            }
+
+            .mvp-area {
+                min-height: 150px;
+            }
         }
+
         .logo {
-  font-family: monospace, monospace;
-  font-size: 48px;
-  color: white;
-  /* background-color: black; */
-}
+            font-family: monospace, monospace;
+            font-size: 48px;
+            color: white;
+            /* background-color: black; */
+        }
 
-.underscore {
-  color: red;
-  font-weight: bold;
-  animation: blink 1s steps(2, start) infinite;
-}
+        .underscore {
+            color: red;
+            font-weight: bold;
+            animation: blink 1s steps(2, start) infinite;
+        }
 
-/* Animação de piscar para o underscore */
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
+        /* Animação de piscar para o underscore */
+        @keyframes blink {
 
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+        .logo {
+            font-family: monospace, monospace;
+            font-size: 48px;
+            color: white;
+            /* background-color: black; */
+        }
+
+        .underscore {
+            color: red;
+            font-weight: bold;
+            animation: blink 1s steps(2, start) infinite;
+        }
+
+        /* Animação de piscar para o underscore */
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -257,7 +325,7 @@
                 Stup<span class="underscore">_</span>
             </div>
             <div class="subtitle">A Jornada do Desenvolvedor</div>
-            <button class="start-btn" onclick="showScreen('universeScreen')">Iniciar Jornada</button>
+            <button class="start-btn" onclick="showScreen('universeScreen', event)">Iniciar Jornada</button>
         </div>
     </div>
 
@@ -320,44 +388,120 @@
         <div class="game-header">
             <h3>Projeto: E-commerce MVP</h3>
             <div class="progress-bar">
-                <div class="progress-fill"></div>
+                <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
-        <div class="code-workspace">
-            <div class="code-block">📦 Setup</div>
-            <div class="code-block">🔐 Auth</div>
-            <div class="code-block">🛒 Cart</div>
-            <div class="code-block">💳 Payment</div>
-            <div class="mvp-area">Área do MVP</div>
+        <div class="code-workspace" id="codeWorkspace">
+            <div class="code-block" draggable="true">📦 Setup</div>
+            <div class="code-block" draggable="true">🔐 Auth</div>
+            <div class="code-block" draggable="true">🛒 Cart</div>
+            <div class="code-block" draggable="true">💳 Payment</div>
+            <div class="code-block" draggable="true">📱 Responsive</div>
+            <div class="code-block" draggable="true">🔍 Search</div>
+            <div class="code-block" draggable="true">⚡ Performance</div>
+            <div class="mvp-area" id="mvpArea">Arraste os blocos para aqui para montar seu MVP...</div>
         </div>
     </div>
 
-    <!-- Nav -->
+    <!-- Navigation Buttons -->
     <div class="nav-buttons">
-        <button class="nav-btn active" onclick="showScreen('titleScreen')">Início</button>
-        <button class="nav-btn" onclick="showScreen('universeScreen')">Universo</button>
-        <button class="nav-btn" onclick="showScreen('teamScreen')">Equipe</button>
-        <button class="nav-btn" onclick="showScreen('gameplayScreen')">Gameplay</button>
+        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
+        <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
+        <button class="nav-btn" onclick="showScreen('teamScreen', event)">Equipe</button>
+        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">Gameplay</button>
     </div>
 
     <script>
-        function showScreen(id) {
+        // Navegação entre telas
+        function showScreen(id, event) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target.classList.contains('nav-btn')) {
+                event.target.classList.add('active');
+            }
         }
 
+        // Universo selecionado e navega para equipe
         function selectUniverse(el) {
             document.querySelectorAll('.universe-card').forEach(card => card.classList.remove('selected'));
             el.classList.add('selected');
-            setTimeout(() => showScreen('teamScreen'), 1000);
+            setTimeout(() => showScreen('teamScreen'), 800);
         }
 
+        // Seleção de membros da equipe
         function selectTeamMember(el) {
             el.classList.toggle('selected');
             if (document.querySelectorAll('.team-member.selected').length >= 3) {
-                setTimeout(() => showScreen('gameplayScreen'), 1000);
+                setTimeout(() => showScreen('gameplayScreen'), 800);
+            }
+        }
+
+        // Drag & Drop da gameplay
+        const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
+        const mvpArea = document.getElementById('mvpArea');
+        const progressFill = document.getElementById('progressFill');
+        let draggedBlock = null;
+
+        codeBlocks.forEach(block => {
+            block.addEventListener('dragstart', e => {
+                draggedBlock = block;
+                setTimeout(() => block.style.visibility = 'hidden', 0);
+            });
+            block.addEventListener('dragend', e => {
+                draggedBlock = null;
+                codeBlocks.forEach(b => b.style.visibility = 'visible');
+            });
+        });
+
+        mvpArea.addEventListener('dragover', e => {
+            e.preventDefault();
+            mvpArea.style.borderColor = '#888';
+        });
+
+        mvpArea.addEventListener('dragleave', e => {
+            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        mvpArea.addEventListener('drop', e => {
+            e.preventDefault();
+            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            if (!draggedBlock) return;
+
+            // Clona o bloco arrastado
+            const clone = draggedBlock.cloneNode(true);
+            clone.removeAttribute('draggable');
+            clone.style.cursor = 'default';
+            clone.style.background = 'rgba(255, 255, 255, 0.15)';
+            clone.style.border = '1px solid #888';
+
+            // Permite remover o bloco clicando nele
+            clone.addEventListener('click', () => {
+                clone.remove();
+                updateProgress();
+            });
+
+            // Remove o texto padrão caso tenha blocos
+            if (mvpArea.textContent.includes('Arraste os blocos')) {
+                mvpArea.textContent = '';
+            }
+
+            mvpArea.appendChild(clone);
+            updateProgress();
+        });
+
+        // Atualiza barra de progresso baseada na quantidade de blocos no MVP
+        function updateProgress() {
+            const totalBlocks = codeBlocks.length;
+            const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
+            let progress = (selectedBlocks / totalBlocks) * 100;
+            if (progress > 100) progress = 100;
+            progressFill.style.width = progress + '%';
+
+            // Se nenhum bloco, exibe o texto padrão
+            if (selectedBlocks === 0) {
+                mvpArea.textContent = 'Arraste os blocos para aqui para montar seu MVP...';
             }
         }
     </script>
