@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevQuest - O Jogo do Desenvolvedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: #0a0a0a;
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-screen .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #eee;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            from {
+                opacity: 1;
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            }
+
+            to {
+                opacity: 0.7;
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bbb;
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            background: #222;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: #333;
+            border-color: #888;
+        }
+
+        .universe-title,
+        .team-panel h3,
+        .game-header h3 {
+            color: #f0f0f0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .universe-grid,
+        .team-grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .universe-card,
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .universe-card:hover,
+        .team-member:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .universe-card.selected,
+        .team-member.selected {
+            border-color: #888;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .universe-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #eee;
+            margin: 0 auto 10px;
+        }
+
+        .code-workspace {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .code-block {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 8px 12px;
+            margin: 5px;
+            display: inline-block;
+            cursor: grab;
+        }
+
+        .mvp-area {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 100px;
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        .team-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            color: #ddd;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            height: 15px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #555, #999);
+            height: 100%;
+            width: 35%;
+            transition: width 0.5s ease;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .universe-grid,
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+        .logo {
+  font-family: monospace, monospace;
+  font-size: 48px;
+  color: white;
+  /* background-color: black; */
+}
+
+.underscore {
+  color: red;
+  font-weight: bold;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+/* Animação de piscar para o underscore */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- Title Screen -->
+    <div class="screen active" id="titleScreen">
+        <div class="title-screen">
+            <div class="logo">
+                Stup<span class="underscore">_</span>
+            </div>
+            <div class="subtitle">A Jornada do Desenvolvedor</div>
+            <button class="start-btn" onclick="showScreen('universeScreen')">Iniciar Jornada</button>
+        </div>
+    </div>
+
+    <!-- Universe Selection -->
+    <div class="screen" id="universeScreen">
+        <h2 class="universe-title">Escolha Seu Universo</h2>
+        <div class="universe-grid">
+            <div class="universe-card" onclick="selectUniverse(this)">
+                <div class="universe-icon">🏢</div>
+                <div>Corporativo</div>
+            </div>
+            <div class="universe-card" onclick="selectUniverse(this)">
+                <div class="universe-icon">🚀</div>
+                <div>Startup</div>
+            </div>
+            <div class="universe-card" onclick="selectUniverse(this)">
+                <div class="universe-icon">🎓</div>
+                <div>Academia</div>
+            </div>
+            <div class="universe-card" onclick="selectUniverse(this)">
+                <div class="universe-icon">🎨</div>
+                <div>Indie</div>
+            </div>
+            <div class="universe-card" onclick="selectUniverse(this)">
+                <div class="universe-icon">🌍</div>
+                <div>Open Source</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Selection -->
+    <div class="screen" id="teamScreen">
+        <h2 class="universe-title">Monte Sua Equipe</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)">
+                <div class="member-avatar">DEV</div>
+                <div>Developer</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)">
+                <div class="member-avatar">QA</div>
+                <div>QA</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)">
+                <div class="member-avatar">OPS</div>
+                <div>DevOps</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)">
+                <div class="member-avatar">UX</div>
+                <div>Designer</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)">
+                <div class="member-avatar">PM</div>
+                <div>PM</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gameplay -->
+    <div class="screen" id="gameplayScreen">
+        <div class="game-header">
+            <h3>Projeto: E-commerce MVP</h3>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        <div class="code-workspace">
+            <div class="code-block">📦 Setup</div>
+            <div class="code-block">🔐 Auth</div>
+            <div class="code-block">🛒 Cart</div>
+            <div class="code-block">💳 Payment</div>
+            <div class="mvp-area">Área do MVP</div>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showScreen('titleScreen')">Início</button>
+        <button class="nav-btn" onclick="showScreen('universeScreen')">Universo</button>
+        <button class="nav-btn" onclick="showScreen('teamScreen')">Equipe</button>
+        <button class="nav-btn" onclick="showScreen('gameplayScreen')">Gameplay</button>
+    </div>
+
+    <script>
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function selectUniverse(el) {
+            document.querySelectorAll('.universe-card').forEach(card => card.classList.remove('selected'));
+            el.classList.add('selected');
+            setTimeout(() => showScreen('teamScreen'), 1000);
+        }
+
+        function selectTeamMember(el) {
+            el.classList.toggle('selected');
+            if (document.querySelectorAll('.team-member.selected').length >= 3) {
+                setTimeout(() => showScreen('gameplayScreen'), 1000);
+            }
+        }
+    </script>
+</body>
+
+</html>
