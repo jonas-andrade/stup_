@@ -327,28 +327,328 @@
             filter: grayscale(0%) brightness(1);
         }
 
-        .member-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--dark-gray), var(--charcoal));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-gray);
-            margin: 0 auto 20px;
-            font-weight: 400;
-            font-size: 1.5rem;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.6s ease;
-        }
+                 /* Character Avatars */
+         .character-avatar {
+             width: 80px;
+             height: 80px;
+             position: relative;
+             margin: 0 auto 20px;
+             transition: all 0.6s ease;
+         }
 
-        .team-member:hover .member-avatar,
-        .team-member.selected .member-avatar {
-            background: linear-gradient(135deg, var(--highlight-red), var(--accent-red));
-            color: var(--pure-white);
-            box-shadow: 0 0 30px rgba(106, 32, 32, 0.6);
-        }
+         .avatar-head {
+             width: 25px;
+             height: 25px;
+             background: var(--medium-gray);
+             border-radius: 50%;
+             position: absolute;
+             top: 5px;
+             left: 50%;
+             transform: translateX(-50%);
+             border: 2px solid var(--light-gray);
+         }
+
+         .avatar-body {
+             width: 40px;
+             height: 45px;
+             background: var(--dark-gray);
+             position: absolute;
+             top: 25px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 5px 5px 10px 10px;
+         }
+
+         .avatar-badge {
+             position: absolute;
+             bottom: 0;
+             right: 0;
+             width: 20px;
+             height: 20px;
+             background: var(--highlight-red);
+             border-radius: 50%;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 10px;
+             color: var(--pure-white);
+             border: 2px solid var(--charcoal);
+         }
+
+         /* Clothing Styles */
+         .avatar-suit {
+             width: 100%;
+             height: 100%;
+             background: var(--charcoal);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+         }
+
+         .avatar-tie {
+             width: 6px;
+             height: 20px;
+             background: var(--highlight-red);
+             position: absolute;
+             top: 5px;
+             left: 50%;
+             transform: translateX(-50%);
+         }
+
+         .avatar-shirt, .avatar-hoodie, .avatar-blazer, .avatar-business {
+             width: 100%;
+             height: 100%;
+             background: var(--medium-gray);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+         }
+
+         .avatar-glasses {
+             width: 15px;
+             height: 8px;
+             border: 1px solid var(--light-gray);
+             position: absolute;
+             top: -15px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 50%;
+         }
+
+         .avatar-terminal, .avatar-clipboard, .avatar-charts {
+             width: 12px;
+             height: 8px;
+             background: var(--light-gray);
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+             border-radius: 2px;
+         }
+
+         /* Security Theme */
+         .security-theme .avatar-black-hat {
+             width: 30px;
+             height: 8px;
+             background: var(--deep-black);
+             position: absolute;
+             top: -5px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 15px;
+         }
+
+         .security-theme .avatar-white-hat {
+             width: 30px;
+             height: 8px;
+             background: var(--pure-white);
+             position: absolute;
+             top: -5px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 15px;
+         }
+
+         .avatar-black-shirt, .avatar-white-shirt, .avatar-monitor-shirt, .avatar-crypto-shirt {
+             width: 100%;
+             height: 100%;
+             background: var(--charcoal);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .avatar-white-shirt {
+             background: var(--fog-gray);
+         }
+
+         .shirt-text {
+             font-size: 6px;
+             font-weight: bold;
+             color: var(--pure-white);
+             text-align: center;
+             font-family: 'JetBrains Mono', monospace;
+         }
+
+         .avatar-white-shirt .shirt-text {
+             color: var(--deep-black);
+         }
+
+         .avatar-hoodie-up {
+             width: 35px;
+             height: 20px;
+             background: var(--deep-black);
+             position: absolute;
+             top: -10px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 15px 15px 0 0;
+         }
+
+         .avatar-lab-coat {
+             width: 100%;
+             height: 100%;
+             background: var(--pure-white);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+         }
+
+         .avatar-magnifier, .avatar-key-chain {
+             width: 8px;
+             height: 8px;
+             background: var(--light-gray);
+             border-radius: 50%;
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+         }
+
+         .avatar-headset {
+             width: 25px;
+             height: 15px;
+             border: 2px solid var(--light-gray);
+             position: absolute;
+             top: -10px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 10px;
+         }
+
+         /* Startup Theme */
+         .startup-theme .avatar-casual-shirt, .startup-theme .avatar-t-shirt, 
+         .startup-theme .avatar-growth-shirt, .startup-theme .avatar-designer-shirt,
+         .startup-theme .avatar-mobile-shirt {
+             width: 100%;
+             height: 100%;
+             background: var(--medium-gray);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .avatar-laptop, .avatar-coffee, .avatar-chart, .avatar-tablet, .avatar-phone {
+             width: 10px;
+             height: 8px;
+             background: var(--light-gray);
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+             border-radius: 2px;
+         }
+
+         /* Academia Theme */
+         .academia-theme .avatar-suit-jacket {
+             width: 100%;
+             height: 100%;
+             background: var(--charcoal);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+         }
+
+         .academia-theme .avatar-phd-shirt, .academia-theme .avatar-data-shirt,
+         .academia-theme .avatar-student-shirt {
+             width: 100%;
+             height: 100%;
+             background: var(--medium-gray);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .avatar-books, .avatar-thesis, .avatar-calculator, .avatar-microscope, .avatar-notebook {
+             width: 10px;
+             height: 8px;
+             background: var(--light-gray);
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+             border-radius: 2px;
+         }
+
+         /* Indie Theme */
+         .indie-theme .avatar-indie-shirt, .indie-theme .avatar-artist-shirt,
+         .indie-theme .avatar-sound-shirt, .indie-theme .avatar-game-shirt,
+         .indie-theme .avatar-community-shirt {
+             width: 100%;
+             height: 100%;
+             background: var(--dark-gray);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .avatar-headphones {
+             width: 20px;
+             height: 12px;
+             border: 2px solid var(--light-gray);
+             position: absolute;
+             top: -8px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 8px;
+         }
+
+         .avatar-stylus, .avatar-mixer, .avatar-controller, .avatar-megaphone {
+             width: 10px;
+             height: 8px;
+             background: var(--light-gray);
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+             border-radius: 2px;
+         }
+
+         /* Open Source Theme */
+         .opensource-theme .avatar-maintainer-shirt, .opensource-theme .avatar-contributor-shirt,
+         .opensource-theme .avatar-core-shirt, .opensource-theme .avatar-doc-shirt,
+         .opensource-theme .avatar-lead-shirt {
+             width: 100%;
+             height: 100%;
+             background: var(--dark-gray);
+             border-radius: 5px 5px 10px 10px;
+             position: relative;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .avatar-github, .avatar-git, .avatar-terminal-2, .avatar-pen {
+             width: 10px;
+             height: 8px;
+             background: var(--light-gray);
+             position: absolute;
+             bottom: 5px;
+             right: 5px;
+             border-radius: 2px;
+         }
+
+         .avatar-crown {
+             width: 15px;
+             height: 8px;
+             background: var(--highlight-red);
+             position: absolute;
+             top: -5px;
+             left: 50%;
+             transform: translateX(-50%);
+             border-radius: 0 0 5px 5px;
+         }
+
+         /* Hover Effects for Character Avatars */
+         .team-member:hover .character-avatar,
+         .team-member.selected .character-avatar {
+             transform: scale(1.1);
+         }
+
+         .team-member:hover .avatar-badge,
+         .team-member.selected .avatar-badge {
+             background: var(--pure-white);
+             color: var(--deep-black);
+         }
 
         .card-title {
             font-size: 1.1rem;
@@ -512,21 +812,76 @@
             color: var(--pure-white);
         }
 
-        /* Navigation */
-        .nav-buttons {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2px;
-            z-index: 100;
-            background: rgba(26, 26, 26, 0.6);
-            padding: 2px;
-            border-radius: 0;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--dark-gray);
-        }
+                 /* Navigation */
+         .nav-buttons {
+             position: fixed;
+             bottom: 40px;
+             left: 50%;
+             transform: translateX(-50%);
+             display: flex;
+             gap: 2px;
+             z-index: 100;
+             background: rgba(26, 26, 26, 0.6);
+             padding: 2px;
+             border-radius: 0;
+             backdrop-filter: blur(10px);
+             border: 1px solid var(--dark-gray);
+         }
+
+         .submenu {
+             position: fixed;
+             bottom: 90px;
+             left: 50%;
+             transform: translateX(-50%);
+             display: flex;
+             flex-wrap: wrap;
+             gap: 5px;
+             z-index: 99;
+             background: rgba(26, 26, 26, 0.8);
+             padding: 10px;
+             border-radius: 8px;
+             backdrop-filter: blur(15px);
+             border: 1px solid var(--dark-gray);
+             max-width: 400px;
+         }
+
+         .submenu button {
+             padding: 8px 12px;
+             background: transparent;
+             border: 1px solid var(--dark-gray);
+             border-radius: 4px;
+             color: var(--medium-gray);
+             cursor: pointer;
+             transition: all 0.3s ease;
+             font-size: 0.8rem;
+         }
+
+         .submenu button:hover {
+             background: var(--highlight-red);
+             color: var(--pure-white);
+             border-color: var(--highlight-red);
+         }
+
+         .game-status {
+             position: fixed;
+             top: 20px;
+             right: 20px;
+             display: flex;
+             flex-direction: column;
+             gap: 5px;
+             z-index: 100;
+             background: rgba(26, 26, 26, 0.8);
+             padding: 10px;
+             border-radius: 8px;
+             backdrop-filter: blur(15px);
+             border: 1px solid var(--dark-gray);
+         }
+
+         .status-item {
+             font-size: 0.8rem;
+             color: var(--medium-gray);
+             font-family: 'JetBrains Mono', monospace;
+         }
 
         .nav-btn {
             padding: 12px 24px;
@@ -697,75 +1052,518 @@
     <div class="screen" id="universeScreen">
         <h2 class="screen-title">Escolha Seu Universo</h2>
         <div class="universe-grid">
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this, 'corporativo')">
                 <div class="universe-icon">🏢</div>
                 <div class="card-title">Corporativo</div>
                 <div class="card-subtitle">Estrutura & Processos</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this, 'startup')">
                 <div class="universe-icon">🚀</div>
                 <div class="card-title">Startup</div>
                 <div class="card-subtitle">Agilidade & Inovação</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this, 'academia')">
                 <div class="universe-icon">🎓</div>
                 <div class="card-title">Academia</div>
                 <div class="card-subtitle">Pesquisa & Ensino</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this, 'indie')">
                 <div class="universe-icon">🎨</div>
                 <div class="card-title">Indie</div>
                 <div class="card-subtitle">Criatividade & Liberdade</div>
             </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this, 'opensource')">
                 <div class="universe-icon">🌍</div>
                 <div class="card-title">Open Source</div>
                 <div class="card-subtitle">Colaboração & Comunidade</div>
             </div>
+            <div class="universe-card" onclick="selectUniverse(this, 'security')">
+                <div class="universe-icon">🔒</div>
+                <div class="card-title">Security</div>
+                <div class="card-subtitle">Proteção & Defesa</div>
+            </div>
         </div>
     </div>
 
-    <!-- Team Selection -->
-    <div class="screen" id="teamScreen">
-        <h2 class="screen-title">Monte Sua Equipe</h2>
+    <!-- Corporativo Universe Team -->
+    <div class="screen universe-team" id="corporativoTeam">
+        <h2 class="screen-title">Equipe Corporativa</h2>
         <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">💻</div>
-                <div class="card-title">Developer</div>
-                <div class="card-subtitle">Código & Lógica</div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="senior-dev">
+                <div class="character-avatar">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-suit"></div>
+                        <div class="avatar-tie"></div>
+                    </div>
+                    <div class="avatar-badge">SR</div>
+                </div>
+                <div class="card-title">Senior Developer</div>
+                <div class="card-subtitle">Arquitetura & Código</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">🔍</div>
-                <div class="card-title">QA</div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="qa-lead">
+                <div class="character-avatar">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-shirt"></div>
+                        <div class="avatar-glasses"></div>
+                    </div>
+                    <div class="avatar-badge">QA</div>
+                </div>
+                <div class="card-title">QA Lead</div>
                 <div class="card-subtitle">Testes & Qualidade</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">⚙️</div>
-                <div class="card-title">DevOps</div>
-                <div class="card-subtitle">Infra & Deploy</div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="devops">
+                <div class="character-avatar">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-hoodie"></div>
+                        <div class="avatar-terminal"></div>
+                    </div>
+                    <div class="avatar-badge">OPS</div>
+                </div>
+                <div class="card-title">DevOps Engineer</div>
+                <div class="card-subtitle">Infraestrutura & CI/CD</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">🎨</div>
-                <div class="card-title">Designer</div>
-                <div class="card-subtitle">UX & Interface</div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="pm">
+                <div class="character-avatar">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-blazer"></div>
+                        <div class="avatar-clipboard"></div>
+                    </div>
+                    <div class="avatar-badge">PM</div>
+                </div>
+                <div class="card-title">Project Manager</div>
+                <div class="card-subtitle">Gestão & Planejamento</div>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">📊</div>
-                <div class="card-title">PM</div>
-                <div class="card-subtitle">Gestão & Estratégia</div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="ba">
+                <div class="character-avatar">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-business"></div>
+                        <div class="avatar-charts"></div>
+                    </div>
+                    <div class="avatar-badge">BA</div>
+                </div>
+                <div class="card-title">Business Analyst</div>
+                <div class="card-subtitle">Análise & Requisitos</div>
             </div>
         </div>
     </div>
 
-    <!-- Gameplay -->
-    <div class="screen" id="gameplayScreen">
-        <div class="game-header">
-            <h3 class="game-title">Projeto: E-commerce MVP</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+    <!-- Security Universe Team -->
+    <div class="screen universe-team" id="securityTeam">
+        <h2 class="screen-title">Equipe de Segurança</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="blackhat">
+                <div class="character-avatar security-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-black-hat"></div>
+                        <div class="avatar-black-shirt">
+                            <div class="shirt-text">H4CK3R</div>
+                        </div>
+                        <div class="avatar-hoodie-up"></div>
+                    </div>
+                    <div class="avatar-badge">⚫</div>
+                </div>
+                <div class="card-title">Black Hat</div>
+                <div class="card-subtitle">Ataque & Penetração</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="whitehat">
+                <div class="character-avatar security-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-white-hat"></div>
+                        <div class="avatar-white-shirt">
+                            <div class="shirt-text">SEC</div>
+                        </div>
+                    </div>
+                    <div class="avatar-badge">⚪</div>
+                </div>
+                <div class="card-title">White Hat</div>
+                <div class="card-subtitle">Defesa & Proteção</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="forensics">
+                <div class="character-avatar security-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-lab-coat"></div>
+                        <div class="avatar-magnifier"></div>
+                    </div>
+                    <div class="avatar-badge">🔍</div>
+                </div>
+                <div class="card-title">Forensics</div>
+                <div class="card-subtitle">Análise & Evidências</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="soc-analyst">
+                <div class="character-avatar security-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-headset"></div>
+                        <div class="avatar-monitor-shirt">
+                            <div class="shirt-text">SOC</div>
+                        </div>
+                    </div>
+                    <div class="avatar-badge">📊</div>
+                </div>
+                <div class="card-title">SOC Analyst</div>
+                <div class="card-subtitle">Monitoramento & Alertas</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="crypto">
+                <div class="character-avatar security-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-crypto-shirt">
+                            <div class="shirt-text">CRYPTO</div>
+                        </div>
+                        <div class="avatar-key-chain"></div>
+                    </div>
+                    <div class="avatar-badge">🔑</div>
+                </div>
+                <div class="card-title">Cryptographer</div>
+                <div class="card-subtitle">Criptografia & Chaves</div>
             </div>
         </div>
-        <div class="code-workspace" id="codeWorkspace">
+    </div>
+
+    <!-- Startup Universe Team -->
+    <div class="screen universe-team" id="startupTeam">
+        <h2 class="screen-title">Equipe Startup</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="fullstack">
+                <div class="character-avatar startup-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-casual-shirt">
+                            <div class="shirt-text">JS</div>
+                        </div>
+                        <div class="avatar-laptop"></div>
+                    </div>
+                    <div class="avatar-badge">⚡</div>
+                </div>
+                <div class="card-title">Full Stack</div>
+                <div class="card-subtitle">Frontend & Backend</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="founder">
+                <div class="character-avatar startup-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-t-shirt">
+                            <div class="shirt-text">CEO</div>
+                        </div>
+                        <div class="avatar-coffee"></div>
+                    </div>
+                    <div class="avatar-badge">🚀</div>
+                </div>
+                <div class="card-title">Founder</div>
+                <div class="card-subtitle">Visão & Liderança</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="growth">
+                <div class="character-avatar startup-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-growth-shirt">
+                            <div class="shirt-text">📈</div>
+                        </div>
+                        <div class="avatar-chart"></div>
+                    </div>
+                    <div class="avatar-badge">�</div>
+                </div>
+                <div class="card-title">Growth Hacker</div>
+                <div class="card-subtitle">Marketing & Métricas</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="ui-ux">
+                <div class="character-avatar startup-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-designer-shirt">
+                            <div class="shirt-text">UX</div>
+                        </div>
+                        <div class="avatar-tablet"></div>
+                    </div>
+                    <div class="avatar-badge">🎨</div>
+                </div>
+                <div class="card-title">UI/UX Designer</div>
+                <div class="card-subtitle">Design & Experiência</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="mobile">
+                <div class="character-avatar startup-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-mobile-shirt">
+                            <div class="shirt-text">📱</div>
+                        </div>
+                        <div class="avatar-phone"></div>
+                    </div>
+                    <div class="avatar-badge">📱</div>
+                </div>
+                <div class="card-title">Mobile Dev</div>
+                <div class="card-subtitle">iOS & Android</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academia Universe Team -->
+    <div class="screen universe-team" id="academiaTeam">
+        <h2 class="screen-title">Equipe Acadêmica</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="professor">
+                <div class="character-avatar academia-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-suit-jacket"></div>
+                        <div class="avatar-books"></div>
+                    </div>
+                    <div class="avatar-badge">🎓</div>
+                </div>
+                <div class="card-title">Professor</div>
+                <div class="card-subtitle">Pesquisa & Ensino</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="phd">
+                <div class="character-avatar academia-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-phd-shirt">
+                            <div class="shirt-text">PhD</div>
+                        </div>
+                        <div class="avatar-thesis"></div>
+                    </div>
+                    <div class="avatar-badge">📚</div>
+                </div>
+                <div class="card-title">PhD Student</div>
+                <div class="card-subtitle">Pesquisa Avançada</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="data-scientist">
+                <div class="character-avatar academia-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-data-shirt">
+                            <div class="shirt-text">DATA</div>
+                        </div>
+                        <div class="avatar-calculator"></div>
+                    </div>
+                    <div class="avatar-badge">📊</div>
+                </div>
+                <div class="card-title">Data Scientist</div>
+                <div class="card-subtitle">Análise & IA</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="researcher">
+                <div class="character-avatar academia-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-lab-coat"></div>
+                        <div class="avatar-microscope"></div>
+                    </div>
+                    <div class="avatar-badge">�</div>
+                </div>
+                <div class="card-title">Researcher</div>
+                <div class="card-subtitle">Investigação & Análise</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="ta">
+                <div class="character-avatar academia-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-student-shirt">
+                            <div class="shirt-text">TA</div>
+                        </div>
+                        <div class="avatar-notebook"></div>
+                    </div>
+                    <div class="avatar-badge">📝</div>
+                </div>
+                <div class="card-title">Teaching Assistant</div>
+                <div class="card-subtitle">Suporte & Ensino</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Indie Universe Team -->
+    <div class="screen universe-team" id="indieTeam">
+        <h2 class="screen-title">Equipe Indie</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="solo-dev">
+                <div class="character-avatar indie-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-indie-shirt">
+                            <div class="shirt-text">SOLO</div>
+                        </div>
+                        <div class="avatar-headphones"></div>
+                    </div>
+                    <div class="avatar-badge">🎮</div>
+                </div>
+                <div class="card-title">Solo Developer</div>
+                <div class="card-subtitle">Tudo em Um</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="pixel-artist">
+                <div class="character-avatar indie-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-artist-shirt">
+                            <div class="shirt-text">PIXEL</div>
+                        </div>
+                        <div class="avatar-stylus"></div>
+                    </div>
+                    <div class="avatar-badge">🎨</div>
+                </div>
+                <div class="card-title">Pixel Artist</div>
+                <div class="card-subtitle">Arte & Visual</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="sound-designer">
+                <div class="character-avatar indie-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-sound-shirt">
+                            <div class="shirt-text">AUDIO</div>
+                        </div>
+                        <div class="avatar-mixer"></div>
+                    </div>
+                    <div class="avatar-badge">🎵</div>
+                </div>
+                <div class="card-title">Sound Designer</div>
+                <div class="card-subtitle">Música & Efeitos</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="game-designer">
+                <div class="character-avatar indie-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-game-shirt">
+                            <div class="shirt-text">GAME</div>
+                        </div>
+                        <div class="avatar-controller"></div>
+                    </div>
+                    <div class="avatar-badge">🎯</div>
+                </div>
+                <div class="card-title">Game Designer</div>
+                <div class="card-subtitle">Mecânicas & Flow</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="community">
+                <div class="character-avatar indie-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-community-shirt">
+                            <div class="shirt-text">COMM</div>
+                        </div>
+                        <div class="avatar-megaphone"></div>
+                    </div>
+                    <div class="avatar-badge">📢</div>
+                </div>
+                <div class="card-title">Community Manager</div>
+                <div class="card-subtitle">Comunidade & Marketing</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Source Universe Team -->
+    <div class="screen universe-team" id="opensourceTeam">
+        <h2 class="screen-title">Equipe Open Source</h2>
+        <div class="team-grid">
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="maintainer">
+                <div class="character-avatar opensource-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-maintainer-shirt">
+                            <div class="shirt-text">MAINT</div>
+                        </div>
+                        <div class="avatar-github"></div>
+                    </div>
+                    <div class="avatar-badge">🔧</div>
+                </div>
+                <div class="card-title">Maintainer</div>
+                <div class="card-subtitle">Manutenção & Review</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="contributor">
+                <div class="character-avatar opensource-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-contributor-shirt">
+                            <div class="shirt-text">FORK</div>
+                        </div>
+                        <div class="avatar-git"></div>
+                    </div>
+                    <div class="avatar-badge">🌿</div>
+                </div>
+                <div class="card-title">Contributor</div>
+                <div class="card-subtitle">Contribuições & PRs</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="core-dev">
+                <div class="character-avatar opensource-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-core-shirt">
+                            <div class="shirt-text">CORE</div>
+                        </div>
+                        <div class="avatar-terminal-2"></div>
+                    </div>
+                    <div class="avatar-badge">💎</div>
+                </div>
+                <div class="card-title">Core Developer</div>
+                <div class="card-subtitle">Arquitetura & Core</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="doc-writer">
+                <div class="character-avatar opensource-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-doc-shirt">
+                            <div class="shirt-text">DOCS</div>
+                        </div>
+                        <div class="avatar-pen"></div>
+                    </div>
+                    <div class="avatar-badge">📖</div>
+                </div>
+                <div class="card-title">Documentation Writer</div>
+                <div class="card-subtitle">Documentação & Guias</div>
+            </div>
+            <div class="team-member" onclick="selectTeamMember(this)" data-role="community-lead">
+                <div class="character-avatar opensource-theme">
+                    <div class="avatar-head"></div>
+                    <div class="avatar-body">
+                        <div class="avatar-lead-shirt">
+                            <div class="shirt-text">LEAD</div>
+                        </div>
+                        <div class="avatar-crown"></div>
+                    </div>
+                    <div class="avatar-badge">👑</div>
+                </div>
+                <div class="card-title">Community Lead</div>
+                <div class="card-subtitle">Comunidade & Eventos</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 1: Planning -->
+    <div class="screen" id="planningScreen">
+        <div class="game-header">
+            <h3 class="game-title">Fase 1: Planejamento</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="planningProgress"></div>
+            </div>
+        </div>
+        <div class="code-workspace" id="planningWorkspace">
+            <div class="code-block" draggable="true">Análise de Requisitos</div>
+            <div class="code-block" draggable="true">Arquitetura</div>
+            <div class="code-block" draggable="true">Wireframes</div>
+            <div class="code-block" draggable="true">Prototipagem</div>
+            <div class="code-block" draggable="true">Definição de Scope</div>
+            <div class="code-block" draggable="true">Tecnologias</div>
+            <div class="code-block" draggable="true">Cronograma</div>
+            <div class="code-block" draggable="true">Orçamento</div>
+            <div class="mvp-area" id="planningArea">
+                Monte seu plano de projeto
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 2: Development -->
+    <div class="screen" id="developmentScreen">
+        <div class="game-header">
+            <h3 class="game-title">Fase 2: Desenvolvimento</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="developmentProgress"></div>
+            </div>
+        </div>
+        <div class="code-workspace" id="developmentWorkspace">
             <div class="code-block" draggable="true">Setup Inicial</div>
             <div class="code-block" draggable="true">Autenticação</div>
             <div class="code-block" draggable="true">Carrinho</div>
@@ -774,19 +1572,82 @@
             <div class="code-block" draggable="true">Busca</div>
             <div class="code-block" draggable="true">Performance</div>
             <div class="code-block" draggable="true">Notificações</div>
-            <div class="mvp-area" id="mvpArea">
-                Arraste os blocos para aqui e monte seu MVP
+            <div class="mvp-area" id="developmentArea">
+                Desenvolva as funcionalidades
             </div>
         </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="nav-buttons">
-        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
-        <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
-        <button class="nav-btn" onclick="showScreen('teamScreen', event)">Equipe</button>
-        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">Gameplay</button>
+    <!-- Phase 3: Testing -->
+    <div class="screen" id="testingScreen">
+        <div class="game-header">
+            <h3 class="game-title">Fase 3: Testes</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="testingProgress"></div>
+            </div>
+        </div>
+        <div class="code-workspace" id="testingWorkspace">
+            <div class="code-block" draggable="true">Testes Unitários</div>
+            <div class="code-block" draggable="true">Testes Integração</div>
+            <div class="code-block" draggable="true">Testes E2E</div>
+            <div class="code-block" draggable="true">Testes Performance</div>
+            <div class="code-block" draggable="true">Testes Usabilidade</div>
+            <div class="code-block" draggable="true">Testes Segurança</div>
+            <div class="code-block" draggable="true">Code Review</div>
+            <div class="code-block" draggable="true">Bug Fixing</div>
+            <div class="mvp-area" id="testingArea">
+                Execute os testes do projeto
+            </div>
+        </div>
     </div>
+
+    <!-- Phase 4: Deployment -->
+    <div class="screen" id="deploymentScreen">
+        <div class="game-header">
+            <h3 class="game-title">Fase 4: Deploy</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="deploymentProgress"></div>
+            </div>
+        </div>
+        <div class="code-workspace" id="deploymentWorkspace">
+            <div class="code-block" draggable="true">CI/CD Pipeline</div>
+            <div class="code-block" draggable="true">Docker</div>
+            <div class="code-block" draggable="true">Kubernetes</div>
+            <div class="code-block" draggable="true">Monitoring</div>
+            <div class="code-block" draggable="true">Logging</div>
+            <div class="code-block" draggable="true">Backup</div>
+            <div class="code-block" draggable="true">SSL/HTTPS</div>
+            <div class="code-block" draggable="true">Load Balancer</div>
+            <div class="mvp-area" id="deploymentArea">
+                Configure o deploy em produção
+            </div>
+        </div>
+    </div>
+
+         <!-- Navigation Buttons -->
+     <div class="nav-buttons">
+         <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
+         <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
+         <button class="nav-btn" onclick="showUniverseTeams(event)">Equipes</button>
+         <button class="nav-btn" onclick="showGamePhases(event)">Fases</button>
+     </div>
+
+     <!-- Team Selection Submenu -->
+     <div class="submenu" id="teamSubmenu" style="display: none;">
+         <button onclick="showScreen('corporativoTeam', event)">Corporativo</button>
+         <button onclick="showScreen('startupTeam', event)">Startup</button>
+         <button onclick="showScreen('academiaTeam', event)">Academia</button>
+         <button onclick="showScreen('indieTeam', event)">Indie</button>
+         <button onclick="showScreen('opensourceTeam', event)">Open Source</button>
+         <button onclick="showScreen('securityTeam', event)">Security</button>
+     </div>
+
+     <!-- Game Status -->
+     <div class="game-status" id="gameStatus">
+         <div class="status-item" id="universeStatus">Universo: -</div>
+         <div class="status-item" id="teamStatus">Equipe: 0/3</div>
+         <div class="status-item" id="phaseStatus">Fase: -</div>
+     </div>
 
     <script>
         // Enhanced Navigation with Cinematic Transitions
@@ -822,153 +1683,314 @@
             }
         }
 
-        // Universe Selection with Weight and Feedback
-        function selectUniverse(el) {
-            createInteractionFeedback(el);
-            
-            document.querySelectorAll('.universe-card').forEach(card => {
-                card.classList.remove('selected');
-                card.style.transform = '';
-            });
-            
-            el.classList.add('selected');
-            
-            // Weighted animation
-            el.style.animation = 'none';
-            setTimeout(() => {
-                el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            }, 10);
-            
-            setTimeout(() => {
-                el.style.animation = '';
-                showScreen('teamScreen');
-            }, 1200);
-        }
+                 // Game State
+         let currentUniverse = '';
+         let selectedTeam = [];
+         let currentPhase = 1;
+         let completedPhases = [];
 
-        // Team Selection with Realistic Physics
-        function selectTeamMember(el) {
-            createInteractionFeedback(el);
-            
-            el.classList.toggle('selected');
-            
-            // Weight-based animation
-            if (el.classList.contains('selected')) {
-                el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-            } else {
-                el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-            }
-            
-            setTimeout(() => {
-                el.style.animation = '';
-            }, 600);
-            
-            const selectedMembers = document.querySelectorAll('.team-member.selected');
-            if (selectedMembers.length >= 3) {
-                // Team completion effect
-                selectedMembers.forEach((member, index) => {
-                    setTimeout(() => {
-                        member.style.animation = 'teamComplete 0.8s ease-out';
-                    }, index * 100);
-                });
-                
-                setTimeout(() => {
-                    showScreen('gameplayScreen');
-                }, 1500);
-            }
-        }
+         // Universe Selection with Weight and Feedback
+         function selectUniverse(el, universe) {
+             createInteractionFeedback(el);
+             currentUniverse = universe;
+             updateGameStatus();
+             
+             document.querySelectorAll('.universe-card').forEach(card => {
+                 card.classList.remove('selected');
+                 card.style.transform = '';
+             });
+             
+             el.classList.add('selected');
+             
+             // Weighted animation
+             el.style.animation = 'none';
+             setTimeout(() => {
+                 el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+             }, 10);
+             
+             setTimeout(() => {
+                 el.style.animation = '';
+                 showScreen(universe + 'Team');
+             }, 1200);
+         }
 
-        // Enhanced Drag & Drop with Physics
-        const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
-        const mvpArea = document.getElementById('mvpArea');
-        const progressFill = document.getElementById('progressFill');
-        let draggedBlock = null;
+                 // Team Selection with Realistic Physics
+         function selectTeamMember(el) {
+             createInteractionFeedback(el);
+             
+             el.classList.toggle('selected');
+             
+             // Weight-based animation
+             if (el.classList.contains('selected')) {
+                 el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                 selectedTeam.push(el.dataset.role);
+             } else {
+                 el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                 selectedTeam = selectedTeam.filter(role => role !== el.dataset.role);
+             }
+             
+             updateGameStatus();
+             
+             setTimeout(() => {
+                 el.style.animation = '';
+             }, 600);
+             
+             const selectedMembers = document.querySelectorAll('.team-member.selected');
+             if (selectedMembers.length >= 3) {
+                 // Team completion effect
+                 selectedMembers.forEach((member, index) => {
+                     setTimeout(() => {
+                         member.style.animation = 'teamComplete 0.8s ease-out';
+                     }, index * 100);
+                 });
+                 
+                 setTimeout(() => {
+                     startGamePhases();
+                 }, 1500);
+             }
+         }
 
-        codeBlocks.forEach(block => {
-            block.addEventListener('dragstart', e => {
-                draggedBlock = block;
-                block.style.opacity = '0.4';
-                block.style.transform = 'scale(0.9) rotate(2deg)';
-                block.style.filter = 'blur(1px)';
-                
-                // Add distortion effect
-                createDistortionWave(block);
-            });
-            
-            block.addEventListener('dragend', e => {
-                draggedBlock = null;
-                block.style.opacity = '';
-                block.style.transform = '';
-                block.style.filter = '';
-            });
-        });
+         // Update Game Status
+         function updateGameStatus() {
+             document.getElementById('universeStatus').textContent = 
+                 `Universo: ${currentUniverse || '-'}`;
+             document.getElementById('teamStatus').textContent = 
+                 `Equipe: ${selectedTeam.length}/3`;
+             document.getElementById('phaseStatus').textContent = 
+                 `Fase: ${currentPhase > 0 ? currentPhase + '/4' : '-'}`;
+         }
 
-        mvpArea.addEventListener('dragover', e => {
-            e.preventDefault();
-            mvpArea.classList.add('drag-over');
-        });
+         // Start Game Phases
+         function startGamePhases() {
+             currentPhase = 1;
+             updateGameStatus();
+             showScreen('planningScreen');
+             updateNavigationForPhases();
+         }
 
-        mvpArea.addEventListener('dragleave', e => {
-            mvpArea.classList.remove('drag-over');
-        });
+         // Update Navigation for Game Phases
+         function updateNavigationForPhases() {
+             const navButtons = document.querySelector('.nav-buttons');
+             navButtons.innerHTML = `
+                 <button class="nav-btn" onclick="showScreen('titleScreen', event)">Início</button>
+                 <button class="nav-btn ${currentPhase === 1 ? 'active' : ''}" onclick="showGamePhase(1)">Planejamento</button>
+                 <button class="nav-btn ${currentPhase === 2 ? 'active' : ''}" onclick="showGamePhase(2)">Desenvolvimento</button>
+                 <button class="nav-btn ${currentPhase === 3 ? 'active' : ''}" onclick="showGamePhase(3)">Testes</button>
+                 <button class="nav-btn ${currentPhase === 4 ? 'active' : ''}" onclick="showGamePhase(4)">Deploy</button>
+             `;
+         }
 
-        mvpArea.addEventListener('drop', e => {
-            e.preventDefault();
-            mvpArea.classList.remove('drag-over');
-            
-            if (!draggedBlock) return;
+         // Show Game Phase
+         function showGamePhase(phase) {
+             if (phase > currentPhase && !completedPhases.includes(phase - 1)) {
+                 showMessage('Complete a fase anterior primeiro!');
+                 return;
+             }
 
-            const clone = draggedBlock.cloneNode(true);
-            clone.removeAttribute('draggable');
-            clone.style.cursor = 'pointer';
-            clone.style.opacity = '1';
-            clone.style.transform = 'scale(1)';
-            clone.style.filter = '';
-            
-            // Landing animation with weight
-            clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+             currentPhase = phase;
+             updateGameStatus();
+             const screens = ['planningScreen', 'developmentScreen', 'testingScreen', 'deploymentScreen'];
+             showScreen(screens[phase - 1]);
+             updateNavigationForPhases();
+         }
 
-            clone.addEventListener('click', () => {
-                createInteractionFeedback(clone);
-                clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                setTimeout(() => {
-                    clone.remove();
-                    updateProgress();
-                }, 600);
-            });
+         // Show Message
+         function showMessage(text) {
+             const message = document.createElement('div');
+             message.style.position = 'fixed';
+             message.style.top = '50%';
+             message.style.left = '50%';
+             message.style.transform = 'translate(-50%, -50%)';
+             message.style.background = 'rgba(0, 0, 0, 0.9)';
+             message.style.color = 'white';
+             message.style.padding = '20px 40px';
+             message.style.borderRadius = '8px';
+             message.style.zIndex = '1000';
+             message.style.fontSize = '1.2rem';
+             message.textContent = text;
+             
+             document.body.appendChild(message);
+             
+             setTimeout(() => {
+                 message.remove();
+             }, 2000);
+         }
 
-            if (mvpArea.textContent.includes('Arraste os blocos')) {
-                mvpArea.textContent = '';
-            }
+                 // Enhanced Drag & Drop with Physics
+         let draggedBlock = null;
 
-            mvpArea.appendChild(clone);
-            updateProgress();
-            
-            // Create particles on drop
-            createDropParticles(clone);
-        });
+         // Initialize Drag & Drop for all phases
+         function initializeDragDrop() {
+             const phases = ['planning', 'development', 'testing', 'deployment'];
+             
+             phases.forEach(phase => {
+                 const workspace = document.getElementById(phase + 'Workspace');
+                 const area = document.getElementById(phase + 'Area');
+                 const progress = document.getElementById(phase + 'Progress');
+                 
+                 if (workspace && area) {
+                     setupDragDropForPhase(workspace, area, progress, phase);
+                 }
+             });
+         }
 
-        // Progress Update with Cinematic Effects
-        function updateProgress() {
-            const totalBlocks = codeBlocks.length;
-            const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
-            let progress = (selectedBlocks / totalBlocks) * 100;
-            
-            if (progress > 100) progress = 100;
-            
-            progressFill.style.width = progress + '%';
-            
-            // Completion effect
-            if (progress === 100) {
-                progressFill.style.animation = 'progressComplete 2s ease-in-out';
-                setTimeout(() => {
-                    createCompletionEffect();
-                }, 1000);
-            }
+                 // Setup Drag & Drop for a specific phase
+         function setupDragDropForPhase(workspace, area, progress, phaseName) {
+             const codeBlocks = workspace.querySelectorAll('.code-block[draggable="true"]');
+             
+             codeBlocks.forEach(block => {
+                 block.addEventListener('dragstart', e => {
+                     draggedBlock = block;
+                     block.style.opacity = '0.4';
+                     block.style.transform = 'scale(0.9) rotate(2deg)';
+                     block.style.filter = 'blur(1px)';
+                     
+                     createDistortionWave(block);
+                 });
+                 
+                 block.addEventListener('dragend', e => {
+                     draggedBlock = null;
+                     block.style.opacity = '';
+                     block.style.transform = '';
+                     block.style.filter = '';
+                 });
+             });
 
-            if (selectedBlocks === 0) {
-                mvpArea.textContent = 'Arraste os blocos para aqui e monte seu MVP';
-            }
-        }
+             area.addEventListener('dragover', e => {
+                 e.preventDefault();
+                 area.classList.add('drag-over');
+             });
+
+             area.addEventListener('dragleave', e => {
+                 area.classList.remove('drag-over');
+             });
+
+             area.addEventListener('drop', e => {
+                 e.preventDefault();
+                 area.classList.remove('drag-over');
+                 
+                 if (!draggedBlock) return;
+
+                 const clone = draggedBlock.cloneNode(true);
+                 clone.removeAttribute('draggable');
+                 clone.style.cursor = 'pointer';
+                 clone.style.opacity = '1';
+                 clone.style.transform = 'scale(1)';
+                 clone.style.filter = '';
+                 
+                 clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+
+                 clone.addEventListener('click', () => {
+                     createInteractionFeedback(clone);
+                     clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                     setTimeout(() => {
+                         clone.remove();
+                         updatePhaseProgress(workspace, area, progress, phaseName);
+                     }, 600);
+                 });
+
+                 if (area.textContent.includes('Monte') || area.textContent.includes('Desenvolva') || 
+                     area.textContent.includes('Execute') || area.textContent.includes('Configure')) {
+                     area.textContent = '';
+                 }
+
+                 area.appendChild(clone);
+                 updatePhaseProgress(workspace, area, progress, phaseName);
+                 
+                 createDropParticles(clone);
+             });
+         }
+
+         // Update Phase Progress
+         function updatePhaseProgress(workspace, area, progress, phaseName) {
+             const totalBlocks = workspace.querySelectorAll('.code-block[draggable="true"]').length;
+             const selectedBlocks = area.querySelectorAll('.code-block').length;
+             let progressPercent = (selectedBlocks / totalBlocks) * 100;
+             
+             if (progressPercent > 100) progressPercent = 100;
+             
+             if (progress) {
+                 progress.style.width = progressPercent + '%';
+                 
+                 // Phase completion effect
+                 if (progressPercent === 100 && !completedPhases.includes(currentPhase)) {
+                     progress.style.animation = 'progressComplete 2s ease-in-out';
+                     completedPhases.push(currentPhase);
+                     
+                     setTimeout(() => {
+                         createCompletionEffect();
+                         unlockNextPhase();
+                     }, 1000);
+                 }
+             }
+
+             if (selectedBlocks === 0) {
+                 const messages = {
+                     'planning': 'Monte seu plano de projeto',
+                     'development': 'Desenvolva as funcionalidades',
+                     'testing': 'Execute os testes do projeto',
+                     'deployment': 'Configure o deploy em produção'
+                 };
+                 area.textContent = messages[phaseName] || 'Arraste os blocos aqui';
+             }
+         }
+
+         // Unlock Next Phase
+         function unlockNextPhase() {
+             if (currentPhase < 4) {
+                 showMessage(`Fase ${currentPhase} concluída! Próxima fase desbloqueada.`);
+                 setTimeout(() => {
+                     showGamePhase(currentPhase + 1);
+                 }, 2000);
+             } else {
+                 showMessage('🎉 Projeto concluído com sucesso!');
+                 setTimeout(() => {
+                     showFinalScreen();
+                 }, 3000);
+             }
+         }
+
+         // Show Final Screen
+         function showFinalScreen() {
+             const finalScreen = document.createElement('div');
+             finalScreen.className = 'screen active';
+             finalScreen.style.background = 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,1) 100%)';
+             finalScreen.innerHTML = `
+                 <div style="text-align: center;">
+                     <h1 style="font-size: 3rem; margin-bottom: 20px; color: var(--pure-white);">Projeto Concluído!</h1>
+                     <p style="font-size: 1.5rem; margin-bottom: 30px; color: var(--light-gray);">Universo: ${currentUniverse.toUpperCase()}</p>
+                     <p style="font-size: 1.2rem; margin-bottom: 30px; color: var(--medium-gray);">Equipe: ${selectedTeam.join(', ')}</p>
+                     <p style="font-size: 1rem; margin-bottom: 40px; color: var(--medium-gray);">Fases completadas: ${completedPhases.length}/4</p>
+                     <button class="start-btn" onclick="restartGame()">Jogar Novamente</button>
+                 </div>
+             `;
+             
+             document.querySelector('.screen.active').classList.remove('active');
+             document.body.appendChild(finalScreen);
+         }
+
+         // Restart Game
+         function restartGame() {
+             currentUniverse = '';
+             selectedTeam = [];
+             currentPhase = 1;
+             completedPhases = [];
+             
+             // Remove final screen
+             const finalScreen = document.querySelector('.screen:last-child');
+             if (finalScreen) finalScreen.remove();
+             
+             // Reset navigation
+             const navButtons = document.querySelector('.nav-buttons');
+             navButtons.innerHTML = `
+                 <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
+                 <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
+                 <button class="nav-btn" onclick="showScreen('corporativoTeam', event)">Equipe</button>
+                 <button class="nav-btn" onclick="showScreen('planningScreen', event)">Gameplay</button>
+             `;
+             
+             showScreen('titleScreen');
+         }
 
         // Particle System
         function createParticles() {
@@ -1105,9 +2127,31 @@
         `;
         document.head.appendChild(dynamicStyles);
 
-        // Initialize particle system
-        createParticles();
-        setInterval(createParticles, 15000);
+                 // Initialize particle system
+         createParticles();
+         setInterval(createParticles, 15000);
+
+         // Show Universe Teams submenu
+         function showUniverseTeams(event) {
+             const submenu = document.getElementById('teamSubmenu');
+             submenu.style.display = submenu.style.display === 'none' ? 'flex' : 'none';
+         }
+
+         // Show Game Phases submenu
+         function showGamePhases(event) {
+             if (selectedTeam.length < 3) {
+                 showMessage('Selecione uma equipe primeiro!');
+                 return;
+             }
+             updateNavigationForPhases();
+             showScreen('planningScreen');
+         }
+
+         // Initialize drag & drop system when page loads
+         document.addEventListener('DOMContentLoaded', () => {
+             initializeDragDrop();
+             updateGameStatus();
+         });
     </script>
 </body>
 
