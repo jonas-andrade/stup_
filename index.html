@@ -4,26 +4,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stup_ - O Jogo do Desenvolvedor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Stup_ - A Jornada do Desenvolvedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0a0a0a;
-            --secondary-bg: #1a1a1a;
-            --accent-primary: #00ff88;
-            --accent-secondary: #ff0080;
-            --accent-blue: #00a8ff;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-muted: #666666;
-            --border-light: rgba(255, 255, 255, 0.1);
-            --border-medium: rgba(255, 255, 255, 0.2);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --shadow-glow: 0 0 20px rgba(0, 255, 136, 0.3);
-            --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --gradient-primary: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
-            --gradient-secondary: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+            --primary-black: #0a0a0a;
+            --deep-black: #000000;
+            --charcoal: #1a1a1a;
+            --dark-gray: #2a2a2a;
+            --medium-gray: #4a4a4a;
+            --light-gray: #8a8a8a;
+            --fog-gray: #b0b0b0;
+            --pure-white: #ffffff;
+            --accent-red: #4a1515;
+            --accent-blue: #152a4a;
+            --accent-sepia: #3a2f1a;
+            --highlight-red: #6a2020;
+            --highlight-blue: #2040aa;
+            --mist-opacity: 0.3;
         }
 
         * {
@@ -34,14 +32,14 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--primary-bg);
-            color: var(--text-primary);
+            background: var(--deep-black);
+            color: var(--fog-gray);
             min-height: 100vh;
             overflow: hidden;
             position: relative;
         }
 
-        /* Animated background */
+        /* Atmospheric Background */
         body::before {
             content: '';
             position: fixed;
@@ -50,16 +48,58 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 168, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 0, 128, 0.05) 0%, transparent 50%);
-            animation: backgroundShift 20s ease-in-out infinite;
+                radial-gradient(circle at 30% 20%, rgba(74, 21, 21, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(21, 42, 74, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(26, 26, 26, 0.6) 0%, transparent 100%);
+            animation: atmosphericShift 30s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        /* Volumetric Light Effects */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                conic-gradient(from 0deg at 20% 30%, transparent 0deg, rgba(255, 255, 255, 0.02) 45deg, transparent 90deg),
+                conic-gradient(from 180deg at 80% 70%, transparent 0deg, rgba(255, 255, 255, 0.01) 60deg, transparent 120deg);
+            animation: lightShift 60s linear infinite;
+            pointer-events: none;
             z-index: -1;
         }
 
-        @keyframes backgroundShift {
+        @keyframes atmosphericShift {
             0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(2deg); }
+            33% { transform: scale(1.1) rotate(1deg); }
+            66% { transform: scale(0.9) rotate(-1deg); }
+        }
+
+        @keyframes lightShift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fog Effect */
+        .fog-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(180deg, transparent 0%, rgba(26, 26, 26, var(--mist-opacity)) 50%, transparent 100%),
+                linear-gradient(90deg, transparent 0%, rgba(26, 26, 26, 0.1) 50%, transparent 100%);
+            animation: fogDrift 40s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fogDrift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(20px) translateY(-10px); }
         }
 
         .screen {
@@ -70,10 +110,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .screen.active {
@@ -82,67 +122,82 @@
             transform: translateY(0);
         }
 
-        /* Title Screen Improvements */
+        /* Title Screen */
         .title-screen {
             text-align: center;
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInSlow 2s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-screen::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: titleGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { opacity: 0.3; transform: translateX(-50%) scale(0.8); }
+            to { opacity: 0.6; transform: translateX(-50%) scale(1.2); }
         }
 
         .title-screen .logo {
-            font-size: 5rem;
-            font-weight: 700;
+            font-size: 4rem;
+            font-weight: 300;
             font-family: 'JetBrains Mono', monospace;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
-            animation: logoGlow 3s ease-in-out infinite alternate;
-            margin-bottom: 20px;
+            color: var(--pure-white);
+            text-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
+            animation: logoBreath 6s ease-in-out infinite;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
         }
 
-        @keyframes logoGlow {
-            from {
-                filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3));
-            }
-            to {
-                filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6));
-            }
+        @keyframes logoBreath {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.02); filter: brightness(1.1); }
         }
 
         .underscore {
-            color: var(--accent-secondary);
-            font-weight: bold;
-            animation: blink 1.5s steps(2, start) infinite;
+            color: var(--highlight-red);
+            font-weight: 500;
+            animation: pulse 2s steps(2, start) infinite;
         }
 
-        @keyframes blink {
+        @keyframes pulse {
             0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            51%, 100% { opacity: 0.3; }
         }
 
         .subtitle {
-            font-size: 1.4rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 60px;
             font-weight: 300;
-            letter-spacing: 0.5px;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
         .start-btn {
-            padding: 16px 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            background: var(--glass-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
+            padding: 18px 40px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: transparent;
+            border: 1px solid var(--medium-gray);
+            border-radius: 2px;
+            color: var(--fog-gray);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(20px);
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
         }
 
         .start-btn::before {
@@ -152,71 +207,75 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: var(--gradient-primary);
-            transition: left 0.5s ease;
-            z-index: -1;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s ease;
         }
 
         .start-btn:hover::before {
-            left: 0;
+            left: 100%;
         }
 
         .start-btn:hover {
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-glow);
+            border-color: var(--pure-white);
+            color: var(--pure-white);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
         /* Screen Titles */
-        .universe-title,
-        .team-panel h3,
-        .game-header h3 {
-            color: var(--text-primary);
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 40px;
+        .screen-title {
+            color: var(--pure-white);
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 60px;
             text-align: center;
             position: relative;
+            letter-spacing: 3px;
+            opacity: 0.9;
         }
 
-        .universe-title::after {
+        .screen-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--medium-gray), transparent);
         }
 
         /* Grid Layouts */
         .universe-grid,
         .team-grid {
             display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            width: 90%;
-            max-width: 1200px;
-            animation: fadeInUp 0.8s ease-out 0.3s both;
+            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            width: 80%;
+            max-width: 1000px;
+            animation: gridRise 1.5s ease-out 0.5s both;
         }
 
-        /* Card Improvements */
+        @keyframes gridRise {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
         .universe-card,
         .team-member {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 30px 20px;
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid var(--dark-gray);
+            border-radius: 0;
+            padding: 40px 30px;
             text-align: center;
-            color: var(--text-primary);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--light-gray);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(20px);
-            min-height: 140px;
+            backdrop-filter: blur(5px);
+            min-height: 160px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -231,226 +290,311 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
             opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
+            transition: opacity 0.6s ease;
         }
 
         .universe-card:hover::before,
         .team-member:hover::before {
-            opacity: 0.1;
+            opacity: 1;
         }
 
         .universe-card:hover,
         .team-member:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--accent-primary);
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+            border-color: var(--medium-gray);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .universe-card.selected,
         .team-member.selected {
-            border-color: var(--accent-primary);
-            background: rgba(0, 255, 136, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-            transform: scale(1.05);
+            border-color: var(--highlight-red);
+            background: rgba(74, 21, 21, 0.2);
+            box-shadow: 0 0 40px rgba(106, 32, 32, 0.4);
+            transform: translateY(-8px);
         }
 
         .universe-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            filter: grayscale(100%) brightness(0.8);
+            transition: filter 0.6s ease;
+        }
+
+        .universe-card:hover .universe-icon,
+        .universe-card.selected .universe-icon {
+            filter: grayscale(0%) brightness(1);
         }
 
         .member-avatar {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, var(--dark-gray), var(--charcoal));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-bg);
-            margin: 0 auto 15px;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+            color: var(--light-gray);
+            margin: 0 auto 20px;
+            font-weight: 400;
+            font-size: 1.5rem;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.6s ease;
         }
 
-        /* Gameplay Improvements */
+        .team-member:hover .member-avatar,
+        .team-member.selected .member-avatar {
+            background: linear-gradient(135deg, var(--highlight-red), var(--accent-red));
+            color: var(--pure-white);
+            box-shadow: 0 0 30px rgba(106, 32, 32, 0.6);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--fog-gray);
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        /* Gameplay */
         .game-header {
             text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--pure-white);
             margin-bottom: 30px;
-            width: 100%;
-            max-width: 800px;
+            letter-spacing: 2px;
         }
 
-        .game-header h3 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .code-workspace {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 20px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .code-block {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            cursor: grab;
-            transition: all 0.3s ease;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        .code-block:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent-primary);
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .code-block:active {
-            cursor: grabbing;
-            transform: scale(0.98);
-        }
-
-        .mvp-area {
-            background: var(--glass-bg);
-            border: 2px dashed var(--border-medium);
-            padding: 20px;
-            border-radius: 12px;
-            min-height: 140px;
-            color: var(--text-secondary);
-            margin-top: 20px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .mvp-area.drag-over {
-            border-color: var(--accent-primary);
-            background: rgba(0, 255, 136, 0.05);
-            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .mvp-area .code-block {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent-primary);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .mvp-area .code-block:hover {
-            background: rgba(255, 0, 128, 0.1);
-            border-color: var(--accent-secondary);
-        }
-
-        /* Progress Bar */
         .progress-bar {
-            background: var(--glass-bg);
-            border-radius: 12px;
+            background: var(--charcoal);
+            border-radius: 0;
             overflow: hidden;
-            height: 8px;
+            height: 4px;
             width: 100%;
-            max-width: 800px;
             margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--dark-gray);
             position: relative;
         }
 
         .progress-fill {
-            background: var(--gradient-primary);
+            background: linear-gradient(90deg, var(--highlight-red), var(--accent-red));
             height: 100%;
             width: 0%;
-            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 20px rgba(106, 32, 32, 0.5);
         }
 
-        .progress-fill::after {
+        .code-workspace {
+            background: rgba(26, 26, 26, 0.3);
+            border: 1px solid var(--dark-gray);
+            padding: 30px;
+            border-radius: 0;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-block {
+            background: rgba(42, 42, 42, 0.6);
+            border: 1px solid var(--medium-gray);
+            border-radius: 0;
+            padding: 12px 20px;
+            cursor: grab;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--light-gray);
+            backdrop-filter: blur(5px);
+            position: relative;
+            user-select: none;
+        }
+
+        .code-block::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        .code-block:hover::before {
+            opacity: 1;
+        }
+
+        .code-block:hover {
+            transform: translateY(-3px);
+            background: rgba(74, 74, 74, 0.8);
+            border-color: var(--light-gray);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .code-block:active {
+            cursor: grabbing;
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .mvp-area {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px dashed var(--dark-gray);
+            padding: 40px;
+            border-radius: 0;
+            min-height: 160px;
+            color: var(--medium-gray);
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.6s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .mvp-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .mvp-area.drag-over {
+            border-color: var(--highlight-red);
+            background: rgba(74, 21, 21, 0.1);
+            box-shadow: inset 0 0 40px rgba(106, 32, 32, 0.2);
+        }
+
+        .mvp-area.drag-over::before {
+            opacity: 1;
+        }
+
+        .mvp-area .code-block {
+            background: rgba(74, 21, 21, 0.3);
+            border: 1px solid var(--highlight-red);
+            cursor: pointer;
+            color: var(--fog-gray);
+        }
+
+        .mvp-area .code-block:hover {
+            background: rgba(106, 32, 32, 0.5);
+            border-color: var(--highlight-red);
+            color: var(--pure-white);
         }
 
         /* Navigation */
         .nav-buttons {
             position: fixed;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 8px;
+            gap: 2px;
             z-index: 100;
-            background: var(--glass-bg);
-            padding: 8px;
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
+            background: rgba(26, 26, 26, 0.6);
+            padding: 2px;
+            border-radius: 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--dark-gray);
         }
 
         .nav-btn {
-            padding: 12px 20px;
+            padding: 12px 24px;
             background: transparent;
-            border: 1px solid transparent;
-            border-radius: 12px;
-            color: var(--text-secondary);
+            border: none;
+            border-radius: 0;
+            color: var(--medium-gray);
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-            position: relative;
+            transition: all 0.4s ease;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
         .nav-btn.active {
-            background: var(--gradient-primary);
-            color: var(--primary-bg);
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+            background: var(--highlight-red);
+            color: var(--pure-white);
         }
 
         .nav-btn:hover:not(.active) {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border-color: var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-gray);
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
+        /* Particle Effects */
+        .particle {
+            position: fixed;
+            width: 1px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title-screen .logo {
+                font-size: 2.8rem;
+                letter-spacing: 4px;
+            }
+
+            .screen-title {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+            }
+
+            .universe-grid,
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                width: 90%;
+            }
+
+            .code-workspace {
+                padding: 20px;
+            }
+
+            .mvp-area {
+                padding: 30px;
+                min-height: 140px;
+            }
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInSlow {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -458,199 +602,157 @@
             }
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
                 opacity: 0;
             }
-            to {
-                transform: translateX(0);
+            10% {
                 opacity: 1;
             }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .title-screen .logo {
-                font-size: 3.5rem;
+            90% {
+                opacity: 1;
             }
-
-            .universe-title,
-            .team-panel h3,
-            .game-header h3 {
-                font-size: 2rem;
-            }
-
-            .universe-grid,
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-                gap: 15px;
-            }
-
-            .code-workspace {
-                max-width: 100%;
-                padding: 15px;
-            }
-
-            .mvp-area {
-                min-height: 120px;
-            }
-
-            .nav-buttons {
-                bottom: 20px;
-                flex-wrap: wrap;
-                width: 90%;
-                max-width: 400px;
-            }
-
-            .nav-btn {
-                padding: 10px 16px;
-                font-size: 0.8rem;
+            100% {
+                transform: translateY(-100vh) translateX(var(--random-x));
+                opacity: 0;
             }
         }
 
-        @media (max-width: 480px) {
-            .title-screen .logo {
-                font-size: 2.5rem;
+        @keyframes distortionWave {
+            0%, 100% {
+                transform: translateX(0);
             }
-
-            .universe-grid,
-            .team-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .start-btn {
-                padding: 14px 30px;
+            50% {
+                transform: translateX(2px);
             }
         }
 
-        /* Loading States */
-        .loading {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loading::after {
-            content: '';
+        /* Interaction Feedback */
+        .interaction-feedback {
             position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--highlight-red);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: feedbackExpand 0.8s ease-out;
+        }
+
+        @keyframes feedbackExpand {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        /* Light Ray Effects */
+        .light-ray {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: loading 1.5s infinite;
+            background: linear-gradient(
+                135deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.01) 30%,
+                transparent 60%
+            );
+            pointer-events: none;
+            animation: rayMove 20s linear infinite;
+            z-index: 0;
         }
 
-        @keyframes loading {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--secondary-bg);
-            color: var(--text-primary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            white-space: nowrap;
-            margin-bottom: 8px;
-        }
-
-        .tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
+        @keyframes rayMove {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100vw) rotate(45deg); }
         }
     </style>
 </head>
 
 <body>
+    <!-- Atmospheric Effects -->
+    <div class="fog-layer"></div>
+    <div class="light-ray"></div>
+
     <!-- Title Screen -->
     <div class="screen active" id="titleScreen">
         <div class="title-screen">
             <div class="logo">
                 Stup<span class="underscore">_</span>
             </div>
-            <div class="subtitle">A Jornada Épica do Desenvolvedor</div>
+            <div class="subtitle">A Jornada do Desenvolvedor</div>
             <button class="start-btn" onclick="showScreen('universeScreen', event)">
-                🚀 Iniciar Jornada
+                Iniciar Jornada
             </button>
         </div>
     </div>
 
     <!-- Universe Selection -->
     <div class="screen" id="universeScreen">
-        <h2 class="universe-title">Escolha Seu Universo</h2>
+        <h2 class="screen-title">Escolha Seu Universo</h2>
         <div class="universe-grid">
-            <div class="universe-card tooltip" data-tooltip="Ambiente corporativo estruturado" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🏢</div>
-                <div><strong>Corporativo</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Estrutura & Processos</div>
+                <div class="card-title">Corporativo</div>
+                <div class="card-subtitle">Estrutura & Processos</div>
             </div>
-            <div class="universe-card tooltip" data-tooltip="Ambiente ágil e inovador" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🚀</div>
-                <div><strong>Startup</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Agilidade & Inovação</div>
+                <div class="card-title">Startup</div>
+                <div class="card-subtitle">Agilidade & Inovação</div>
             </div>
-            <div class="universe-card tooltip" data-tooltip="Ambiente acadêmico e pesquisa" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎓</div>
-                <div><strong>Academia</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Pesquisa & Ensino</div>
+                <div class="card-title">Academia</div>
+                <div class="card-subtitle">Pesquisa & Ensino</div>
             </div>
-            <div class="universe-card tooltip" data-tooltip="Desenvolvimento independente" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎨</div>
-                <div><strong>Indie</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Criatividade & Liberdade</div>
+                <div class="card-title">Indie</div>
+                <div class="card-subtitle">Criatividade & Liberdade</div>
             </div>
-            <div class="universe-card tooltip" data-tooltip="Código aberto e colaboração" onclick="selectUniverse(this)">
+            <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🌍</div>
-                <div><strong>Open Source</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Colaboração & Comunidade</div>
+                <div class="card-title">Open Source</div>
+                <div class="card-subtitle">Colaboração & Comunidade</div>
             </div>
         </div>
     </div>
 
     <!-- Team Selection -->
     <div class="screen" id="teamScreen">
-        <h2 class="universe-title">Monte Sua Equipe</h2>
+        <h2 class="screen-title">Monte Sua Equipe</h2>
         <div class="team-grid">
-            <div class="team-member tooltip" data-tooltip="Especialista em desenvolvimento" onclick="selectTeamMember(this)">
+            <div class="team-member" onclick="selectTeamMember(this)">
                 <div class="member-avatar">💻</div>
-                <div><strong>Developer</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Código & Lógica</div>
+                <div class="card-title">Developer</div>
+                <div class="card-subtitle">Código & Lógica</div>
             </div>
-            <div class="team-member tooltip" data-tooltip="Garantia de qualidade" onclick="selectTeamMember(this)">
+            <div class="team-member" onclick="selectTeamMember(this)">
                 <div class="member-avatar">🔍</div>
-                <div><strong>QA</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Testes & Qualidade</div>
+                <div class="card-title">QA</div>
+                <div class="card-subtitle">Testes & Qualidade</div>
             </div>
-            <div class="team-member tooltip" data-tooltip="Infraestrutura e deploy" onclick="selectTeamMember(this)">
+            <div class="team-member" onclick="selectTeamMember(this)">
                 <div class="member-avatar">⚙️</div>
-                <div><strong>DevOps</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Infra & Deploy</div>
+                <div class="card-title">DevOps</div>
+                <div class="card-subtitle">Infra & Deploy</div>
             </div>
-            <div class="team-member tooltip" data-tooltip="Experiência do usuário" onclick="selectTeamMember(this)">
+            <div class="team-member" onclick="selectTeamMember(this)">
                 <div class="member-avatar">🎨</div>
-                <div><strong>Designer</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">UX & Interface</div>
+                <div class="card-title">Designer</div>
+                <div class="card-subtitle">UX & Interface</div>
             </div>
-            <div class="team-member tooltip" data-tooltip="Gestão de projetos" onclick="selectTeamMember(this)">
+            <div class="team-member" onclick="selectTeamMember(this)">
                 <div class="member-avatar">📊</div>
-                <div><strong>PM</strong></div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Gestão & Estratégia</div>
+                <div class="card-title">PM</div>
+                <div class="card-subtitle">Gestão & Estratégia</div>
             </div>
         </div>
     </div>
@@ -658,115 +760,124 @@
     <!-- Gameplay -->
     <div class="screen" id="gameplayScreen">
         <div class="game-header">
-            <h3>🛍️ Projeto: E-commerce MVP</h3>
+            <h3 class="game-title">Projeto: E-commerce MVP</h3>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
         <div class="code-workspace" id="codeWorkspace">
-            <div class="code-block" draggable="true">📦 Setup Inicial</div>
-            <div class="code-block" draggable="true">🔐 Autenticação</div>
-            <div class="code-block" draggable="true">🛒 Carrinho</div>
-            <div class="code-block" draggable="true">💳 Pagamento</div>
-            <div class="code-block" draggable="true">📱 Responsivo</div>
-            <div class="code-block" draggable="true">🔍 Busca</div>
-            <div class="code-block" draggable="true">⚡ Performance</div>
-            <div class="code-block" draggable="true">🔔 Notificações</div>
+            <div class="code-block" draggable="true">Setup Inicial</div>
+            <div class="code-block" draggable="true">Autenticação</div>
+            <div class="code-block" draggable="true">Carrinho</div>
+            <div class="code-block" draggable="true">Pagamento</div>
+            <div class="code-block" draggable="true">Responsivo</div>
+            <div class="code-block" draggable="true">Busca</div>
+            <div class="code-block" draggable="true">Performance</div>
+            <div class="code-block" draggable="true">Notificações</div>
             <div class="mvp-area" id="mvpArea">
-                ✨ Arraste os blocos para aqui e monte seu MVP perfeito!
+                Arraste os blocos para aqui e monte seu MVP
             </div>
         </div>
     </div>
 
     <!-- Navigation Buttons -->
     <div class="nav-buttons">
-        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">🏠 Início</button>
-        <button class="nav-btn" onclick="showScreen('universeScreen', event)">🌌 Universo</button>
-        <button class="nav-btn" onclick="showScreen('teamScreen', event)">👥 Equipe</button>
-        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">🎮 Gameplay</button>
+        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
+        <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
+        <button class="nav-btn" onclick="showScreen('teamScreen', event)">Equipe</button>
+        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">Gameplay</button>
     </div>
 
     <script>
-        // Função aprimorada para navegação entre telas
+        // Enhanced Navigation with Cinematic Transitions
         function showScreen(id, event) {
             const currentScreen = document.querySelector('.screen.active');
             const targetScreen = document.getElementById(id);
             
             if (currentScreen === targetScreen) return;
             
-            // Animação de saída
+            // Cinematic Exit
             if (currentScreen) {
-                currentScreen.style.transform = 'translateY(-20px)';
+                currentScreen.style.transform = 'translateY(-50px)';
                 currentScreen.style.opacity = '0';
+                currentScreen.style.filter = 'blur(5px)';
                 setTimeout(() => {
                     currentScreen.classList.remove('active');
                     currentScreen.style.transform = '';
                     currentScreen.style.opacity = '';
-                }, 300);
+                    currentScreen.style.filter = '';
+                }, 600);
             }
             
-            // Animação de entrada
+            // Cinematic Enter
             setTimeout(() => {
                 targetScreen.classList.add('active');
-            }, 300);
+                createParticles();
+            }, 600);
 
-            // Atualiza navegação
+            // Update Navigation
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if (event && event.target.classList.contains('nav-btn')) {
                 event.target.classList.add('active');
             }
         }
 
-        // Seleção de universo aprimorada
+        // Universe Selection with Weight and Feedback
         function selectUniverse(el) {
+            createInteractionFeedback(el);
+            
             document.querySelectorAll('.universe-card').forEach(card => {
                 card.classList.remove('selected');
                 card.style.transform = '';
             });
             
             el.classList.add('selected');
-            el.style.transform = 'scale(1.1)';
             
-            // Feedback visual
-            el.style.animation = 'pulse 0.6s ease-in-out';
+            // Weighted animation
+            el.style.animation = 'none';
+            setTimeout(() => {
+                el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            }, 10);
             
             setTimeout(() => {
                 el.style.animation = '';
                 showScreen('teamScreen');
-            }, 800);
+            }, 1200);
         }
 
-        // Seleção de equipe aprimorada
+        // Team Selection with Realistic Physics
         function selectTeamMember(el) {
+            createInteractionFeedback(el);
+            
             el.classList.toggle('selected');
             
-            // Animação de seleção
+            // Weight-based animation
             if (el.classList.contains('selected')) {
-                el.style.animation = 'bounceIn 0.5s ease-out';
+                el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
             } else {
-                el.style.animation = 'bounceOut 0.5s ease-out';
+                el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
             }
             
             setTimeout(() => {
                 el.style.animation = '';
-            }, 500);
+            }, 600);
             
             const selectedMembers = document.querySelectorAll('.team-member.selected');
             if (selectedMembers.length >= 3) {
-                // Feedback visual para equipe completa
+                // Team completion effect
                 selectedMembers.forEach((member, index) => {
                     setTimeout(() => {
-                        member.style.animation = 'glow 0.5s ease-in-out';
+                        member.style.animation = 'teamComplete 0.8s ease-out';
                     }, index * 100);
                 });
                 
                 setTimeout(() => {
                     showScreen('gameplayScreen');
-                }, 1000);
+                }, 1500);
             }
         }
 
-        // Sistema de drag & drop aprimorado
+        // Enhanced Drag & Drop with Physics
         const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
         const mvpArea = document.getElementById('mvpArea');
         const progressFill = document.getElementById('progressFill');
@@ -775,14 +886,19 @@
         codeBlocks.forEach(block => {
             block.addEventListener('dragstart', e => {
                 draggedBlock = block;
-                block.style.opacity = '0.5';
-                block.style.transform = 'scale(0.95)';
+                block.style.opacity = '0.4';
+                block.style.transform = 'scale(0.9) rotate(2deg)';
+                block.style.filter = 'blur(1px)';
+                
+                // Add distortion effect
+                createDistortionWave(block);
             });
             
             block.addEventListener('dragend', e => {
                 draggedBlock = null;
                 block.style.opacity = '';
                 block.style.transform = '';
+                block.style.filter = '';
             });
         });
 
@@ -801,26 +917,25 @@
             
             if (!draggedBlock) return;
 
-            // Clona o bloco arrastado
             const clone = draggedBlock.cloneNode(true);
             clone.removeAttribute('draggable');
             clone.style.cursor = 'pointer';
             clone.style.opacity = '1';
             clone.style.transform = 'scale(1)';
+            clone.style.filter = '';
             
-            // Animação de entrada
-            clone.style.animation = 'slideIn 0.5s ease-out';
+            // Landing animation with weight
+            clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
 
-            // Permite remover o bloco clicando nele
             clone.addEventListener('click', () => {
-                clone.style.animation = 'fadeOut 0.3s ease-out';
+                createInteractionFeedback(clone);
+                clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
                 setTimeout(() => {
                     clone.remove();
                     updateProgress();
-                }, 300);
+                }, 600);
             });
 
-            // Remove o texto padrão caso tenha blocos
             if (mvpArea.textContent.includes('Arraste os blocos')) {
                 mvpArea.textContent = '';
             }
@@ -828,11 +943,11 @@
             mvpArea.appendChild(clone);
             updateProgress();
             
-            // Feedback visual
-            clone.style.animation = 'bounceIn 0.6s ease-out';
+            // Create particles on drop
+            createDropParticles(clone);
         });
 
-        // Atualiza barra de progresso com animações
+        // Progress Update with Cinematic Effects
         function updateProgress() {
             const totalBlocks = codeBlocks.length;
             const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
@@ -842,96 +957,157 @@
             
             progressFill.style.width = progress + '%';
             
-            // Animação especial quando completa
+            // Completion effect
             if (progress === 100) {
-                progressFill.style.animation = 'glow 1s ease-in-out infinite';
+                progressFill.style.animation = 'progressComplete 2s ease-in-out';
                 setTimeout(() => {
-                    alert('🎉 Parabéns! Você completou seu MVP!');
-                }, 500);
-            } else {
-                progressFill.style.animation = '';
+                    createCompletionEffect();
+                }, 1000);
             }
 
-            // Se nenhum bloco, exibe o texto padrão
             if (selectedBlocks === 0) {
-                mvpArea.textContent = '✨ Arraste os blocos para aqui e monte seu MVP perfeito!';
+                mvpArea.textContent = 'Arraste os blocos para aqui e monte seu MVP';
             }
         }
 
-        // Adiciona animações CSS dinâmicas
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
+        // Particle System
+        function createParticles() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.setProperty('--random-x', (Math.random() - 0.5) * 200 + 'px');
+                    particle.style.animation = `particleFloat ${Math.random() * 10 + 10}s linear`;
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 20000);
+                }, i * 200);
+            }
+        }
+
+        // Interaction Feedback
+        function createInteractionFeedback(element) {
+            const rect = element.getBoundingClientRect();
+            const feedback = document.createElement('div');
+            feedback.className = 'interaction-feedback';
+            feedback.style.left = rect.left + rect.width / 2 + 'px';
+            feedback.style.top = rect.top + rect.height / 2 + 'px';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 800);
+        }
+
+        // Distortion Wave Effect
+        function createDistortionWave(element) {
+            element.style.animation = 'distortionWave 0.3s ease-in-out';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 300);
+        }
+
+        // Drop Particles
+        function createDropParticles(element) {
+            const rect = element.getBoundingClientRect();
+            for (let i = 0; i < 3; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = rect.left + rect.width / 2 + 'px';
+                particle.style.top = rect.top + rect.height / 2 + 'px';
+                particle.style.setProperty('--random-x', (Math.random() - 0.5) * 50 + 'px');
+                particle.style.animation = `particleFloat ${Math.random() * 3 + 2}s linear`;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 5000);
+            }
+        }
+
+        // Completion Effect
+        function createCompletionEffect() {
+            // Screen flash effect
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.right = '0';
+            flash.style.bottom = '0';
+            flash.style.background = 'rgba(255, 255, 255, 0.1)';
+            flash.style.pointerEvents = 'none';
+            flash.style.animation = 'flashEffect 1s ease-out';
+            
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.remove();
+            }, 1000);
+        }
+
+        // Dynamic Animation Styles
+        const dynamicStyles = document.createElement('style');
+        dynamicStyles.textContent = `
+            @keyframes cardSettle {
+                0% { transform: translateY(-10px) scale(1.05); }
+                50% { transform: translateY(5px) scale(0.98); }
+                100% { transform: translateY(-8px) scale(1.05); }
+            }
+            
+            @keyframes memberSelect {
                 0% { transform: scale(1); }
-                50% { transform: scale(1.1); }
+                30% { transform: scale(1.1) translateY(-5px); }
+                60% { transform: scale(0.95) translateY(2px); }
+                100% { transform: scale(1.05) translateY(-8px); }
+            }
+            
+            @keyframes memberDeselect {
+                0% { transform: scale(1.05) translateY(-8px); }
+                50% { transform: scale(0.9) translateY(3px); }
                 100% { transform: scale(1); }
             }
             
-            @keyframes bounceIn {
-                0% { transform: scale(0.3); opacity: 0; }
-                50% { transform: scale(1.1); opacity: 1; }
-                100% { transform: scale(1); opacity: 1; }
+            @keyframes teamComplete {
+                0% { transform: scale(1.05) translateY(-8px); }
+                50% { transform: scale(1.15) translateY(-15px); }
+                100% { transform: scale(1.05) translateY(-8px); }
             }
             
-            @keyframes bounceOut {
+            @keyframes blockLand {
+                0% { transform: translateY(-20px) scale(0.9); opacity: 0.5; }
+                50% { transform: translateY(3px) scale(1.05); opacity: 0.8; }
+                100% { transform: translateY(0) scale(1); opacity: 1; }
+            }
+            
+            @keyframes blockRemove {
                 0% { transform: scale(1); opacity: 1; }
-                50% { transform: scale(1.1); opacity: 0.7; }
-                100% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(0.8) translateY(-10px); opacity: 0.5; }
+                100% { transform: scale(0.5) translateY(-20px); opacity: 0; }
             }
             
-            @keyframes glow {
-                0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-                50% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.6); }
+            @keyframes progressComplete {
+                0% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
+                50% { box-shadow: 0 0 40px rgba(106, 32, 32, 0.8); }
+                100% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
             }
             
-            @keyframes fadeOut {
-                from { opacity: 1; transform: scale(1); }
-                to { opacity: 0; transform: scale(0.8); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Adiciona efeitos de partículas no background (opcional)
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'fixed';
-            particle.style.width = '2px';
-            particle.style.height = '2px';
-            particle.style.background = 'rgba(0, 255, 136, 0.6)';
-            particle.style.borderRadius = '50%';
-            particle.style.pointerEvents = 'none';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = '100%';
-            particle.style.zIndex = '-1';
-            
-            document.body.appendChild(particle);
-            
-            const duration = Math.random() * 3 + 2;
-            particle.style.animation = `floatUp ${duration}s linear`;
-            
-            setTimeout(() => {
-                particle.remove();
-            }, duration * 1000);
-        }
-
-        // Adiciona animação de partículas flutuantes
-        const particleStyle = document.createElement('style');
-        particleStyle.textContent = `
-            @keyframes floatUp {
-                from {
-                    transform: translateY(0) translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px);
-                    opacity: 0;
-                }
+            @keyframes flashEffect {
+                0% { opacity: 0; }
+                50% { opacity: 1; }
+                100% { opacity: 0; }
             }
         `;
-        document.head.appendChild(particleStyle);
+        document.head.appendChild(dynamicStyles);
 
-        // Cria partículas ocasionalmente
-        setInterval(createParticle, 3000);
+        // Initialize particle system
+        createParticles();
+        setInterval(createParticles, 15000);
     </script>
 </body>
 
