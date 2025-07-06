@@ -4,9 +4,26 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stup_ - O Jogo do Desenvolvedor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Stup_ - A Jornada do Desenvolvedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --deep-black: #000000;
+            --charcoal: #1a1a1a;
+            --dark-gray: #2a2a2a;
+            --medium-gray: #4a4a4a;
+            --light-gray: #8a8a8a;
+            --fog-gray: #b0b0b0;
+            --pure-white: #ffffff;
+            --accent-red: #4a1515;
+            --accent-blue: #152a4a;
+            --accent-sepia: #3a2f1a;
+            --highlight-red: #6a2020;
+            --highlight-blue: #2040aa;
+            --mist-opacity: 0.3;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,11 +31,75 @@
         }
 
         body {
-            font-family: 'Roboto Mono', monospace;
-            background: #0a0a0a;
-            color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            background: var(--deep-black);
+            color: var(--fog-gray);
             min-height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Atmospheric Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(74, 21, 21, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(21, 42, 74, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(26, 26, 26, 0.6) 0%, transparent 100%);
+            animation: atmosphericShift 30s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        /* Volumetric Light Effects */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                conic-gradient(from 0deg at 20% 30%, transparent 0deg, rgba(255, 255, 255, 0.02) 45deg, transparent 90deg),
+                conic-gradient(from 180deg at 80% 70%, transparent 0deg, rgba(255, 255, 255, 0.01) 60deg, transparent 120deg);
+            animation: lightShift 60s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes atmosphericShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            33% { transform: scale(1.1) rotate(1deg); }
+            66% { transform: scale(0.9) rotate(-1deg); }
+        }
+
+        @keyframes lightShift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fog Effect */
+        .fog-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(180deg, transparent 0%, rgba(26, 26, 26, var(--mist-opacity)) 50%, transparent 100%),
+                linear-gradient(90deg, transparent 0%, rgba(26, 26, 26, 0.1) 50%, transparent 100%);
+            animation: fogDrift 40s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fogDrift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(20px) translateY(-10px); }
         }
 
         .screen {
@@ -26,298 +107,579 @@
             width: 100%;
             height: 100vh;
             position: relative;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .screen.active {
             display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Title Screen */
+        .title-screen {
+            text-align: center;
+            animation: fadeInSlow 2s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-screen::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: titleGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { opacity: 0.3; transform: translateX(-50%) scale(0.8); }
+            to { opacity: 0.6; transform: translateX(-50%) scale(1.2); }
         }
 
         .title-screen .logo {
             font-size: 4rem;
-            font-weight: bold;
-            color: #eee;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            animation: flicker 2s infinite alternate;
-            font-family: monospace, monospace;
+            font-weight: 300;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--pure-white);
+            text-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
+            animation: logoBreath 6s ease-in-out infinite;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
         }
 
-        @keyframes flicker {
-            from {
-                opacity: 1;
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            }
+        @keyframes logoBreath {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.02); filter: brightness(1.1); }
+        }
 
-            to {
-                opacity: 0.7;
-                text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-            }
+        .underscore {
+            color: var(--highlight-red);
+            font-weight: 500;
+            animation: pulse 2s steps(2, start) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #bbb;
-            opacity: 0.7;
-            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 60px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
         .start-btn {
-            padding: 12px 30px;
+            padding: 18px 40px;
             font-size: 1rem;
-            background: #222;
-            border: 1px solid #555;
-            border-radius: 5px;
-            color: #f0f0f0;
+            font-weight: 400;
+            background: transparent;
+            border: 1px solid var(--medium-gray);
+            border-radius: 2px;
+            color: var(--fog-gray);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
         }
 
         .start-btn:hover {
-            background: #333;
-            border-color: #888;
+            border-color: var(--pure-white);
+            color: var(--pure-white);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
-        .universe-title,
-        .team-panel h3,
-        .game-header h3 {
-            color: #f0f0f0;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+        /* Screen Titles */
+        .screen-title {
+            color: var(--pure-white);
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            letter-spacing: 3px;
+            opacity: 0.9;
         }
 
+        .screen-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--medium-gray), transparent);
+        }
+
+        /* Grid Layouts */
         .universe-grid,
         .team-grid {
             display: grid;
-            gap: 15px;
+            gap: 30px;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            width: 90%;
+            width: 80%;
             max-width: 1000px;
+            animation: gridRise 1.5s ease-out 0.5s both;
         }
 
+        @keyframes gridRise {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
         .universe-card,
         .team-member {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 20px;
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid var(--dark-gray);
+            border-radius: 0;
+            padding: 40px 30px;
             text-align: center;
-            color: #ddd;
-            transition: all 0.3s ease;
+            color: var(--light-gray);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-            user-select: none;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .universe-card::before,
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .universe-card:hover::before,
+        .team-member:hover::before {
+            opacity: 1;
         }
 
         .universe-card:hover,
         .team-member:hover {
-            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--medium-gray);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .universe-card.selected,
         .team-member.selected {
-            border-color: #888;
-            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--highlight-red);
+            background: rgba(74, 21, 21, 0.2);
+            box-shadow: 0 0 40px rgba(106, 32, 32, 0.4);
+            transform: translateY(-8px);
         }
 
         .universe-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            filter: grayscale(100%) brightness(0.8);
+            transition: filter 0.6s ease;
+        }
+
+        .universe-card:hover .universe-icon,
+        .universe-card.selected .universe-icon {
+            filter: grayscale(0%) brightness(1);
         }
 
         .member-avatar {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: #111;
-            border: 1px solid #333;
+            background: linear-gradient(135deg, var(--dark-gray), var(--charcoal));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #eee;
-            margin: 0 auto 10px;
-            font-weight: 700;
-            font-family: monospace, monospace;
-            user-select: none;
+            color: var(--light-gray);
+            margin: 0 auto 20px;
+            font-weight: 400;
+            font-size: 1.5rem;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.6s ease;
+        }
+
+        .team-member:hover .member-avatar,
+        .team-member.selected .member-avatar {
+            background: linear-gradient(135deg, var(--highlight-red), var(--accent-red));
+            color: var(--pure-white);
+            box-shadow: 0 0 30px rgba(106, 32, 32, 0.6);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--fog-gray);
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        /* Gameplay */
+        .game-header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--pure-white);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .progress-bar {
+            background: var(--charcoal);
+            border-radius: 0;
+            overflow: hidden;
+            height: 4px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid var(--dark-gray);
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--highlight-red), var(--accent-red));
+            height: 100%;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-shadow: 0 0 20px rgba(106, 32, 32, 0.5);
         }
 
         .code-workspace {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(26, 26, 26, 0.3);
+            border: 1px solid var(--dark-gray);
+            padding: 30px;
+            border-radius: 0;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            user-select: none;
+            gap: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
         }
 
         .code-block {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            padding: 8px 12px;
+            background: rgba(42, 42, 42, 0.6);
+            border: 1px solid var(--medium-gray);
+            border-radius: 0;
+            padding: 12px 20px;
             cursor: grab;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--light-gray);
+            backdrop-filter: blur(5px);
+            position: relative;
             user-select: none;
-            transition: background 0.3s ease;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .code-block:hover::before {
+            opacity: 1;
+        }
+
+        .code-block:hover {
+            transform: translateY(-3px);
+            background: rgba(74, 74, 74, 0.8);
+            border-color: var(--light-gray);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .code-block:active {
             cursor: grabbing;
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px) scale(0.98);
         }
 
         .mvp-area {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 5px;
-            min-height: 120px;
-            color: #ccc;
-            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px dashed var(--dark-gray);
+            padding: 40px;
+            border-radius: 0;
+            min-height: 160px;
+            color: var(--medium-gray);
+            margin-top: 20px;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            overflow-y: auto;
-            user-select: none;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.6s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .mvp-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .mvp-area.drag-over {
+            border-color: var(--highlight-red);
+            background: rgba(74, 21, 21, 0.1);
+            box-shadow: inset 0 0 40px rgba(106, 32, 32, 0.2);
+        }
+
+        .mvp-area.drag-over::before {
+            opacity: 1;
         }
 
         .mvp-area .code-block {
-            cursor: default;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid #888;
-            user-select: none;
+            background: rgba(74, 21, 21, 0.3);
+            border: 1px solid var(--highlight-red);
+            cursor: pointer;
+            color: var(--fog-gray);
         }
 
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            height: 15px;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 20px;
+        .mvp-area .code-block:hover {
+            background: rgba(106, 32, 32, 0.5);
+            border-color: var(--highlight-red);
+            color: var(--pure-white);
         }
 
-        .progress-fill {
-            background: linear-gradient(90deg, #555, #999);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
+        /* Navigation */
         .nav-buttons {
             position: fixed;
-            bottom: 20px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 2px;
             z-index: 100;
+            background: rgba(26, 26, 26, 0.6);
+            padding: 2px;
+            border-radius: 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--dark-gray);
         }
 
         .nav-btn {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            color: #ddd;
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            color: var(--medium-gray);
             cursor: pointer;
-            transition: all 0.3s ease;
-            user-select: none;
+            transition: all 0.4s ease;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
         .nav-btn.active {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--highlight-red);
+            color: var(--pure-white);
         }
 
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .nav-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-gray);
         }
 
+        /* Particle Effects */
+        .particle {
+            position: fixed;
+            width: 1px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .title-screen .logo {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
+                letter-spacing: 4px;
+            }
+
+            .screen-title {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
             }
 
             .universe-grid,
             .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                width: 90%;
             }
 
             .code-workspace {
-                max-width: 100%;
-                flex-direction: column;
+                padding: 20px;
             }
 
             .mvp-area {
-                min-height: 150px;
+                padding: 30px;
+                min-height: 140px;
             }
         }
 
-        .logo {
-            font-family: monospace, monospace;
-            font-size: 48px;
-            color: white;
-            /* background-color: black; */
+        /* Animation Keyframes */
+        @keyframes fadeInSlow {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .underscore {
-            color: red;
-            font-weight: bold;
-            animation: blink 1s steps(2, start) infinite;
-        }
-
-        /* Animação de piscar para o underscore */
-        @keyframes blink {
-
-            0%,
-            50% {
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
                 opacity: 1;
             }
-
-            51%,
+            90% {
+                opacity: 1;
+            }
             100% {
+                transform: translateY(-100vh) translateX(var(--random-x));
                 opacity: 0;
             }
         }
 
-
-        .logo {
-            font-family: monospace, monospace;
-            font-size: 48px;
-            color: white;
-            /* background-color: black; */
-        }
-
-        .underscore {
-            color: red;
-            font-weight: bold;
-            animation: blink 1s steps(2, start) infinite;
-        }
-
-        /* Animação de piscar para o underscore */
-        @keyframes blink {
-
-            0%,
+        @keyframes distortionWave {
+            0%, 100% {
+                transform: translateX(0);
+            }
             50% {
+                transform: translateX(2px);
+            }
+        }
+
+        /* Interaction Feedback */
+        .interaction-feedback {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--highlight-red);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: feedbackExpand 0.8s ease-out;
+        }
+
+        @keyframes feedbackExpand {
+            0% {
+                transform: scale(0);
                 opacity: 1;
             }
-
-            51%,
             100% {
+                transform: scale(20);
                 opacity: 0;
             }
+        }
+
+        /* Light Ray Effects */
+        .light-ray {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.01) 30%,
+                transparent 60%
+            );
+            pointer-events: none;
+            animation: rayMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rayMove {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100vw) rotate(45deg); }
         }
     </style>
 </head>
 
 <body>
+    <!-- Atmospheric Effects -->
+    <div class="fog-layer"></div>
+    <div class="light-ray"></div>
+
     <!-- Title Screen -->
     <div class="screen active" id="titleScreen">
         <div class="title-screen">
@@ -325,60 +687,72 @@
                 Stup<span class="underscore">_</span>
             </div>
             <div class="subtitle">A Jornada do Desenvolvedor</div>
-            <button class="start-btn" onclick="showScreen('universeScreen', event)">Iniciar Jornada</button>
+            <button class="start-btn" onclick="showScreen('universeScreen', event)">
+                Iniciar Jornada
+            </button>
         </div>
     </div>
 
     <!-- Universe Selection -->
     <div class="screen" id="universeScreen">
-        <h2 class="universe-title">Escolha Seu Universo</h2>
+        <h2 class="screen-title">Escolha Seu Universo</h2>
         <div class="universe-grid">
             <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🏢</div>
-                <div>Corporativo</div>
+                <div class="card-title">Corporativo</div>
+                <div class="card-subtitle">Estrutura & Processos</div>
             </div>
             <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🚀</div>
-                <div>Startup</div>
+                <div class="card-title">Startup</div>
+                <div class="card-subtitle">Agilidade & Inovação</div>
             </div>
             <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎓</div>
-                <div>Academia</div>
+                <div class="card-title">Academia</div>
+                <div class="card-subtitle">Pesquisa & Ensino</div>
             </div>
             <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🎨</div>
-                <div>Indie</div>
+                <div class="card-title">Indie</div>
+                <div class="card-subtitle">Criatividade & Liberdade</div>
             </div>
             <div class="universe-card" onclick="selectUniverse(this)">
                 <div class="universe-icon">🌍</div>
-                <div>Open Source</div>
+                <div class="card-title">Open Source</div>
+                <div class="card-subtitle">Colaboração & Comunidade</div>
             </div>
         </div>
     </div>
 
     <!-- Team Selection -->
     <div class="screen" id="teamScreen">
-        <h2 class="universe-title">Monte Sua Equipe</h2>
+        <h2 class="screen-title">Monte Sua Equipe</h2>
         <div class="team-grid">
             <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">DEV</div>
-                <div>Developer</div>
+                <div class="member-avatar">💻</div>
+                <div class="card-title">Developer</div>
+                <div class="card-subtitle">Código & Lógica</div>
             </div>
             <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">QA</div>
-                <div>QA</div>
+                <div class="member-avatar">🔍</div>
+                <div class="card-title">QA</div>
+                <div class="card-subtitle">Testes & Qualidade</div>
             </div>
             <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">OPS</div>
-                <div>DevOps</div>
+                <div class="member-avatar">⚙️</div>
+                <div class="card-title">DevOps</div>
+                <div class="card-subtitle">Infra & Deploy</div>
             </div>
             <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">UX</div>
-                <div>Designer</div>
+                <div class="member-avatar">🎨</div>
+                <div class="card-title">Designer</div>
+                <div class="card-subtitle">UX & Interface</div>
             </div>
             <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">PM</div>
-                <div>PM</div>
+                <div class="member-avatar">📊</div>
+                <div class="card-title">PM</div>
+                <div class="card-subtitle">Gestão & Estratégia</div>
             </div>
         </div>
     </div>
@@ -386,20 +760,23 @@
     <!-- Gameplay -->
     <div class="screen" id="gameplayScreen">
         <div class="game-header">
-            <h3>Projeto: E-commerce MVP</h3>
+            <h3 class="game-title">Projeto: E-commerce MVP</h3>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
         </div>
         <div class="code-workspace" id="codeWorkspace">
-            <div class="code-block" draggable="true">📦 Setup</div>
-            <div class="code-block" draggable="true">🔐 Auth</div>
-            <div class="code-block" draggable="true">🛒 Cart</div>
-            <div class="code-block" draggable="true">💳 Payment</div>
-            <div class="code-block" draggable="true">📱 Responsive</div>
-            <div class="code-block" draggable="true">🔍 Search</div>
-            <div class="code-block" draggable="true">⚡ Performance</div>
-            <div class="mvp-area" id="mvpArea">Arraste os blocos para aqui para montar seu MVP...</div>
+            <div class="code-block" draggable="true">Setup Inicial</div>
+            <div class="code-block" draggable="true">Autenticação</div>
+            <div class="code-block" draggable="true">Carrinho</div>
+            <div class="code-block" draggable="true">Pagamento</div>
+            <div class="code-block" draggable="true">Responsivo</div>
+            <div class="code-block" draggable="true">Busca</div>
+            <div class="code-block" draggable="true">Performance</div>
+            <div class="code-block" draggable="true">Notificações</div>
+            <div class="mvp-area" id="mvpArea">
+                Arraste os blocos para aqui e monte seu MVP
+            </div>
         </div>
     </div>
 
@@ -412,33 +789,95 @@
     </div>
 
     <script>
-        // Navegação entre telas
+        // Enhanced Navigation with Cinematic Transitions
         function showScreen(id, event) {
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const currentScreen = document.querySelector('.screen.active');
+            const targetScreen = document.getElementById(id);
+            
+            if (currentScreen === targetScreen) return;
+            
+            // Cinematic Exit
+            if (currentScreen) {
+                currentScreen.style.transform = 'translateY(-50px)';
+                currentScreen.style.opacity = '0';
+                currentScreen.style.filter = 'blur(5px)';
+                setTimeout(() => {
+                    currentScreen.classList.remove('active');
+                    currentScreen.style.transform = '';
+                    currentScreen.style.opacity = '';
+                    currentScreen.style.filter = '';
+                }, 600);
+            }
+            
+            // Cinematic Enter
+            setTimeout(() => {
+                targetScreen.classList.add('active');
+                createParticles();
+            }, 600);
 
+            // Update Navigation
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if (event && event.target.classList.contains('nav-btn')) {
                 event.target.classList.add('active');
             }
         }
 
-        // Universo selecionado e navega para equipe
+        // Universe Selection with Weight and Feedback
         function selectUniverse(el) {
-            document.querySelectorAll('.universe-card').forEach(card => card.classList.remove('selected'));
+            createInteractionFeedback(el);
+            
+            document.querySelectorAll('.universe-card').forEach(card => {
+                card.classList.remove('selected');
+                card.style.transform = '';
+            });
+            
             el.classList.add('selected');
-            setTimeout(() => showScreen('teamScreen'), 800);
+            
+            // Weighted animation
+            el.style.animation = 'none';
+            setTimeout(() => {
+                el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            }, 10);
+            
+            setTimeout(() => {
+                el.style.animation = '';
+                showScreen('teamScreen');
+            }, 1200);
         }
 
-        // Seleção de membros da equipe
+        // Team Selection with Realistic Physics
         function selectTeamMember(el) {
+            createInteractionFeedback(el);
+            
             el.classList.toggle('selected');
-            if (document.querySelectorAll('.team-member.selected').length >= 3) {
-                setTimeout(() => showScreen('gameplayScreen'), 800);
+            
+            // Weight-based animation
+            if (el.classList.contains('selected')) {
+                el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            } else {
+                el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            }
+            
+            setTimeout(() => {
+                el.style.animation = '';
+            }, 600);
+            
+            const selectedMembers = document.querySelectorAll('.team-member.selected');
+            if (selectedMembers.length >= 3) {
+                // Team completion effect
+                selectedMembers.forEach((member, index) => {
+                    setTimeout(() => {
+                        member.style.animation = 'teamComplete 0.8s ease-out';
+                    }, index * 100);
+                });
+                
+                setTimeout(() => {
+                    showScreen('gameplayScreen');
+                }, 1500);
             }
         }
 
-        // Drag & Drop da gameplay
+        // Enhanced Drag & Drop with Physics
         const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
         const mvpArea = document.getElementById('mvpArea');
         const progressFill = document.getElementById('progressFill');
@@ -447,63 +886,228 @@
         codeBlocks.forEach(block => {
             block.addEventListener('dragstart', e => {
                 draggedBlock = block;
-                setTimeout(() => block.style.visibility = 'hidden', 0);
+                block.style.opacity = '0.4';
+                block.style.transform = 'scale(0.9) rotate(2deg)';
+                block.style.filter = 'blur(1px)';
+                
+                // Add distortion effect
+                createDistortionWave(block);
             });
+            
             block.addEventListener('dragend', e => {
                 draggedBlock = null;
-                codeBlocks.forEach(b => b.style.visibility = 'visible');
+                block.style.opacity = '';
+                block.style.transform = '';
+                block.style.filter = '';
             });
         });
 
         mvpArea.addEventListener('dragover', e => {
             e.preventDefault();
-            mvpArea.style.borderColor = '#888';
+            mvpArea.classList.add('drag-over');
         });
 
         mvpArea.addEventListener('dragleave', e => {
-            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            mvpArea.classList.remove('drag-over');
         });
 
         mvpArea.addEventListener('drop', e => {
             e.preventDefault();
-            mvpArea.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            mvpArea.classList.remove('drag-over');
+            
             if (!draggedBlock) return;
 
-            // Clona o bloco arrastado
             const clone = draggedBlock.cloneNode(true);
             clone.removeAttribute('draggable');
-            clone.style.cursor = 'default';
-            clone.style.background = 'rgba(255, 255, 255, 0.15)';
-            clone.style.border = '1px solid #888';
+            clone.style.cursor = 'pointer';
+            clone.style.opacity = '1';
+            clone.style.transform = 'scale(1)';
+            clone.style.filter = '';
+            
+            // Landing animation with weight
+            clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
 
-            // Permite remover o bloco clicando nele
             clone.addEventListener('click', () => {
-                clone.remove();
-                updateProgress();
+                createInteractionFeedback(clone);
+                clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                setTimeout(() => {
+                    clone.remove();
+                    updateProgress();
+                }, 600);
             });
 
-            // Remove o texto padrão caso tenha blocos
             if (mvpArea.textContent.includes('Arraste os blocos')) {
                 mvpArea.textContent = '';
             }
 
             mvpArea.appendChild(clone);
             updateProgress();
+            
+            // Create particles on drop
+            createDropParticles(clone);
         });
 
-        // Atualiza barra de progresso baseada na quantidade de blocos no MVP
+        // Progress Update with Cinematic Effects
         function updateProgress() {
             const totalBlocks = codeBlocks.length;
             const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
             let progress = (selectedBlocks / totalBlocks) * 100;
+            
             if (progress > 100) progress = 100;
+            
             progressFill.style.width = progress + '%';
+            
+            // Completion effect
+            if (progress === 100) {
+                progressFill.style.animation = 'progressComplete 2s ease-in-out';
+                setTimeout(() => {
+                    createCompletionEffect();
+                }, 1000);
+            }
 
-            // Se nenhum bloco, exibe o texto padrão
             if (selectedBlocks === 0) {
-                mvpArea.textContent = 'Arraste os blocos para aqui para montar seu MVP...';
+                mvpArea.textContent = 'Arraste os blocos para aqui e monte seu MVP';
             }
         }
+
+        // Particle System
+        function createParticles() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.setProperty('--random-x', (Math.random() - 0.5) * 200 + 'px');
+                    particle.style.animation = `particleFloat ${Math.random() * 10 + 10}s linear`;
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 20000);
+                }, i * 200);
+            }
+        }
+
+        // Interaction Feedback
+        function createInteractionFeedback(element) {
+            const rect = element.getBoundingClientRect();
+            const feedback = document.createElement('div');
+            feedback.className = 'interaction-feedback';
+            feedback.style.left = rect.left + rect.width / 2 + 'px';
+            feedback.style.top = rect.top + rect.height / 2 + 'px';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 800);
+        }
+
+        // Distortion Wave Effect
+        function createDistortionWave(element) {
+            element.style.animation = 'distortionWave 0.3s ease-in-out';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 300);
+        }
+
+        // Drop Particles
+        function createDropParticles(element) {
+            const rect = element.getBoundingClientRect();
+            for (let i = 0; i < 3; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = rect.left + rect.width / 2 + 'px';
+                particle.style.top = rect.top + rect.height / 2 + 'px';
+                particle.style.setProperty('--random-x', (Math.random() - 0.5) * 50 + 'px');
+                particle.style.animation = `particleFloat ${Math.random() * 3 + 2}s linear`;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 5000);
+            }
+        }
+
+        // Completion Effect
+        function createCompletionEffect() {
+            // Screen flash effect
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.right = '0';
+            flash.style.bottom = '0';
+            flash.style.background = 'rgba(255, 255, 255, 0.1)';
+            flash.style.pointerEvents = 'none';
+            flash.style.animation = 'flashEffect 1s ease-out';
+            
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.remove();
+            }, 1000);
+        }
+
+        // Dynamic Animation Styles
+        const dynamicStyles = document.createElement('style');
+        dynamicStyles.textContent = `
+            @keyframes cardSettle {
+                0% { transform: translateY(-10px) scale(1.05); }
+                50% { transform: translateY(5px) scale(0.98); }
+                100% { transform: translateY(-8px) scale(1.05); }
+            }
+            
+            @keyframes memberSelect {
+                0% { transform: scale(1); }
+                30% { transform: scale(1.1) translateY(-5px); }
+                60% { transform: scale(0.95) translateY(2px); }
+                100% { transform: scale(1.05) translateY(-8px); }
+            }
+            
+            @keyframes memberDeselect {
+                0% { transform: scale(1.05) translateY(-8px); }
+                50% { transform: scale(0.9) translateY(3px); }
+                100% { transform: scale(1); }
+            }
+            
+            @keyframes teamComplete {
+                0% { transform: scale(1.05) translateY(-8px); }
+                50% { transform: scale(1.15) translateY(-15px); }
+                100% { transform: scale(1.05) translateY(-8px); }
+            }
+            
+            @keyframes blockLand {
+                0% { transform: translateY(-20px) scale(0.9); opacity: 0.5; }
+                50% { transform: translateY(3px) scale(1.05); opacity: 0.8; }
+                100% { transform: translateY(0) scale(1); opacity: 1; }
+            }
+            
+            @keyframes blockRemove {
+                0% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(0.8) translateY(-10px); opacity: 0.5; }
+                100% { transform: scale(0.5) translateY(-20px); opacity: 0; }
+            }
+            
+            @keyframes progressComplete {
+                0% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
+                50% { box-shadow: 0 0 40px rgba(106, 32, 32, 0.8); }
+                100% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
+            }
+            
+            @keyframes flashEffect {
+                0% { opacity: 0; }
+                50% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(dynamicStyles);
+
+        // Initialize particle system
+        createParticles();
+        setInterval(createParticles, 15000);
     </script>
 </body>
 
