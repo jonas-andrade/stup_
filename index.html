@@ -4,24 +4,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stup_ - A Jornada do Desenvolvedor</title>
+    <title>DevCode - A Jornada do Desenvolvedor</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
-            --primary-black: #0a0a0a;
-            --deep-black: #000000;
-            --charcoal: #1a1a1a;
-            --dark-gray: #2a2a2a;
-            --medium-gray: #4a4a4a;
-            --light-gray: #8a8a8a;
-            --fog-gray: #b0b0b0;
-            --pure-white: #ffffff;
-            --accent-red: #4a1515;
-            --accent-blue: #152a4a;
-            --accent-sepia: #3a2f1a;
-            --highlight-red: #6a2020;
-            --highlight-blue: #2040aa;
-            --mist-opacity: 0.3;
+            --void-black: #000000;
+            --carbon-black: #0a0a0a;
+            --graphite: #1a1a1a;
+            --steel-gray: #2a2a2a;
+            --slate-gray: #3a3a3a;
+            --ash-gray: #4a4a4a;
+            --smoke-gray: #6a6a6a;
+            --silver: #8a8a8a;
+            --platinum: #b0b0b0;
+            --crystal-white: #ffffff;
+            --neon-cyan: #00ffcc;
+            --electric-blue: #0080ff;
+            --warning-amber: #ff8c00;
+            --danger-red: #ff3333;
+            --success-green: #00ff80;
+            --glass-alpha: 0.1;
+            --shadow-depth: 0.3;
         }
 
         * {
@@ -32,11 +36,80 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--deep-black);
-            color: var(--fog-gray);
+            background: var(--void-black);
+            color: var(--platinum);
             min-height: 100vh;
             overflow: hidden;
             position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        #threejs-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .overlay-ui {
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        .glass-panel {
+            background: rgba(26, 26, 26, var(--glass-alpha));
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, var(--shadow-depth)),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .neo-button {
+            background: linear-gradient(145deg, var(--steel-gray), var(--graphite));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--crystal-white);
+            padding: 12px 24px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neo-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .neo-button:hover::before {
+            left: 100%;
+        }
+
+        .neo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 255, 204, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        .neo-button.selected {
+            background: linear-gradient(145deg, var(--neon-cyan), var(--electric-blue));
+            color: var(--void-black);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
         }
 
         /* Atmospheric Background */
@@ -423,8 +496,133 @@
              border-radius: 2px;
          }
 
-         /* Security Theme */
-         .security-theme .avatar-black-hat {
+        /* Modern UI Styles */
+        .welcome-container {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .main-logo .logo-text {
+            font-size: 4rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--crystal-white);
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+        }
+
+        .cursor-blink {
+            color: var(--neon-cyan);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--silver);
+            margin-bottom: 40px;
+        }
+
+        .instruction {
+            font-size: 1rem;
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+        }
+
+        .controls-hint {
+            font-size: 0.8rem;
+            color: var(--smoke-gray);
+        }
+
+        .screen-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .screen-header h2 {
+            font-size: 2.5rem;
+            color: var(--crystal-white);
+            margin-bottom: 10px;
+        }
+
+        .screen-header p {
+            color: var(--silver);
+            font-size: 1rem;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .context-card {
+            background: var(--graphite);
+            border: 1px solid var(--steel-gray);
+            padding: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .context-card:hover, .context-card.highlighted {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        .context-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .context-title {
+            font-size: 1.3rem;
+            color: var(--crystal-white);
+            margin-bottom: 10px;
+        }
+
+        .context-desc {
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .context-methods {
+            color: var(--smoke-gray);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .keyboard-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .key-hint {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--smoke-gray);
+            font-size: 0.8rem;
+        }
+
+        .key {
+            background: var(--steel-gray);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--crystal-white);
+        }
              width: 30px;
              height: 8px;
              background: var(--deep-black);
@@ -1031,1127 +1229,651 @@
 </head>
 
 <body>
-    <!-- Atmospheric Effects -->
-    <div class="fog-layer"></div>
-    <div class="light-ray"></div>
+    <!-- Three.js Container -->
+    <div id="threejs-container"></div>
 
-    <!-- Title Screen -->
-    <div class="screen active" id="titleScreen">
-        <div class="title-screen">
-            <div class="logo">
-                Stup<span class="underscore">_</span>
-            </div>
-            <div class="subtitle">A Jornada do Desenvolvedor</div>
-            <button class="start-btn" onclick="showScreen('universeScreen', event)">
-                Iniciar Jornada
-            </button>
-        </div>
-    </div>
-
-    <!-- Universe Selection -->
-    <div class="screen" id="universeScreen">
-        <h2 class="screen-title">Escolha Seu Universo</h2>
-        <div class="universe-grid">
-            <div class="universe-card" onclick="selectUniverse(this, 'corporativo')">
-                <div class="universe-icon">🏢</div>
-                <div class="card-title">Corporativo</div>
-                <div class="card-subtitle">Estrutura & Processos</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this, 'startup')">
-                <div class="universe-icon">🚀</div>
-                <div class="card-title">Startup</div>
-                <div class="card-subtitle">Agilidade & Inovação</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this, 'academia')">
-                <div class="universe-icon">🎓</div>
-                <div class="card-title">Academia</div>
-                <div class="card-subtitle">Pesquisa & Ensino</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this, 'indie')">
-                <div class="universe-icon">🎨</div>
-                <div class="card-title">Indie</div>
-                <div class="card-subtitle">Criatividade & Liberdade</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this, 'opensource')">
-                <div class="universe-icon">🌍</div>
-                <div class="card-title">Open Source</div>
-                <div class="card-subtitle">Colaboração & Comunidade</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this, 'security')">
-                <div class="universe-icon">🔒</div>
-                <div class="card-title">Security</div>
-                <div class="card-subtitle">Proteção & Defesa</div>
+    <!-- Main UI Overlay -->
+    <div class="overlay-ui">
+        <!-- Welcome Screen -->
+        <div class="screen active" id="welcomeScreen">
+            <div class="welcome-container">
+                <div class="main-logo">
+                    <div class="logo-text">
+                        DevCode<span class="cursor-blink">_</span>
+                    </div>
+                    <div class="tagline">A Jornada Profissional do Desenvolvedor</div>
+                </div>
+                <div class="start-prompt">
+                    <div class="instruction">Pressione ENTER para iniciar</div>
+                    <div class="controls-hint">Use ↑↓ para navegar • ENTER para selecionar • ESC para voltar</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Corporativo Universe Team -->
-    <div class="screen universe-team" id="corporativoTeam">
-        <h2 class="screen-title">Equipe Corporativa</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="senior-dev">
-                <div class="character-avatar">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-suit"></div>
-                        <div class="avatar-tie"></div>
-                    </div>
-                    <div class="avatar-badge">SR</div>
-                </div>
-                <div class="card-title">Senior Developer</div>
-                <div class="card-subtitle">Arquitetura & Código</div>
+        <!-- Context Selection -->
+        <div class="screen" id="contextScreen">
+            <div class="screen-header">
+                <h2>Escolha seu Contexto de Desenvolvimento</h2>
+                <p>Cada contexto oferece metodologias, equipes e desafios únicos</p>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="qa-lead">
-                <div class="character-avatar">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-shirt"></div>
-                        <div class="avatar-glasses"></div>
-                    </div>
-                    <div class="avatar-badge">QA</div>
+            <div class="context-grid">
+                <div class="context-card" data-context="enterprise">
+                    <div class="context-icon">🏢</div>
+                    <div class="context-title">Enterprise</div>
+                    <div class="context-desc">Grandes corporações com processos estruturados e governança rigorosa</div>
+                    <div class="context-methods">Waterfall • ITIL • TOGAF • Enterprise Architecture</div>
                 </div>
-                <div class="card-title">QA Lead</div>
-                <div class="card-subtitle">Testes & Qualidade</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="devops">
-                <div class="character-avatar">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-hoodie"></div>
-                        <div class="avatar-terminal"></div>
-                    </div>
-                    <div class="avatar-badge">OPS</div>
+                <div class="context-card" data-context="startup">
+                    <div class="context-icon">🚀</div>
+                    <div class="context-title">Startup</div>
+                    <div class="context-desc">Ambiente ágil focado em inovação rápida e crescimento acelerado</div>
+                    <div class="context-methods">Lean Startup • Design Thinking • Growth Hacking • MVP</div>
                 </div>
-                <div class="card-title">DevOps Engineer</div>
-                <div class="card-subtitle">Infraestrutura & CI/CD</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="pm">
-                <div class="character-avatar">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-blazer"></div>
-                        <div class="avatar-clipboard"></div>
-                    </div>
-                    <div class="avatar-badge">PM</div>
+                <div class="context-card" data-context="agile">
+                    <div class="context-icon">⚡</div>
+                    <div class="context-title">Ágil</div>
+                    <div class="context-desc">Desenvolvimento iterativo com foco na colaboração e adaptação</div>
+                    <div class="context-methods">Scrum • XP • Kanban • SAFe • Lean</div>
                 </div>
-                <div class="card-title">Project Manager</div>
-                <div class="card-subtitle">Gestão & Planejamento</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="ba">
-                <div class="character-avatar">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-business"></div>
-                        <div class="avatar-charts"></div>
-                    </div>
-                    <div class="avatar-badge">BA</div>
+                <div class="context-card" data-context="devops">
+                    <div class="context-icon">🔧</div>
+                    <div class="context-title">DevOps</div>
+                    <div class="context-desc">Integração entre desenvolvimento e operações para entrega contínua</div>
+                    <div class="context-methods">CI/CD • GitOps • SRE • Infrastructure as Code</div>
                 </div>
-                <div class="card-title">Business Analyst</div>
-                <div class="card-subtitle">Análise & Requisitos</div>
+                <div class="context-card" data-context="opensource">
+                    <div class="context-icon">🌍</div>
+                    <div class="context-title">Open Source</div>
+                    <div class="context-desc">Desenvolvimento colaborativo e transparente com a comunidade global</div>
+                    <div class="context-methods">Community-driven • Fork & PR • Release Cycles</div>
+                </div>
+                <div class="context-card" data-context="consulting">
+                    <div class="context-icon">💼</div>
+                    <div class="context-title">Consultoria</div>
+                    <div class="context-desc">Projetos diversos para múltiplos clientes com metodologias adaptáveis</div>
+                    <div class="context-methods">PMBOK • Client-centric • Multi-stack • Adaptive</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Security Universe Team -->
-    <div class="screen universe-team" id="securityTeam">
-        <h2 class="screen-title">Equipe de Segurança</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="blackhat">
-                <div class="character-avatar security-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-black-hat"></div>
-                        <div class="avatar-black-shirt">
-                            <div class="shirt-text">H4CK3R</div>
-                        </div>
-                        <div class="avatar-hoodie-up"></div>
-                    </div>
-                    <div class="avatar-badge">⚫</div>
-                </div>
-                <div class="card-title">Black Hat</div>
-                <div class="card-subtitle">Ataque & Penetração</div>
+        <!-- Methodology Selection -->
+        <div class="screen" id="methodologyScreen">
+            <div class="screen-header">
+                <h2>Selecione a Metodologia</h2>
+                <p id="methodologyDescription">Escolha como sua equipe trabalhará</p>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="whitehat">
-                <div class="character-avatar security-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-white-hat"></div>
-                        <div class="avatar-white-shirt">
-                            <div class="shirt-text">SEC</div>
-                        </div>
-                    </div>
-                    <div class="avatar-badge">⚪</div>
-                </div>
-                <div class="card-title">White Hat</div>
-                <div class="card-subtitle">Defesa & Proteção</div>
+            <div class="methodology-grid" id="methodologyGrid">
+                <!-- Metodologias serão inseridas dinamicamente -->
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="forensics">
-                <div class="character-avatar security-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-lab-coat"></div>
-                        <div class="avatar-magnifier"></div>
-                    </div>
-                    <div class="avatar-badge">🔍</div>
-                </div>
-                <div class="card-title">Forensics</div>
-                <div class="card-subtitle">Análise & Evidências</div>
+        </div>
+
+        <!-- Team Building -->
+        <div class="screen" id="teamScreen">
+            <div class="screen-header">
+                <h2>Monte sua Equipe</h2>
+                <p id="teamDescription">Selecione os profissionais para seu projeto</p>
             </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="soc-analyst">
-                <div class="character-avatar security-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-headset"></div>
-                        <div class="avatar-monitor-shirt">
-                            <div class="shirt-text">SOC</div>
+            <div class="team-selection">
+                <div class="available-roles" id="availableRoles">
+                    <!-- Roles disponíveis serão inseridos aqui -->
+                </div>
+                <div class="selected-team" id="selectedTeam">
+                    <h3>Equipe Selecionada</h3>
+                    <div class="team-members" id="teamMembers">
+                        <!-- Membros selecionados aparecerão aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workspace/Meeting Room -->
+        <div class="screen" id="workspaceScreen">
+            <div class="workspace-container">
+                <div class="meeting-room">
+                    <div class="room-header">
+                        <h2 id="meetingTitle">Sala de Reunião</h2>
+                        <div class="meeting-info">
+                            <span id="meetingType">Daily Scrum</span>
+                            <span id="meetingDuration">15 min</span>
                         </div>
                     </div>
-                    <div class="avatar-badge">📊</div>
-                </div>
-                <div class="card-title">SOC Analyst</div>
-                <div class="card-subtitle">Monitoramento & Alertas</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="crypto">
-                <div class="character-avatar security-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-crypto-shirt">
-                            <div class="shirt-text">CRYPTO</div>
+                    <div class="conference-table">
+                        <div class="table-surface"></div>
+                        <div class="team-seats" id="teamSeats">
+                            <!-- Assentos da equipe -->
                         </div>
-                        <div class="avatar-key-chain"></div>
                     </div>
-                    <div class="avatar-badge">🔑</div>
+                    <div class="meeting-actions">
+                        <div class="action-button" data-action="start">Iniciar Reunião</div>
+                        <div class="action-button" data-action="agenda">Ver Agenda</div>
+                        <div class="action-button" data-action="board">Quadro Kanban</div>
+                        <div class="action-button" data-action="continue">Continuar Desenvolvimento</div>
+                    </div>
                 </div>
-                <div class="card-title">Cryptographer</div>
-                <div class="card-subtitle">Criptografia & Chaves</div>
             </div>
         </div>
     </div>
 
-    <!-- Startup Universe Team -->
-    <div class="screen universe-team" id="startupTeam">
-        <h2 class="screen-title">Equipe Startup</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="fullstack">
-                <div class="character-avatar startup-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-casual-shirt">
-                            <div class="shirt-text">JS</div>
-                        </div>
-                        <div class="avatar-laptop"></div>
-                    </div>
-                    <div class="avatar-badge">⚡</div>
-                </div>
-                <div class="card-title">Full Stack</div>
-                <div class="card-subtitle">Frontend & Backend</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="founder">
-                <div class="character-avatar startup-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-t-shirt">
-                            <div class="shirt-text">CEO</div>
-                        </div>
-                        <div class="avatar-coffee"></div>
-                    </div>
-                    <div class="avatar-badge">🚀</div>
-                </div>
-                <div class="card-title">Founder</div>
-                <div class="card-subtitle">Visão & Liderança</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="growth">
-                <div class="character-avatar startup-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-growth-shirt">
-                            <div class="shirt-text">📈</div>
-                        </div>
-                        <div class="avatar-chart"></div>
-                    </div>
-                    <div class="avatar-badge">�</div>
-                </div>
-                <div class="card-title">Growth Hacker</div>
-                <div class="card-subtitle">Marketing & Métricas</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="ui-ux">
-                <div class="character-avatar startup-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-designer-shirt">
-                            <div class="shirt-text">UX</div>
-                        </div>
-                        <div class="avatar-tablet"></div>
-                    </div>
-                    <div class="avatar-badge">🎨</div>
-                </div>
-                <div class="card-title">UI/UX Designer</div>
-                <div class="card-subtitle">Design & Experiência</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="mobile">
-                <div class="character-avatar startup-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-mobile-shirt">
-                            <div class="shirt-text">📱</div>
-                        </div>
-                        <div class="avatar-phone"></div>
-                    </div>
-                    <div class="avatar-badge">📱</div>
-                </div>
-                <div class="card-title">Mobile Dev</div>
-                <div class="card-subtitle">iOS & Android</div>
-            </div>
+    <!-- Keyboard Navigation Indicator -->
+    <div class="keyboard-indicator">
+        <div class="key-hint">
+            <span class="key">↑↓</span> Navegar
+        </div>
+        <div class="key-hint">
+            <span class="key">ENTER</span> Selecionar
+        </div>
+        <div class="key-hint">
+            <span class="key">ESC</span> Voltar
         </div>
     </div>
-
-    <!-- Academia Universe Team -->
-    <div class="screen universe-team" id="academiaTeam">
-        <h2 class="screen-title">Equipe Acadêmica</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="professor">
-                <div class="character-avatar academia-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-suit-jacket"></div>
-                        <div class="avatar-books"></div>
-                    </div>
-                    <div class="avatar-badge">🎓</div>
-                </div>
-                <div class="card-title">Professor</div>
-                <div class="card-subtitle">Pesquisa & Ensino</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="phd">
-                <div class="character-avatar academia-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-phd-shirt">
-                            <div class="shirt-text">PhD</div>
-                        </div>
-                        <div class="avatar-thesis"></div>
-                    </div>
-                    <div class="avatar-badge">📚</div>
-                </div>
-                <div class="card-title">PhD Student</div>
-                <div class="card-subtitle">Pesquisa Avançada</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="data-scientist">
-                <div class="character-avatar academia-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-data-shirt">
-                            <div class="shirt-text">DATA</div>
-                        </div>
-                        <div class="avatar-calculator"></div>
-                    </div>
-                    <div class="avatar-badge">📊</div>
-                </div>
-                <div class="card-title">Data Scientist</div>
-                <div class="card-subtitle">Análise & IA</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="researcher">
-                <div class="character-avatar academia-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-lab-coat"></div>
-                        <div class="avatar-microscope"></div>
-                    </div>
-                    <div class="avatar-badge">�</div>
-                </div>
-                <div class="card-title">Researcher</div>
-                <div class="card-subtitle">Investigação & Análise</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="ta">
-                <div class="character-avatar academia-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-student-shirt">
-                            <div class="shirt-text">TA</div>
-                        </div>
-                        <div class="avatar-notebook"></div>
-                    </div>
-                    <div class="avatar-badge">📝</div>
-                </div>
-                <div class="card-title">Teaching Assistant</div>
-                <div class="card-subtitle">Suporte & Ensino</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Indie Universe Team -->
-    <div class="screen universe-team" id="indieTeam">
-        <h2 class="screen-title">Equipe Indie</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="solo-dev">
-                <div class="character-avatar indie-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-indie-shirt">
-                            <div class="shirt-text">SOLO</div>
-                        </div>
-                        <div class="avatar-headphones"></div>
-                    </div>
-                    <div class="avatar-badge">🎮</div>
-                </div>
-                <div class="card-title">Solo Developer</div>
-                <div class="card-subtitle">Tudo em Um</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="pixel-artist">
-                <div class="character-avatar indie-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-artist-shirt">
-                            <div class="shirt-text">PIXEL</div>
-                        </div>
-                        <div class="avatar-stylus"></div>
-                    </div>
-                    <div class="avatar-badge">🎨</div>
-                </div>
-                <div class="card-title">Pixel Artist</div>
-                <div class="card-subtitle">Arte & Visual</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="sound-designer">
-                <div class="character-avatar indie-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-sound-shirt">
-                            <div class="shirt-text">AUDIO</div>
-                        </div>
-                        <div class="avatar-mixer"></div>
-                    </div>
-                    <div class="avatar-badge">🎵</div>
-                </div>
-                <div class="card-title">Sound Designer</div>
-                <div class="card-subtitle">Música & Efeitos</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="game-designer">
-                <div class="character-avatar indie-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-game-shirt">
-                            <div class="shirt-text">GAME</div>
-                        </div>
-                        <div class="avatar-controller"></div>
-                    </div>
-                    <div class="avatar-badge">🎯</div>
-                </div>
-                <div class="card-title">Game Designer</div>
-                <div class="card-subtitle">Mecânicas & Flow</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="community">
-                <div class="character-avatar indie-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-community-shirt">
-                            <div class="shirt-text">COMM</div>
-                        </div>
-                        <div class="avatar-megaphone"></div>
-                    </div>
-                    <div class="avatar-badge">📢</div>
-                </div>
-                <div class="card-title">Community Manager</div>
-                <div class="card-subtitle">Comunidade & Marketing</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Open Source Universe Team -->
-    <div class="screen universe-team" id="opensourceTeam">
-        <h2 class="screen-title">Equipe Open Source</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="maintainer">
-                <div class="character-avatar opensource-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-maintainer-shirt">
-                            <div class="shirt-text">MAINT</div>
-                        </div>
-                        <div class="avatar-github"></div>
-                    </div>
-                    <div class="avatar-badge">🔧</div>
-                </div>
-                <div class="card-title">Maintainer</div>
-                <div class="card-subtitle">Manutenção & Review</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="contributor">
-                <div class="character-avatar opensource-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-contributor-shirt">
-                            <div class="shirt-text">FORK</div>
-                        </div>
-                        <div class="avatar-git"></div>
-                    </div>
-                    <div class="avatar-badge">🌿</div>
-                </div>
-                <div class="card-title">Contributor</div>
-                <div class="card-subtitle">Contribuições & PRs</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="core-dev">
-                <div class="character-avatar opensource-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-core-shirt">
-                            <div class="shirt-text">CORE</div>
-                        </div>
-                        <div class="avatar-terminal-2"></div>
-                    </div>
-                    <div class="avatar-badge">💎</div>
-                </div>
-                <div class="card-title">Core Developer</div>
-                <div class="card-subtitle">Arquitetura & Core</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="doc-writer">
-                <div class="character-avatar opensource-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-doc-shirt">
-                            <div class="shirt-text">DOCS</div>
-                        </div>
-                        <div class="avatar-pen"></div>
-                    </div>
-                    <div class="avatar-badge">📖</div>
-                </div>
-                <div class="card-title">Documentation Writer</div>
-                <div class="card-subtitle">Documentação & Guias</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)" data-role="community-lead">
-                <div class="character-avatar opensource-theme">
-                    <div class="avatar-head"></div>
-                    <div class="avatar-body">
-                        <div class="avatar-lead-shirt">
-                            <div class="shirt-text">LEAD</div>
-                        </div>
-                        <div class="avatar-crown"></div>
-                    </div>
-                    <div class="avatar-badge">👑</div>
-                </div>
-                <div class="card-title">Community Lead</div>
-                <div class="card-subtitle">Comunidade & Eventos</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Phase 1: Planning -->
-    <div class="screen" id="planningScreen">
-        <div class="game-header">
-            <h3 class="game-title">Fase 1: Planejamento</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="planningProgress"></div>
-            </div>
-        </div>
-        <div class="code-workspace" id="planningWorkspace">
-            <div class="code-block" draggable="true">Análise de Requisitos</div>
-            <div class="code-block" draggable="true">Arquitetura</div>
-            <div class="code-block" draggable="true">Wireframes</div>
-            <div class="code-block" draggable="true">Prototipagem</div>
-            <div class="code-block" draggable="true">Definição de Scope</div>
-            <div class="code-block" draggable="true">Tecnologias</div>
-            <div class="code-block" draggable="true">Cronograma</div>
-            <div class="code-block" draggable="true">Orçamento</div>
-            <div class="mvp-area" id="planningArea">
-                Monte seu plano de projeto
-            </div>
-        </div>
-    </div>
-
-    <!-- Phase 2: Development -->
-    <div class="screen" id="developmentScreen">
-        <div class="game-header">
-            <h3 class="game-title">Fase 2: Desenvolvimento</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="developmentProgress"></div>
-            </div>
-        </div>
-        <div class="code-workspace" id="developmentWorkspace">
-            <div class="code-block" draggable="true">Setup Inicial</div>
-            <div class="code-block" draggable="true">Autenticação</div>
-            <div class="code-block" draggable="true">Carrinho</div>
-            <div class="code-block" draggable="true">Pagamento</div>
-            <div class="code-block" draggable="true">Responsivo</div>
-            <div class="code-block" draggable="true">Busca</div>
-            <div class="code-block" draggable="true">Performance</div>
-            <div class="code-block" draggable="true">Notificações</div>
-            <div class="mvp-area" id="developmentArea">
-                Desenvolva as funcionalidades
-            </div>
-        </div>
-    </div>
-
-    <!-- Phase 3: Testing -->
-    <div class="screen" id="testingScreen">
-        <div class="game-header">
-            <h3 class="game-title">Fase 3: Testes</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="testingProgress"></div>
-            </div>
-        </div>
-        <div class="code-workspace" id="testingWorkspace">
-            <div class="code-block" draggable="true">Testes Unitários</div>
-            <div class="code-block" draggable="true">Testes Integração</div>
-            <div class="code-block" draggable="true">Testes E2E</div>
-            <div class="code-block" draggable="true">Testes Performance</div>
-            <div class="code-block" draggable="true">Testes Usabilidade</div>
-            <div class="code-block" draggable="true">Testes Segurança</div>
-            <div class="code-block" draggable="true">Code Review</div>
-            <div class="code-block" draggable="true">Bug Fixing</div>
-            <div class="mvp-area" id="testingArea">
-                Execute os testes do projeto
-            </div>
-        </div>
-    </div>
-
-    <!-- Phase 4: Deployment -->
-    <div class="screen" id="deploymentScreen">
-        <div class="game-header">
-            <h3 class="game-title">Fase 4: Deploy</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="deploymentProgress"></div>
-            </div>
-        </div>
-        <div class="code-workspace" id="deploymentWorkspace">
-            <div class="code-block" draggable="true">CI/CD Pipeline</div>
-            <div class="code-block" draggable="true">Docker</div>
-            <div class="code-block" draggable="true">Kubernetes</div>
-            <div class="code-block" draggable="true">Monitoring</div>
-            <div class="code-block" draggable="true">Logging</div>
-            <div class="code-block" draggable="true">Backup</div>
-            <div class="code-block" draggable="true">SSL/HTTPS</div>
-            <div class="code-block" draggable="true">Load Balancer</div>
-            <div class="mvp-area" id="deploymentArea">
-                Configure o deploy em produção
-            </div>
-        </div>
-    </div>
-
-         <!-- Navigation Buttons -->
-     <div class="nav-buttons">
-         <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
-         <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
-         <button class="nav-btn" onclick="showUniverseTeams(event)">Equipes</button>
-         <button class="nav-btn" onclick="showGamePhases(event)">Fases</button>
-     </div>
-
-     <!-- Team Selection Submenu -->
-     <div class="submenu" id="teamSubmenu" style="display: none;">
-         <button onclick="showScreen('corporativoTeam', event)">Corporativo</button>
-         <button onclick="showScreen('startupTeam', event)">Startup</button>
-         <button onclick="showScreen('academiaTeam', event)">Academia</button>
-         <button onclick="showScreen('indieTeam', event)">Indie</button>
-         <button onclick="showScreen('opensourceTeam', event)">Open Source</button>
-         <button onclick="showScreen('securityTeam', event)">Security</button>
-     </div>
-
-     <!-- Game Status -->
-     <div class="game-status" id="gameStatus">
-         <div class="status-item" id="universeStatus">Universo: -</div>
-         <div class="status-item" id="teamStatus">Equipe: 0/3</div>
-         <div class="status-item" id="phaseStatus">Fase: -</div>
-     </div>
 
     <script>
-        // Enhanced Navigation with Cinematic Transitions
-        function showScreen(id, event) {
-            const currentScreen = document.querySelector('.screen.active');
-            const targetScreen = document.getElementById(id);
-            
-            if (currentScreen === targetScreen) return;
-            
-            // Cinematic Exit
-            if (currentScreen) {
-                currentScreen.style.transform = 'translateY(-50px)';
-                currentScreen.style.opacity = '0';
-                currentScreen.style.filter = 'blur(5px)';
-                setTimeout(() => {
-                    currentScreen.classList.remove('active');
-                    currentScreen.style.transform = '';
-                    currentScreen.style.opacity = '';
-                    currentScreen.style.filter = '';
-                }, 600);
-            }
-            
-            // Cinematic Enter
-            setTimeout(() => {
-                targetScreen.classList.add('active');
-                createParticles();
-            }, 600);
+        // ==========================================
+        // GAME STATE AND CONFIGURATION
+        // ==========================================
+        
+        const GameState = {
+            currentScreen: 'welcomeScreen',
+            selectedContext: null,
+            selectedMethodology: null,
+            selectedTeam: [],
+            currentPhase: 'planning',
+            navigationIndex: 0,
+            maxTeamSize: 5,
+            scene: null,
+            camera: null,
+            renderer: null
+        };
 
-            // Update Navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.target.classList.contains('nav-btn')) {
-                event.target.classList.add('active');
+        // Context definitions with methodologies and roles
+        const CONTEXTS = {
+            enterprise: {
+                name: 'Enterprise',
+                description: 'Grandes corporações com processos estruturados e governança rigorosa',
+                methodologies: {
+                    waterfall: {
+                        name: 'Waterfall',
+                        description: 'Desenvolvimento sequencial com fases bem definidas',
+                        phases: ['Análise', 'Design', 'Implementação', 'Testes', 'Deploy', 'Manutenção'],
+                        meetings: ['Kick-off Meeting', 'Design Review', 'Quality Gate Review', 'Go-Live Meeting'],
+                        artifacts: ['Business Requirements Document', 'Technical Specification', 'Test Plan', 'Deployment Guide']
+                    },
+                    itil: {
+                        name: 'ITIL',
+                        description: 'Framework de gerenciamento de serviços de TI',
+                        phases: ['Strategy', 'Design', 'Transition', 'Operation', 'Improvement'],
+                        meetings: ['Service Review', 'Change Advisory Board', 'Problem Management Meeting'],
+                        artifacts: ['Service Catalog', 'SLA Document', 'Change Request', 'Incident Report']
+                    }
+                },
+                roles: {
+                    architect: { name: 'Solution Architect', skills: ['Architecture', 'Integration', 'Governance'] },
+                    pm: { name: 'Project Manager', skills: ['Planning', 'Risk Management', 'Stakeholder Management'] },
+                    ba: { name: 'Business Analyst', skills: ['Requirements', 'Process Modeling', 'Documentation'] },
+                    developer: { name: 'Senior Developer', skills: ['Java/.NET', 'Database', 'Security'] },
+                    qa: { name: 'QA Manager', skills: ['Test Planning', 'Quality Assurance', 'Compliance'] }
+                }
+            },
+            agile: {
+                name: 'Ágil',
+                description: 'Desenvolvimento iterativo com foco na colaboração e adaptação',
+                methodologies: {
+                    scrum: {
+                        name: 'Scrum',
+                        description: 'Framework ágil com sprints e cerimônias estruturadas',
+                        phases: ['Sprint Planning', 'Daily Scrum', 'Sprint Review', 'Sprint Retrospective'],
+                        meetings: ['Daily Scrum', 'Sprint Planning', 'Sprint Review', 'Retrospective', 'Backlog Refinement'],
+                        artifacts: ['Product Backlog', 'Sprint Backlog', 'Product Increment', 'Burndown Chart']
+                    },
+                    xp: {
+                        name: 'Extreme Programming',
+                        description: 'Práticas técnicas extremas para qualidade de código',
+                        phases: ['Planning Game', 'Small Releases', 'Pair Programming', 'Continuous Integration'],
+                        meetings: ['Planning Game', 'Standup', 'Iteration Planning', 'Release Planning'],
+                        artifacts: ['User Stories', 'Release Plan', 'Code', 'Test Suite']
+                    }
+                },
+                roles: {
+                    scrummaster: { name: 'Scrum Master', skills: ['Facilitation', 'Coaching', 'Process Improvement'] },
+                    po: { name: 'Product Owner', skills: ['Product Vision', 'Backlog Management', 'Stakeholder Liaison'] },
+                    developer: { name: 'Developer', skills: ['Coding', 'Testing', 'Pair Programming'] },
+                    tester: { name: 'Tester', skills: ['Test Automation', 'BDD', 'Exploratory Testing'] },
+                    ux: { name: 'UX Designer', skills: ['User Research', 'Prototyping', 'Usability Testing'] }
+                }
             }
+            // Adicione outros contextos aqui conforme necessário
+        };
+
+        // ==========================================
+        // THREE.JS INITIALIZATION
+        // ==========================================
+        
+        function initThreeJS() {
+            const container = document.getElementById('threejs-container');
+            
+            GameState.scene = new THREE.Scene();
+            GameState.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            GameState.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            GameState.renderer.setSize(window.innerWidth, window.innerHeight);
+            GameState.renderer.setClearColor(0x000000, 0);
+            container.appendChild(GameState.renderer.domElement);
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            GameState.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0x00ffcc, 0.8);
+            directionalLight.position.set(-1, 1, 1);
+            GameState.scene.add(directionalLight);
+            
+            GameState.camera.position.z = 5;
+            
+            createBackgroundElements();
+            animate();
         }
 
-                 // Game State
-         let currentUniverse = '';
-         let selectedTeam = [];
-         let currentPhase = 1;
-         let completedPhases = [];
-
-         // Universe Selection with Weight and Feedback
-         function selectUniverse(el, universe) {
-             createInteractionFeedback(el);
-             currentUniverse = universe;
-             updateGameStatus();
-             
-             document.querySelectorAll('.universe-card').forEach(card => {
-                 card.classList.remove('selected');
-                 card.style.transform = '';
-             });
-             
-             el.classList.add('selected');
-             
-             // Weighted animation
-             el.style.animation = 'none';
-             setTimeout(() => {
-                 el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-             }, 10);
-             
-             setTimeout(() => {
-                 el.style.animation = '';
-                 showScreen(universe + 'Team');
-             }, 1200);
-         }
-
-                 // Team Selection with Realistic Physics
-         function selectTeamMember(el) {
-             createInteractionFeedback(el);
-             
-             el.classList.toggle('selected');
-             
-             // Weight-based animation
-             if (el.classList.contains('selected')) {
-                 el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                 selectedTeam.push(el.dataset.role);
-             } else {
-                 el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                 selectedTeam = selectedTeam.filter(role => role !== el.dataset.role);
-             }
-             
-             updateGameStatus();
-             
-             setTimeout(() => {
-                 el.style.animation = '';
-             }, 600);
-             
-             const selectedMembers = document.querySelectorAll('.team-member.selected');
-             if (selectedMembers.length >= 3) {
-                 // Team completion effect
-                 selectedMembers.forEach((member, index) => {
-                     setTimeout(() => {
-                         member.style.animation = 'teamComplete 0.8s ease-out';
-                     }, index * 100);
-                 });
-                 
-                 setTimeout(() => {
-                     startGamePhases();
-                 }, 1500);
-             }
-         }
-
-         // Update Game Status
-         function updateGameStatus() {
-             document.getElementById('universeStatus').textContent = 
-                 `Universo: ${currentUniverse || '-'}`;
-             document.getElementById('teamStatus').textContent = 
-                 `Equipe: ${selectedTeam.length}/3`;
-             document.getElementById('phaseStatus').textContent = 
-                 `Fase: ${currentPhase > 0 ? currentPhase + '/4' : '-'}`;
-         }
-
-         // Start Game Phases
-         function startGamePhases() {
-             currentPhase = 1;
-             updateGameStatus();
-             showScreen('planningScreen');
-             updateNavigationForPhases();
-         }
-
-         // Update Navigation for Game Phases
-         function updateNavigationForPhases() {
-             const navButtons = document.querySelector('.nav-buttons');
-             navButtons.innerHTML = `
-                 <button class="nav-btn" onclick="showScreen('titleScreen', event)">Início</button>
-                 <button class="nav-btn ${currentPhase === 1 ? 'active' : ''}" onclick="showGamePhase(1)">Planejamento</button>
-                 <button class="nav-btn ${currentPhase === 2 ? 'active' : ''}" onclick="showGamePhase(2)">Desenvolvimento</button>
-                 <button class="nav-btn ${currentPhase === 3 ? 'active' : ''}" onclick="showGamePhase(3)">Testes</button>
-                 <button class="nav-btn ${currentPhase === 4 ? 'active' : ''}" onclick="showGamePhase(4)">Deploy</button>
-             `;
-         }
-
-         // Show Game Phase
-         function showGamePhase(phase) {
-             if (phase > currentPhase && !completedPhases.includes(phase - 1)) {
-                 showMessage('Complete a fase anterior primeiro!');
-                 return;
-             }
-
-             currentPhase = phase;
-             updateGameStatus();
-             const screens = ['planningScreen', 'developmentScreen', 'testingScreen', 'deploymentScreen'];
-             showScreen(screens[phase - 1]);
-             updateNavigationForPhases();
-         }
-
-         // Show Message
-         function showMessage(text) {
-             const message = document.createElement('div');
-             message.style.position = 'fixed';
-             message.style.top = '50%';
-             message.style.left = '50%';
-             message.style.transform = 'translate(-50%, -50%)';
-             message.style.background = 'rgba(0, 0, 0, 0.9)';
-             message.style.color = 'white';
-             message.style.padding = '20px 40px';
-             message.style.borderRadius = '8px';
-             message.style.zIndex = '1000';
-             message.style.fontSize = '1.2rem';
-             message.textContent = text;
-             
-             document.body.appendChild(message);
-             
-             setTimeout(() => {
-                 message.remove();
-             }, 2000);
-         }
-
-                 // Enhanced Drag & Drop with Physics
-         let draggedBlock = null;
-
-         // Initialize Drag & Drop for all phases
-         function initializeDragDrop() {
-             const phases = ['planning', 'development', 'testing', 'deployment'];
-             
-             phases.forEach(phase => {
-                 const workspace = document.getElementById(phase + 'Workspace');
-                 const area = document.getElementById(phase + 'Area');
-                 const progress = document.getElementById(phase + 'Progress');
-                 
-                 if (workspace && area) {
-                     setupDragDropForPhase(workspace, area, progress, phase);
-                 }
-             });
-         }
-
-                 // Setup Drag & Drop for a specific phase
-         function setupDragDropForPhase(workspace, area, progress, phaseName) {
-             const codeBlocks = workspace.querySelectorAll('.code-block[draggable="true"]');
-             
-             codeBlocks.forEach(block => {
-                 block.addEventListener('dragstart', e => {
-                     draggedBlock = block;
-                     block.style.opacity = '0.4';
-                     block.style.transform = 'scale(0.9) rotate(2deg)';
-                     block.style.filter = 'blur(1px)';
-                     
-                     createDistortionWave(block);
-                 });
-                 
-                 block.addEventListener('dragend', e => {
-                     draggedBlock = null;
-                     block.style.opacity = '';
-                     block.style.transform = '';
-                     block.style.filter = '';
-                 });
-             });
-
-             area.addEventListener('dragover', e => {
-                 e.preventDefault();
-                 area.classList.add('drag-over');
-             });
-
-             area.addEventListener('dragleave', e => {
-                 area.classList.remove('drag-over');
-             });
-
-             area.addEventListener('drop', e => {
-                 e.preventDefault();
-                 area.classList.remove('drag-over');
-                 
-                 if (!draggedBlock) return;
-
-                 const clone = draggedBlock.cloneNode(true);
-                 clone.removeAttribute('draggable');
-                 clone.style.cursor = 'pointer';
-                 clone.style.opacity = '1';
-                 clone.style.transform = 'scale(1)';
-                 clone.style.filter = '';
-                 
-                 clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-
-                 clone.addEventListener('click', () => {
-                     createInteractionFeedback(clone);
-                     clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                     setTimeout(() => {
-                         clone.remove();
-                         updatePhaseProgress(workspace, area, progress, phaseName);
-                     }, 600);
-                 });
-
-                 if (area.textContent.includes('Monte') || area.textContent.includes('Desenvolva') || 
-                     area.textContent.includes('Execute') || area.textContent.includes('Configure')) {
-                     area.textContent = '';
-                 }
-
-                 area.appendChild(clone);
-                 updatePhaseProgress(workspace, area, progress, phaseName);
-                 
-                 createDropParticles(clone);
-             });
-         }
-
-         // Update Phase Progress
-         function updatePhaseProgress(workspace, area, progress, phaseName) {
-             const totalBlocks = workspace.querySelectorAll('.code-block[draggable="true"]').length;
-             const selectedBlocks = area.querySelectorAll('.code-block').length;
-             let progressPercent = (selectedBlocks / totalBlocks) * 100;
-             
-             if (progressPercent > 100) progressPercent = 100;
-             
-             if (progress) {
-                 progress.style.width = progressPercent + '%';
-                 
-                 // Phase completion effect
-                 if (progressPercent === 100 && !completedPhases.includes(currentPhase)) {
-                     progress.style.animation = 'progressComplete 2s ease-in-out';
-                     completedPhases.push(currentPhase);
-                     
-                     setTimeout(() => {
-                         createCompletionEffect();
-                         unlockNextPhase();
-                     }, 1000);
-                 }
-             }
-
-             if (selectedBlocks === 0) {
-                 const messages = {
-                     'planning': 'Monte seu plano de projeto',
-                     'development': 'Desenvolva as funcionalidades',
-                     'testing': 'Execute os testes do projeto',
-                     'deployment': 'Configure o deploy em produção'
-                 };
-                 area.textContent = messages[phaseName] || 'Arraste os blocos aqui';
-             }
-         }
-
-         // Unlock Next Phase
-         function unlockNextPhase() {
-             if (currentPhase < 4) {
-                 showMessage(`Fase ${currentPhase} concluída! Próxima fase desbloqueada.`);
-                 setTimeout(() => {
-                     showGamePhase(currentPhase + 1);
-                 }, 2000);
-             } else {
-                 showMessage('🎉 Projeto concluído com sucesso!');
-                 setTimeout(() => {
-                     showFinalScreen();
-                 }, 3000);
-             }
-         }
-
-         // Show Final Screen
-         function showFinalScreen() {
-             const finalScreen = document.createElement('div');
-             finalScreen.className = 'screen active';
-             finalScreen.style.background = 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,1) 100%)';
-             finalScreen.innerHTML = `
-                 <div style="text-align: center;">
-                     <h1 style="font-size: 3rem; margin-bottom: 20px; color: var(--pure-white);">Projeto Concluído!</h1>
-                     <p style="font-size: 1.5rem; margin-bottom: 30px; color: var(--light-gray);">Universo: ${currentUniverse.toUpperCase()}</p>
-                     <p style="font-size: 1.2rem; margin-bottom: 30px; color: var(--medium-gray);">Equipe: ${selectedTeam.join(', ')}</p>
-                     <p style="font-size: 1rem; margin-bottom: 40px; color: var(--medium-gray);">Fases completadas: ${completedPhases.length}/4</p>
-                     <button class="start-btn" onclick="restartGame()">Jogar Novamente</button>
-                 </div>
-             `;
-             
-             document.querySelector('.screen.active').classList.remove('active');
-             document.body.appendChild(finalScreen);
-         }
-
-         // Restart Game
-         function restartGame() {
-             currentUniverse = '';
-             selectedTeam = [];
-             currentPhase = 1;
-             completedPhases = [];
-             
-             // Remove final screen
-             const finalScreen = document.querySelector('.screen:last-child');
-             if (finalScreen) finalScreen.remove();
-             
-             // Reset navigation
-             const navButtons = document.querySelector('.nav-buttons');
-             navButtons.innerHTML = `
-                 <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
-                 <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
-                 <button class="nav-btn" onclick="showScreen('corporativoTeam', event)">Equipe</button>
-                 <button class="nav-btn" onclick="showScreen('planningScreen', event)">Gameplay</button>
-             `;
-             
-             showScreen('titleScreen');
-         }
-
-        // Particle System
-        function createParticles() {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + 'vw';
-                    particle.style.setProperty('--random-x', (Math.random() - 0.5) * 200 + 'px');
-                    particle.style.animation = `particleFloat ${Math.random() * 10 + 10}s linear`;
-                    
-                    document.body.appendChild(particle);
-                    
-                    setTimeout(() => {
-                        particle.remove();
-                    }, 20000);
-                }, i * 200);
+        function createBackgroundElements() {
+            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+            const material = new THREE.MeshLambertMaterial({ 
+                color: 0x00ffcc, 
+                transparent: true, 
+                opacity: 0.1,
+                wireframe: true 
+            });
+            
+            for (let i = 0; i < 15; i++) {
+                const cube = new THREE.Mesh(geometry, material);
+                cube.position.set(
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20
+                );
+                cube.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                GameState.scene.add(cube);
             }
         }
 
-        // Interaction Feedback
-        function createInteractionFeedback(element) {
-            const rect = element.getBoundingClientRect();
-            const feedback = document.createElement('div');
-            feedback.className = 'interaction-feedback';
-            feedback.style.left = rect.left + rect.width / 2 + 'px';
-            feedback.style.top = rect.top + rect.height / 2 + 'px';
+        function animate() {
+            requestAnimationFrame(animate);
             
-            document.body.appendChild(feedback);
+            GameState.scene.children.forEach(child => {
+                if (child.type === 'Mesh' && child.material.wireframe) {
+                    child.rotation.x += 0.005;
+                    child.rotation.y += 0.005;
+                }
+            });
             
-            setTimeout(() => {
-                feedback.remove();
-            }, 800);
+            GameState.renderer.render(GameState.scene, GameState.camera);
         }
 
-        // Distortion Wave Effect
-        function createDistortionWave(element) {
-            element.style.animation = 'distortionWave 0.3s ease-in-out';
+        // ==========================================
+        // KEYBOARD NAVIGATION
+        // ==========================================
+        
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        function handleKeyPress(event) {
+            switch(event.key) {
+                case 'Enter':
+                    event.preventDefault();
+                    handleEnterKey();
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    navigateUp();
+                    break;
+                case 'ArrowDown':
+                    event.preventDefault();
+                    navigateDown();
+                    break;
+                case 'Escape':
+                    event.preventDefault();
+                    handleEscapeKey();
+                    break;
+            }
+        }
+
+        function handleEnterKey() {
+            switch(GameState.currentScreen) {
+                case 'welcomeScreen':
+                    transitionToScreen('contextScreen');
+                    break;
+                case 'contextScreen':
+                    selectCurrentContext();
+                    break;
+                case 'methodologyScreen':
+                    selectCurrentMethodology();
+                    break;
+                case 'teamScreen':
+                    selectCurrentTeamMember();
+                    break;
+                case 'workspaceScreen':
+                    executeWorkspaceAction();
+                    break;
+            }
+        }
+
+        function handleEscapeKey() {
+            switch(GameState.currentScreen) {
+                case 'contextScreen':
+                    transitionToScreen('welcomeScreen');
+                    break;
+                case 'methodologyScreen':
+                    transitionToScreen('contextScreen');
+                    break;
+                case 'teamScreen':
+                    transitionToScreen('methodologyScreen');
+                    break;
+                case 'workspaceScreen':
+                    transitionToScreen('teamScreen');
+                    break;
+            }
+        }
+
+        function navigateUp() {
+            const navItems = getCurrentNavigationItems();
+            if (navItems.length > 0) {
+                navItems[GameState.navigationIndex].classList.remove('highlighted');
+                GameState.navigationIndex = Math.max(0, GameState.navigationIndex - 1);
+                updateNavigationHighlight();
+            }
+        }
+
+        function navigateDown() {
+            const navItems = getCurrentNavigationItems();
+            if (navItems.length > 0) {
+                navItems[GameState.navigationIndex].classList.remove('highlighted');
+                GameState.navigationIndex = Math.min(navItems.length - 1, GameState.navigationIndex + 1);
+                updateNavigationHighlight();
+            }
+        }
+
+        function getCurrentNavigationItems() {
+            switch(GameState.currentScreen) {
+                case 'contextScreen':
+                    return document.querySelectorAll('.context-card');
+                case 'methodologyScreen':
+                    return document.querySelectorAll('.methodology-card');
+                case 'teamScreen':
+                    return document.querySelectorAll('.role-card:not(.selected)');
+                case 'workspaceScreen':
+                    return document.querySelectorAll('.action-button');
+                default:
+                    return [];
+            }
+        }
+
+        function updateNavigationHighlight() {
+            const navItems = getCurrentNavigationItems();
+            navItems.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === GameState.navigationIndex);
+            });
+        }
+
+        // ==========================================
+        // SCREEN TRANSITIONS
+        // ==========================================
+        
+        function transitionToScreen(newScreen) {
+            const currentScreenEl = document.getElementById(GameState.currentScreen);
+            const newScreenEl = document.getElementById(newScreen);
+            
+            currentScreenEl.classList.remove('active');
             setTimeout(() => {
-                element.style.animation = '';
+                newScreenEl.classList.add('active');
+                GameState.currentScreen = newScreen;
+                GameState.navigationIndex = 0;
+                setupCurrentScreen();
             }, 300);
         }
 
-        // Drop Particles
-        function createDropParticles(element) {
-            const rect = element.getBoundingClientRect();
-            for (let i = 0; i < 3; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = rect.left + rect.width / 2 + 'px';
-                particle.style.top = rect.top + rect.height / 2 + 'px';
-                particle.style.setProperty('--random-x', (Math.random() - 0.5) * 50 + 'px');
-                particle.style.animation = `particleFloat ${Math.random() * 3 + 2}s linear`;
-                
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 5000);
+        function setupCurrentScreen() {
+            switch(GameState.currentScreen) {
+                case 'contextScreen':
+                    updateNavigationHighlight();
+                    break;
+                case 'methodologyScreen':
+                    setupMethodologyScreen();
+                    break;
+                case 'teamScreen':
+                    setupTeamScreen();
+                    break;
+                case 'workspaceScreen':
+                    setupWorkspaceScreen();
+                    break;
             }
         }
 
-        // Completion Effect
-        function createCompletionEffect() {
-            // Screen flash effect
-            const flash = document.createElement('div');
-            flash.style.position = 'fixed';
-            flash.style.top = '0';
-            flash.style.left = '0';
-            flash.style.right = '0';
-            flash.style.bottom = '0';
-            flash.style.background = 'rgba(255, 255, 255, 0.1)';
-            flash.style.pointerEvents = 'none';
-            flash.style.animation = 'flashEffect 1s ease-out';
+        // ==========================================
+        // SCREEN SETUP FUNCTIONS
+        // ==========================================
+        
+        function setupMethodologyScreen() {
+            const grid = document.getElementById('methodologyGrid');
+            const context = CONTEXTS[GameState.selectedContext];
             
-            document.body.appendChild(flash);
+            grid.innerHTML = '';
+            Object.entries(context.methodologies).forEach(([key, methodology]) => {
+                const card = document.createElement('div');
+                card.className = 'methodology-card';
+                card.dataset.methodology = key;
+                card.innerHTML = `
+                    <h3>${methodology.name}</h3>
+                    <p>${methodology.description}</p>
+                    <div class="methodology-phases">
+                        ${methodology.phases.slice(0, 4).map(phase => `<span class="phase-tag">${phase}</span>`).join('')}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            updateNavigationHighlight();
+        }
+
+        function setupTeamScreen() {
+            const rolesContainer = document.getElementById('availableRoles');
+            const context = CONTEXTS[GameState.selectedContext];
+            
+            rolesContainer.innerHTML = '';
+            Object.entries(context.roles).forEach(([key, role]) => {
+                const card = document.createElement('div');
+                card.className = 'role-card';
+                card.dataset.role = key;
+                card.innerHTML = `
+                    <div class="role-avatar">
+                        <img src="data:image/svg+xml,${encodeURIComponent(generateAvatarSVG(role, key))}" alt="${role.name}">
+                    </div>
+                    <h3>${role.name}</h3>
+                    <div class="role-skills">
+                        ${role.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                `;
+                rolesContainer.appendChild(card);
+            });
+            
+            updateNavigationHighlight();
+        }
+
+        function setupWorkspaceScreen() {
+            const methodology = CONTEXTS[GameState.selectedContext].methodologies[GameState.selectedMethodology];
+            
+            document.getElementById('meetingTitle').textContent = `${methodology.meetings[0]} - ${methodology.name}`;
+            document.getElementById('meetingType').textContent = methodology.meetings[0];
+            
+            setupTeamSeats();
+            updateNavigationHighlight();
+        }
+
+        // ==========================================
+        // GAME LOGIC
+        // ==========================================
+        
+        function selectCurrentContext() {
+            const contextCards = document.querySelectorAll('.context-card');
+            const selectedCard = contextCards[GameState.navigationIndex];
+            
+            GameState.selectedContext = selectedCard.dataset.context;
+            selectedCard.classList.add('selected');
             
             setTimeout(() => {
-                flash.remove();
-            }, 1000);
+                transitionToScreen('methodologyScreen');
+            }, 500);
         }
 
-        // Dynamic Animation Styles
-        const dynamicStyles = document.createElement('style');
-        dynamicStyles.textContent = `
-            @keyframes cardSettle {
-                0% { transform: translateY(-10px) scale(1.05); }
-                50% { transform: translateY(5px) scale(0.98); }
-                100% { transform: translateY(-8px) scale(1.05); }
-            }
+        function selectCurrentMethodology() {
+            const methodologyCards = document.querySelectorAll('.methodology-card');
+            const selectedCard = methodologyCards[GameState.navigationIndex];
             
-            @keyframes memberSelect {
-                0% { transform: scale(1); }
-                30% { transform: scale(1.1) translateY(-5px); }
-                60% { transform: scale(0.95) translateY(2px); }
-                100% { transform: scale(1.05) translateY(-8px); }
-            }
+            GameState.selectedMethodology = selectedCard.dataset.methodology;
+            selectedCard.classList.add('selected');
             
-            @keyframes memberDeselect {
-                0% { transform: scale(1.05) translateY(-8px); }
-                50% { transform: scale(0.9) translateY(3px); }
-                100% { transform: scale(1); }
-            }
-            
-            @keyframes teamComplete {
-                0% { transform: scale(1.05) translateY(-8px); }
-                50% { transform: scale(1.15) translateY(-15px); }
-                100% { transform: scale(1.05) translateY(-8px); }
-            }
-            
-            @keyframes blockLand {
-                0% { transform: translateY(-20px) scale(0.9); opacity: 0.5; }
-                50% { transform: translateY(3px) scale(1.05); opacity: 0.8; }
-                100% { transform: translateY(0) scale(1); opacity: 1; }
-            }
-            
-            @keyframes blockRemove {
-                0% { transform: scale(1); opacity: 1; }
-                50% { transform: scale(0.8) translateY(-10px); opacity: 0.5; }
-                100% { transform: scale(0.5) translateY(-20px); opacity: 0; }
-            }
-            
-            @keyframes progressComplete {
-                0% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
-                50% { box-shadow: 0 0 40px rgba(106, 32, 32, 0.8); }
-                100% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
-            }
-            
-            @keyframes flashEffect {
-                0% { opacity: 0; }
-                50% { opacity: 1; }
-                100% { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(dynamicStyles);
+            setTimeout(() => {
+                transitionToScreen('teamScreen');
+            }, 500);
+        }
 
-                 // Initialize particle system
-         createParticles();
-         setInterval(createParticles, 15000);
+        function selectCurrentTeamMember() {
+            const roleCards = document.querySelectorAll('.role-card:not(.selected)');
+            if (roleCards.length === 0) return;
+            
+            const selectedCard = roleCards[GameState.navigationIndex];
+            const roleKey = selectedCard.dataset.role;
+            const role = CONTEXTS[GameState.selectedContext].roles[roleKey];
+            
+            if (GameState.selectedTeam.length < GameState.maxTeamSize) {
+                GameState.selectedTeam.push({ key: roleKey, ...role });
+                selectedCard.classList.add('selected');
+                updateSelectedTeamDisplay();
+                
+                if (GameState.selectedTeam.length >= 3) {
+                    setTimeout(() => {
+                        transitionToScreen('workspaceScreen');
+                    }, 1000);
+                }
+            }
+        }
 
-         // Show Universe Teams submenu
-         function showUniverseTeams(event) {
-             const submenu = document.getElementById('teamSubmenu');
-             submenu.style.display = submenu.style.display === 'none' ? 'flex' : 'none';
-         }
+        function executeWorkspaceAction() {
+            const actionButtons = document.querySelectorAll('.action-button');
+            const selectedButton = actionButtons[GameState.navigationIndex];
+            const action = selectedButton.dataset.action;
+            
+            switch(action) {
+                case 'start':
+                    startMeeting();
+                    break;
+                case 'agenda':
+                    showAgenda();
+                    break;
+                case 'board':
+                    showKanbanBoard();
+                    break;
+                case 'continue':
+                    continueToNextPhase();
+                    break;
+            }
+        }
 
-         // Show Game Phases submenu
-         function showGamePhases(event) {
-             if (selectedTeam.length < 3) {
-                 showMessage('Selecione uma equipe primeiro!');
-                 return;
-             }
-             updateNavigationForPhases();
-             showScreen('planningScreen');
-         }
+        function startMeeting() {
+            alert('🎯 Reunião iniciada! A equipe está discutindo o progresso do projeto...');
+        }
 
-         // Initialize drag & drop system when page loads
-         document.addEventListener('DOMContentLoaded', () => {
-             initializeDragDrop();
-             updateGameStatus();
-         });
+        function showAgenda() {
+            const methodology = CONTEXTS[GameState.selectedContext].methodologies[GameState.selectedMethodology];
+            alert(`📋 Agenda:\n${methodology.artifacts.join('\n• ')}`);
+        }
+
+        function showKanbanBoard() {
+            alert('📊 Quadro Kanban atualizado com as tarefas da sprint atual.');
+        }
+
+        function continueToNextPhase() {
+            alert('🚀 Projeto concluído com sucesso! Parabéns pela jornada!');
+        }
+
+        function updateSelectedTeamDisplay() {
+            const container = document.getElementById('teamMembers');
+            container.innerHTML = GameState.selectedTeam.map(member => `
+                <div class="selected-member">
+                    <img src="data:image/svg+xml,${encodeURIComponent(generateAvatarSVG(member, member.key))}" alt="${member.name}">
+                    <span>${member.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function setupTeamSeats() {
+            const seatsContainer = document.getElementById('teamSeats');
+            const angleStep = 360 / Math.max(GameState.selectedTeam.length, 4);
+            
+            seatsContainer.innerHTML = GameState.selectedTeam.map((member, index) => {
+                const angle = index * angleStep;
+                return `
+                    <div class="team-seat" style="transform: rotate(${angle}deg) translateY(-80px) rotate(-${angle}deg)">
+                        <img src="data:image/svg+xml,${encodeURIComponent(generateAvatarSVG(member, member.key))}" alt="${member.name}">
+                        <span>${member.name.split(' ')[0]}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function generateAvatarSVG(role, roleKey) {
+            const colors = {
+                architect: '#4a90e2',
+                pm: '#7ed321',
+                developer: '#9013fe',
+                scrummaster: '#f5a623',
+                po: '#d0021b',
+                qa: '#50e3c2',
+                ba: '#bd10e0',
+                tester: '#b8e986',
+                ux: '#ff6b35'
+            };
+            
+            const color = colors[roleKey] || '#888888';
+            const initials = role.name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0, 2);
+            
+            return `
+                <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad-${roleKey}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:${color};stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:${color};stop-opacity:0.4" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="30" cy="30" r="28" fill="url(#grad-${roleKey})" stroke="${color}" stroke-width="2"/>
+                    <circle cx="30" cy="22" r="8" fill="${color}" opacity="0.9"/>
+                    <path d="M15 45 Q30 35 45 45 L45 50 Q30 45 15 50 Z" fill="${color}" opacity="0.9"/>
+                    <text x="30" y="50" text-anchor="middle" fill="${color}" font-size="10" font-family="JetBrains Mono, monospace" font-weight="bold">
+                        ${initials}
+                    </text>
+                </svg>
+            `;
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            setupKeyboardNavigation();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (GameState.camera && GameState.renderer) {
+                    GameState.camera.aspect = window.innerWidth / window.innerHeight;
+                    GameState.camera.updateProjectionMatrix();
+                    GameState.renderer.setSize(window.innerWidth, window.innerHeight);
+                }
+            });
+        });
     </script>
 </body>
 
