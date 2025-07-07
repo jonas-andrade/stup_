@@ -7,9 +7,6 @@
     <title>DevCode - A Jornada do Desenvolvedor</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="game-data.js"></script>
-    <script src="3d-workspace.js"></script>
-    <script src="game-phases.js"></script>
     <style>
         :root {
             --void-black: #000000;
@@ -1822,6 +1819,104 @@
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100vw) rotate(45deg); }
         }
+
+        /* Methodology Cards Styles */
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .methodology-card {
+            background: rgba(42, 42, 42, 0.8);
+            border: 2px solid var(--dark-gray);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .methodology-card:hover {
+            border-color: var(--highlight-red);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(106, 32, 32, 0.3);
+        }
+
+        .methodology-card.highlighted {
+            border-color: var(--highlight-red);
+            box-shadow: 0 0 30px rgba(106, 32, 32, 0.5);
+            transform: scale(1.05);
+        }
+
+        .methodology-card.selected {
+            border-color: var(--pure-white);
+            background: rgba(106, 32, 32, 0.3);
+        }
+
+        .methodology-card h3 {
+            color: var(--pure-white);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .methodology-card p {
+            color: var(--light-gray);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .methodology-phases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .phase-tag {
+            background: var(--highlight-red);
+            color: var(--pure-white);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Fix Three.js Container */
+        #threejs-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .overlay-ui {
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        /* Fix workspace 3D container sizing */
+        .workspace-3d-container {
+            width: 100%;
+            height: 400px;
+            border: 1px solid var(--steel-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .workspace-3d-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
     </style>
 </head>
 
@@ -1938,9 +2033,10 @@
                     <!-- Enhanced 3D Workspace -->
                     <div class="workspace-3d-container" id="workspace3DContainer">
                         <div class="workspace-3d-controls">
-                            <button class="control-btn" onclick="workspace3D?.animateCamera({x: 0, y: 10, z: 15}, {x: 0, y: 2, z: 0})">Vista Geral</button>
-                            <button class="control-btn" onclick="workspace3D?.animateCamera({x: 15, y: 8, z: 15}, {x: 0, y: 2, z: 0})">Vista Lateral</button>
-                            <button class="control-btn" onclick="workspace3D?.animateCamera({x: 0, y: 20, z: 0}, {x: 0, y: 0, z: 0})">Vista Superior</button>
+                            <button class="control-btn" onclick="animate3DCamera({x: 0, y: 8, z: 12}, {x: 0, y: 2, z: 0})">Vista Geral</button>
+                            <button class="control-btn" onclick="animate3DCamera({x: 15, y: 6, z: 8}, {x: 0, y: 2, z: 0})">Vista Lateral</button>
+                            <button class="control-btn" onclick="animate3DCamera({x: 0, y: 15, z: 0}, {x: 0, y: 0, z: 0})">Vista Superior</button>
+                            <button class="control-btn" onclick="animate3DCamera({x: -8, y: 4, z: 8}, {x: 0, y: 2, z: 0})">Vista Closeup</button>
                         </div>
                     </div>
                     
@@ -1996,8 +2092,8 @@
         let selectedProfessionals = [];
         let currentGamePhase = 'selection';
 
-        // Use data from external files
-        const GAME_CONTEXTS = typeof CONTEXTS !== 'undefined' ? CONTEXTS : {
+        // Complete contexts with all methodologies and roles
+        const GAME_CONTEXTS = {
             enterprise: {
                 name: 'Enterprise',
                 description: 'Grandes corporações com processos estruturados e governança rigorosa',
@@ -2008,12 +2104,48 @@
                         phases: ['Análise', 'Design', 'Implementação', 'Testes', 'Deploy', 'Manutenção'],
                         meetings: ['Kick-off Meeting', 'Design Review', 'Quality Gate Review', 'Go-Live Meeting'],
                         artifacts: ['Business Requirements Document', 'Technical Specification', 'Test Plan', 'Deployment Guide']
+                    },
+                    itil: {
+                        name: 'ITIL',
+                        description: 'Framework de gerenciamento de serviços de TI',
+                        phases: ['Strategy', 'Design', 'Transition', 'Operation', 'Improvement'],
+                        meetings: ['Service Review', 'Change Advisory Board', 'Problem Management Meeting'],
+                        artifacts: ['Service Catalog', 'SLA Document', 'Change Request', 'Incident Report']
                     }
                 },
                 roles: {
                     architect: { name: 'Solution Architect', skills: ['Architecture', 'Integration', 'Governance'] },
                     pm: { name: 'Project Manager', skills: ['Planning', 'Risk Management', 'Stakeholder Management'] },
-                    developer: { name: 'Senior Developer', skills: ['Java/.NET', 'Database', 'Security'] }
+                    developer: { name: 'Senior Developer', skills: ['Java/.NET', 'Database', 'Security'] },
+                    ba: { name: 'Business Analyst', skills: ['Requirements', 'Process Modeling', 'Documentation'] },
+                    qa: { name: 'QA Manager', skills: ['Test Planning', 'Quality Assurance', 'Compliance'] }
+                }
+            },
+            startup: {
+                name: 'Startup',
+                description: 'Ambiente ágil focado em inovação rápida e crescimento acelerado',
+                methodologies: {
+                    lean: {
+                        name: 'Lean Startup',
+                        description: 'Build-Measure-Learn para validação rápida',
+                        phases: ['Build MVP', 'Measure Results', 'Learn Insights', 'Pivot or Persevere'],
+                        meetings: ['Daily Sync', 'Weekly Demo', 'Pivot Meeting', 'Investor Update'],
+                        artifacts: ['MVP', 'Metrics Dashboard', 'Customer Interviews', 'Pivot Report']
+                    },
+                    design_thinking: {
+                        name: 'Design Thinking',
+                        description: 'Abordagem centrada no usuário para inovação',
+                        phases: ['Empathize', 'Define', 'Ideate', 'Prototype', 'Test'],
+                        meetings: ['User Interview', 'Brainstorming', 'Prototype Review', 'User Testing'],
+                        artifacts: ['User Personas', 'Journey Map', 'Prototype', 'Test Results']
+                    }
+                },
+                roles: {
+                    founder: { name: 'Founder/CEO', skills: ['Vision', 'Leadership', 'Fundraising'] },
+                    fullstack: { name: 'Full Stack Developer', skills: ['React', 'Node.js', 'MongoDB', 'AWS'] },
+                    designer: { name: 'Product Designer', skills: ['UI/UX', 'Figma', 'User Research', 'Prototyping'] },
+                    growth: { name: 'Growth Hacker', skills: ['Analytics', 'A/B Testing', 'Marketing', 'Growth Metrics'] },
+                    mobile: { name: 'Mobile Developer', skills: ['React Native', 'iOS', 'Android', 'App Store'] }
                 }
             },
             agile: {
@@ -2024,14 +2156,104 @@
                         name: 'Scrum',
                         description: 'Framework ágil com sprints e cerimônias estruturadas',
                         phases: ['Sprint Planning', 'Daily Scrum', 'Sprint Review', 'Sprint Retrospective'],
-                        meetings: ['Daily Scrum', 'Sprint Planning', 'Sprint Review', 'Retrospective'],
+                        meetings: ['Daily Standup', 'Sprint Planning', 'Sprint Review', 'Retrospective', 'Backlog Refinement'],
                         artifacts: ['Product Backlog', 'Sprint Backlog', 'Product Increment', 'Burndown Chart']
+                    },
+                    xp: {
+                        name: 'Extreme Programming',
+                        description: 'Práticas técnicas extremas para qualidade',
+                        phases: ['Planning Game', 'Small Releases', 'Pair Programming', 'Continuous Integration'],
+                        meetings: ['Planning Game', 'Standup Meeting', 'Iteration Planning', 'Release Planning'],
+                        artifacts: ['User Stories', 'Release Plan', 'Code', 'Automated Tests']
                     }
                 },
                 roles: {
                     scrummaster: { name: 'Scrum Master', skills: ['Facilitation', 'Coaching', 'Process Improvement'] },
                     po: { name: 'Product Owner', skills: ['Product Vision', 'Backlog Management', 'Stakeholder Liaison'] },
-                    developer: { name: 'Developer', skills: ['Coding', 'Testing', 'Pair Programming'] }
+                    developer: { name: 'Agile Developer', skills: ['Coding', 'Testing', 'Pair Programming'] },
+                    tester: { name: 'Tester', skills: ['Test Automation', 'BDD', 'Exploratory Testing'] },
+                    ux: { name: 'UX Designer', skills: ['User Research', 'Prototyping', 'Usability Testing'] }
+                }
+            },
+            devops: {
+                name: 'DevOps',
+                description: 'Integração entre desenvolvimento e operações',
+                methodologies: {
+                    cicd: {
+                        name: 'CI/CD',
+                        description: 'Integração e entrega contínua',
+                        phases: ['Code', 'Build', 'Test', 'Deploy', 'Monitor'],
+                        meetings: ['Daily Standup', 'Pipeline Review', 'Deployment Review', 'Post-mortem'],
+                        artifacts: ['Pipeline Config', 'Deployment Scripts', 'Monitoring Dashboards', 'SLA Reports']
+                    },
+                    sre: {
+                        name: 'Site Reliability Engineering',
+                        description: 'Engenharia de confiabilidade de sistemas',
+                        phases: ['Monitor', 'Alert', 'Respond', 'Learn', 'Improve'],
+                        meetings: ['On-call Handoff', 'Incident Review', 'SLO Review', 'Capacity Planning'],
+                        artifacts: ['SLI/SLO', 'Error Budget', 'Runbook', 'Post-mortem Report']
+                    }
+                },
+                roles: {
+                    devops: { name: 'DevOps Engineer', skills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS'] },
+                    sre: { name: 'Site Reliability Engineer', skills: ['Monitoring', 'Alerting', 'SLI/SLO', 'Incident Response'] },
+                    platform: { name: 'Platform Engineer', skills: ['Infrastructure', 'Automation', 'Developer Tools'] },
+                    security: { name: 'Security Engineer', skills: ['Security Scanning', 'Compliance', 'Threat Modeling'] },
+                    cloud: { name: 'Cloud Architect', skills: ['AWS', 'Infrastructure as Code', 'Cost Optimization'] }
+                }
+            },
+            opensource: {
+                name: 'Open Source',
+                description: 'Desenvolvimento colaborativo e transparente',
+                methodologies: {
+                    community: {
+                        name: 'Community-driven',
+                        description: 'Desenvolvimento orientado pela comunidade',
+                        phases: ['Discussion', 'RFC', 'Implementation', 'Review', 'Release'],
+                        meetings: ['Community Call', 'Technical Committee', 'Contributor Meeting', 'Release Planning'],
+                        artifacts: ['RFC Document', 'Contribution Guidelines', 'Code of Conduct', 'Release Notes']
+                    },
+                    fork_pr: {
+                        name: 'Fork & Pull Request',
+                        description: 'Workflow de contribuição distribuída',
+                        phases: ['Fork', 'Branch', 'Commit', 'Pull Request', 'Review', 'Merge'],
+                        meetings: ['Code Review', 'Maintainer Sync', 'Community Standup'],
+                        artifacts: ['Pull Request', 'Code Review', 'Issue Tracker', 'Documentation']
+                    }
+                },
+                roles: {
+                    maintainer: { name: 'Project Maintainer', skills: ['Project Vision', 'Code Review', 'Community Management'] },
+                    contributor: { name: 'Core Contributor', skills: ['Development', 'Documentation', 'Testing'] },
+                    community: { name: 'Community Manager', skills: ['Communication', 'Events', 'Onboarding'] },
+                    docs: { name: 'Documentation Lead', skills: ['Technical Writing', 'Information Architecture'] },
+                    release: { name: 'Release Manager', skills: ['Release Planning', 'Version Control', 'Change Management'] }
+                }
+            },
+            consulting: {
+                name: 'Consultoria',
+                description: 'Projetos diversos para múltiplos clientes',
+                methodologies: {
+                    pmbok: {
+                        name: 'PMBOK',
+                        description: 'Project Management Body of Knowledge',
+                        phases: ['Initiation', 'Planning', 'Execution', 'Monitoring', 'Closure'],
+                        meetings: ['Project Kickoff', 'Status Review', 'Steering Committee', 'Lessons Learned'],
+                        artifacts: ['Project Charter', 'Work Breakdown Structure', 'Risk Register', 'Project Report']
+                    },
+                    client_centric: {
+                        name: 'Client-centric',
+                        description: 'Abordagem focada no cliente',
+                        phases: ['Discovery', 'Analysis', 'Solution Design', 'Implementation', 'Handover'],
+                        meetings: ['Client Discovery', 'Weekly Check-in', 'Solution Review', 'Handover Meeting'],
+                        artifacts: ['Discovery Report', 'Solution Proposal', 'Implementation Plan', 'Handover Document']
+                    }
+                },
+                roles: {
+                    consultant: { name: 'Senior Consultant', skills: ['Client Management', 'Solution Design', 'Implementation'] },
+                    architect: { name: 'Solutions Architect', skills: ['Technical Architecture', 'Integration', 'Best Practices'] },
+                    specialist: { name: 'Technical Specialist', skills: ['Deep Expertise', 'Problem Solving', 'Innovation'] },
+                    delivery: { name: 'Delivery Manager', skills: ['Project Delivery', 'Risk Management', 'Quality Assurance'] },
+                    analyst: { name: 'Business Analyst', skills: ['Requirements Analysis', 'Process Improvement', 'Stakeholder Management'] }
                 }
             }
         };
@@ -2048,59 +2270,559 @@
             GameState.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             
             GameState.renderer.setSize(window.innerWidth, window.innerHeight);
-            GameState.renderer.setClearColor(0x000000, 0);
+            GameState.renderer.setClearColor(0x0a0a0a, 0.8);
+            GameState.renderer.shadowMap.enabled = true;
+            GameState.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(GameState.renderer.domElement);
             
-            // Lighting
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-            GameState.scene.add(ambientLight);
+            // Professional Lighting Setup
+            setupProfessionalLighting();
             
-            const directionalLight = new THREE.DirectionalLight(0x00ffcc, 0.8);
-            directionalLight.position.set(-1, 1, 1);
-            GameState.scene.add(directionalLight);
+            // Create Modern Office Environment
+            createOfficeEnvironment();
             
-            GameState.camera.position.z = 5;
+            GameState.camera.position.set(0, 8, 12);
+            GameState.camera.lookAt(0, 0, 0);
             
-            createBackgroundElements();
             animate();
         }
 
-        function createBackgroundElements() {
-            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-            const material = new THREE.MeshLambertMaterial({ 
-                color: 0x00ffcc, 
-                transparent: true, 
-                opacity: 0.1,
-                wireframe: true 
+        function setupProfessionalLighting() {
+            // Ambient light for overall illumination
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+            GameState.scene.add(ambientLight);
+            
+            // Main directional light (sun/ceiling light)
+            const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            mainLight.position.set(10, 20, 10);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            mainLight.shadow.camera.near = 0.5;
+            mainLight.shadow.camera.far = 50;
+            GameState.scene.add(mainLight);
+            
+            // Accent lighting (tech theme)
+            const accentLight1 = new THREE.PointLight(0x00ffcc, 0.6, 30);
+            accentLight1.position.set(-8, 5, 8);
+            GameState.scene.add(accentLight1);
+            
+            const accentLight2 = new THREE.PointLight(0x0080ff, 0.4, 25);
+            accentLight2.position.set(8, 4, -8);
+            GameState.scene.add(accentLight2);
+            
+            // Ceiling panel lights
+            const ceilingLight = new THREE.RectAreaLight(0xffffff, 1, 20, 20);
+            ceilingLight.position.set(0, 15, 0);
+            ceilingLight.lookAt(0, 0, 0);
+            GameState.scene.add(ceilingLight);
+        }
+
+        function createOfficeEnvironment() {
+            const officeGroup = new THREE.Group();
+            
+            // Modern floor with subtle pattern
+            const floorGeometry = new THREE.PlaneGeometry(40, 40);
+            const floorMaterial = new THREE.MeshLambertMaterial({ 
+                color: 0x2a2a2a,
+                transparent: true,
+                opacity: 0.9
+            });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            officeGroup.add(floor);
+            
+            // Glass walls (modern office style)
+            const wallHeight = 12;
+            const glassMaterial = new THREE.MeshPhysicalMaterial({ 
+                color: 0x888888,
+                transparent: true,
+                opacity: 0.3,
+                roughness: 0.1,
+                metalness: 0.9,
+                clearcoat: 1.0
             });
             
-            for (let i = 0; i < 15; i++) {
-                const cube = new THREE.Mesh(geometry, material);
-                cube.position.set(
-                    (Math.random() - 0.5) * 20,
-                    (Math.random() - 0.5) * 20,
-                    (Math.random() - 0.5) * 20
+            // Back glass wall
+            const backWallGeometry = new THREE.PlaneGeometry(40, wallHeight);
+            const backWall = new THREE.Mesh(backWallGeometry, glassMaterial);
+            backWall.position.set(0, wallHeight/2, -20);
+            officeGroup.add(backWall);
+            
+            // Side glass panels
+            const leftWall = new THREE.Mesh(backWallGeometry, glassMaterial);
+            leftWall.position.set(-20, wallHeight/2, 0);
+            leftWall.rotation.y = Math.PI / 2;
+            officeGroup.add(leftWall);
+            
+            const rightWall = new THREE.Mesh(backWallGeometry, glassMaterial);
+            rightWall.position.set(20, wallHeight/2, 0);
+            rightWall.rotation.y = -Math.PI / 2;
+            officeGroup.add(rightWall);
+            
+            // Conference table (modern design)
+            createConferenceTable(officeGroup);
+            
+            // Tech decorations
+            createTechDecorations(officeGroup);
+            
+            GameState.scene.add(officeGroup);
+        }
+
+        function createConferenceTable(parent) {
+            const tableGroup = new THREE.Group();
+            
+            // Modern oval table surface
+            const tableGeometry = new THREE.CylinderGeometry(6, 6, 0.2, 32);
+            const tableMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x1a1a1a,
+                metalness: 0.8,
+                roughness: 0.2
+            });
+            const tableTop = new THREE.Mesh(tableGeometry, tableMaterial);
+            tableTop.position.y = 2;
+            tableTop.castShadow = true;
+            tableTop.receiveShadow = true;
+            tableGroup.add(tableTop);
+            
+            // Modern metal legs
+            const legGeometry = new THREE.CylinderGeometry(0.1, 0.15, 2, 8);
+            const legMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x444444,
+                metalness: 0.9,
+                roughness: 0.1
+            });
+            
+            const legPositions = [
+                { x: 4, z: 4 },
+                { x: -4, z: 4 },
+                { x: 4, z: -4 },
+                { x: -4, z: -4 }
+            ];
+            
+            legPositions.forEach(pos => {
+                const leg = new THREE.Mesh(legGeometry, legMaterial);
+                leg.position.set(pos.x, 1, pos.z);
+                leg.castShadow = true;
+                tableGroup.add(leg);
+            });
+            
+            // Tech accessories on table
+            createTableTech(tableGroup);
+            
+            parent.add(tableGroup);
+        }
+
+        function createTableTech(tableGroup) {
+            // Holographic display in center
+            const holoGeometry = new THREE.CylinderGeometry(1, 1, 0.05, 32);
+            const holoMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x00ffcc,
+                transparent: true,
+                opacity: 0.7
+            });
+            const holoDisplay = new THREE.Mesh(holoGeometry, holoMaterial);
+            holoDisplay.position.set(0, 2.2, 0);
+            holoDisplay.name = 'holoDisplay';
+            tableGroup.add(holoDisplay);
+            
+            // Floating data particles above holo display
+            for (let i = 0; i < 20; i++) {
+                const particleGeometry = new THREE.SphereGeometry(0.02, 4, 4);
+                const particleMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x00ffcc,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+                particle.position.set(
+                    (Math.random() - 0.5) * 2,
+                    2.5 + Math.random() * 2,
+                    (Math.random() - 0.5) * 2
                 );
-                cube.rotation.set(
-                    Math.random() * Math.PI,
-                    Math.random() * Math.PI,
-                    Math.random() * Math.PI
-                );
-                GameState.scene.add(cube);
+                particle.userData = {
+                    velocity: new THREE.Vector3(
+                        (Math.random() - 0.5) * 0.01,
+                        Math.random() * 0.005,
+                        (Math.random() - 0.5) * 0.01
+                    )
+                };
+                tableGroup.add(particle);
             }
+            
+            // Modern laptops around table
+            const laptopPositions = [
+                { x: 3, z: 3, rotation: Math.PI * 0.25 },
+                { x: -3, z: 3, rotation: Math.PI * 0.75 },
+                { x: 3, z: -3, rotation: Math.PI * 1.75 },
+                { x: -3, z: -3, rotation: Math.PI * 1.25 }
+            ];
+            
+            laptopPositions.forEach(pos => {
+                const laptop = createLaptop();
+                laptop.position.set(pos.x, 2.2, pos.z);
+                laptop.rotation.y = pos.rotation;
+                tableGroup.add(laptop);
+            });
+        }
+
+        function createLaptop() {
+            const laptopGroup = new THREE.Group();
+            
+            // Laptop base
+            const baseGeometry = new THREE.BoxGeometry(1.2, 0.05, 0.8);
+            const baseMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x333333,
+                metalness: 0.8,
+                roughness: 0.2
+            });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            laptopGroup.add(base);
+            
+            // Laptop screen
+            const screenGeometry = new THREE.BoxGeometry(1.2, 0.02, 0.75);
+            const screenMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x000000,
+                metalness: 0.1,
+                roughness: 0.9
+            });
+            const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+            screen.position.set(0, 0.35, -0.3);
+            screen.rotation.x = -Math.PI / 8;
+            laptopGroup.add(screen);
+            
+            // Screen glow
+            const glowGeometry = new THREE.PlaneGeometry(1.1, 0.7);
+            const glowMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x0080ff,
+                transparent: true,
+                opacity: 0.3
+            });
+            const screenGlow = new THREE.Mesh(glowGeometry, glowMaterial);
+            screenGlow.position.set(0, 0.35, -0.29);
+            screenGlow.rotation.x = -Math.PI / 8;
+            laptopGroup.add(screenGlow);
+            
+            return laptopGroup;
+        }
+
+        function createTechDecorations(parent) {
+            // Floating geometric shapes (tech aesthetic)
+            const shapes = [];
+            const geometries = [
+                new THREE.TetrahedronGeometry(0.3),
+                new THREE.OctahedronGeometry(0.25),
+                new THREE.IcosahedronGeometry(0.2)
+            ];
+            
+            for (let i = 0; i < 10; i++) {
+                const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: 0x00ffcc,
+                    transparent: true,
+                    opacity: 0.6,
+                    wireframe: true
+                });
+                const shape = new THREE.Mesh(geometry, material);
+                shape.position.set(
+                    (Math.random() - 0.5) * 30,
+                    2 + Math.random() * 8,
+                    (Math.random() - 0.5) * 30
+                );
+                shape.userData = {
+                    rotationSpeed: {
+                        x: (Math.random() - 0.5) * 0.02,
+                        y: (Math.random() - 0.5) * 0.02,
+                        z: (Math.random() - 0.5) * 0.02
+                    }
+                };
+                shapes.push(shape);
+                parent.add(shape);
+            }
+            
+            // Store shapes for animation
+            GameState.decorativeShapes = shapes;
+        }
+
+        function create3DCharacter(roleData, position, index) {
+            const characterGroup = new THREE.Group();
+            
+            // Character body (humanoid figure)
+            const bodyGeometry = new THREE.CapsuleGeometry(0.3, 1.5, 4, 8);
+            const bodyMaterial = new THREE.MeshStandardMaterial({ 
+                color: getCharacterColor(roleData.name),
+                metalness: 0.1,
+                roughness: 0.8
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.position.y = 1.5;
+            body.castShadow = true;
+            characterGroup.add(body);
+            
+            // Head
+            const headGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+            const headMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xfdbcb4,
+                metalness: 0.1,
+                roughness: 0.9
+            });
+            const head = new THREE.Mesh(headGeometry, headMaterial);
+            head.position.y = 2.5;
+            head.castShadow = true;
+            characterGroup.add(head);
+            
+            // Professional badge floating above character
+            const badgeGeometry = new THREE.PlaneGeometry(0.8, 0.4);
+            const badgeMaterial = new THREE.MeshBasicMaterial({ 
+                color: getCharacterColor(roleData.name),
+                transparent: true,
+                opacity: 0.8
+            });
+            const badge = new THREE.Mesh(badgeGeometry, badgeMaterial);
+            badge.position.set(0, 3.2, 0);
+            badge.lookAt(GameState.camera.position);
+            characterGroup.add(badge);
+            
+            // Chair
+            const chair = create3DChair();
+            characterGroup.add(chair);
+            
+            // Position around table
+            const angle = (index / 8) * Math.PI * 2;
+            const radius = 8;
+            characterGroup.position.set(
+                Math.cos(angle) * radius,
+                0,
+                Math.sin(angle) * radius
+            );
+            characterGroup.rotation.y = angle + Math.PI;
+            
+            // Animation data
+            characterGroup.userData = {
+                originalY: characterGroup.position.y,
+                bobSpeed: 0.02 + Math.random() * 0.01,
+                bobAmount: 0.1
+            };
+            
+            return characterGroup;
+        }
+
+        function create3DChair() {
+            const chairGroup = new THREE.Group();
+            
+            // Modern office chair
+            const seatGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.1, 16);
+            const chairMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x333333,
+                metalness: 0.3,
+                roughness: 0.7
+            });
+            const seat = new THREE.Mesh(seatGeometry, chairMaterial);
+            seat.position.y = 0.6;
+            seat.castShadow = true;
+            chairGroup.add(seat);
+            
+            // Backrest
+            const backGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.05, 16);
+            const back = new THREE.Mesh(backGeometry, chairMaterial);
+            back.position.set(0, 1.2, -0.4);
+            back.rotation.x = Math.PI / 6;
+            back.castShadow = true;
+            chairGroup.add(back);
+            
+            // Base
+            const baseGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.1, 16);
+            const base = new THREE.Mesh(baseGeometry, chairMaterial);
+            base.position.y = 0.1;
+            chairGroup.add(base);
+            
+            return chairGroup;
+        }
+
+        function getCharacterColor(roleName) {
+            const colors = {
+                'Solution Architect': 0x4a90e2,
+                'Project Manager': 0x7ed321,
+                'Senior Developer': 0x9013fe,
+                'Scrum Master': 0xf5a623,
+                'Product Owner': 0xd0021b,
+                'Business Analyst': 0xbd10e0,
+                'QA Manager': 0x50e3c2,
+                'Founder/CEO': 0xff6b35,
+                'Full Stack Developer': 0x9013fe,
+                'Product Designer': 0xff1744,
+                'Growth Hacker': 0x00e676,
+                'Mobile Developer': 0x2196f3
+            };
+            
+            return colors[roleName] || 0x888888;
         }
 
         function animate() {
             requestAnimationFrame(animate);
             
-            GameState.scene.children.forEach(child => {
-                if (child.type === 'Mesh' && child.material.wireframe) {
-                    child.rotation.x += 0.005;
-                    child.rotation.y += 0.005;
+            const time = Date.now() * 0.001;
+            
+            // Animate decorative shapes
+            if (GameState.decorativeShapes) {
+                GameState.decorativeShapes.forEach(shape => {
+                    shape.rotation.x += shape.userData.rotationSpeed.x;
+                    shape.rotation.y += shape.userData.rotationSpeed.y;
+                    shape.rotation.z += shape.userData.rotationSpeed.z;
+                });
+            }
+            
+            // Animate floating particles
+            GameState.scene.traverse(child => {
+                if (child.userData.velocity) {
+                    child.position.add(child.userData.velocity);
+                    
+                    // Reset particle if it goes too high
+                    if (child.position.y > 6) {
+                        child.position.y = 2.5;
+                        child.position.x = (Math.random() - 0.5) * 2;
+                        child.position.z = (Math.random() - 0.5) * 2;
+                    }
+                }
+                
+                // Animate 3D characters
+                if (child.userData.bobSpeed) {
+                    child.position.y = child.userData.originalY + 
+                        Math.sin(time * child.userData.bobSpeed) * child.userData.bobAmount;
                 }
             });
             
+            // Animate holographic display
+            const holoDisplay = GameState.scene.getObjectByName('holoDisplay');
+            if (holoDisplay) {
+                holoDisplay.rotation.y += 0.01;
+                holoDisplay.material.opacity = 0.5 + Math.sin(time * 2) * 0.2;
+            }
+            
             GameState.renderer.render(GameState.scene, GameState.camera);
+        }
+
+        function load3DTeam(teamMembers) {
+            // Clear existing 3D characters
+            const existingChars = [];
+            GameState.scene.traverse(child => {
+                if (child.userData.isCharacter) {
+                    existingChars.push(child);
+                }
+            });
+            existingChars.forEach(char => GameState.scene.remove(char));
+            
+            // Create new 3D characters
+            teamMembers.forEach((member, index) => {
+                const character = create3DCharacter(member, null, index);
+                character.userData.isCharacter = true;
+                character.name = `character_${index}`;
+                GameState.scene.add(character);
+            });
+        }
+
+        function add3DWorkspaceEffects(meetingType) {
+            // Add meeting-specific visual effects
+            switch(meetingType) {
+                case 'Daily Scrum':
+                    addScrumVisuals();
+                    break;
+                case 'Sprint Planning':
+                    addPlanningVisuals();
+                    break;
+                case 'Design Review':
+                    addDesignVisuals();
+                    break;
+                default:
+                    addGenericMeetingVisuals();
+            }
+        }
+
+        function addScrumVisuals() {
+            // Create floating scrum board
+            const boardGeometry = new THREE.PlaneGeometry(4, 2);
+            const boardMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x333333,
+                transparent: true,
+                opacity: 0.8
+            });
+            const board = new THREE.Mesh(boardGeometry, boardMaterial);
+            board.position.set(0, 5, -8);
+            board.name = 'scrumBoard';
+            GameState.scene.add(board);
+        }
+
+        function addPlanningVisuals() {
+            // Add planning charts floating around
+            for (let i = 0; i < 3; i++) {
+                const chartGeometry = new THREE.PlaneGeometry(1.5, 1);
+                const chartMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x00ffcc,
+                    transparent: true,
+                    opacity: 0.6
+                });
+                const chart = new THREE.Mesh(chartGeometry, chartMaterial);
+                chart.position.set(
+                    (i - 1) * 3,
+                    4 + Math.sin(i) * 0.5,
+                    -6
+                );
+                chart.name = `planningChart_${i}`;
+                GameState.scene.add(chart);
+            }
+        }
+
+        function addDesignVisuals() {
+            // Add wireframe prototypes
+            const prototypeGeometry = new THREE.BoxGeometry(1, 1, 1);
+            const prototypeMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xff6b35,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            for (let i = 0; i < 5; i++) {
+                const prototype = new THREE.Mesh(prototypeGeometry, prototypeMaterial);
+                prototype.position.set(
+                    (Math.random() - 0.5) * 8,
+                    3 + Math.random() * 2,
+                    -5 + (Math.random() - 0.5) * 4
+                );
+                prototype.userData.rotationSpeed = {
+                    x: (Math.random() - 0.5) * 0.02,
+                    y: (Math.random() - 0.5) * 0.02,
+                    z: (Math.random() - 0.5) * 0.02
+                };
+                prototype.name = `designPrototype_${i}`;
+                GameState.scene.add(prototype);
+            }
+        }
+
+        function addGenericMeetingVisuals() {
+            // Add subtle ambient particles
+            for (let i = 0; i < 10; i++) {
+                const particleGeometry = new THREE.SphereGeometry(0.05, 4, 4);
+                const particleMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x00ffcc,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+                particle.position.set(
+                    (Math.random() - 0.5) * 15,
+                    2 + Math.random() * 4,
+                    (Math.random() - 0.5) * 15
+                );
+                particle.userData.velocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.005,
+                    Math.random() * 0.002,
+                    (Math.random() - 0.5) * 0.005
+                );
+                particle.name = `ambientParticle_${i}`;
+                GameState.scene.add(particle);
+            }
         }
 
         // ==========================================
@@ -2329,7 +3051,7 @@
         
         function setupMethodologyScreen() {
             const grid = document.getElementById('methodologyGrid');
-            const context = CONTEXTS[GameState.selectedContext];
+            const context = GAME_CONTEXTS[GameState.selectedContext];
             
             grid.innerHTML = '';
             Object.entries(context.methodologies).forEach(([key, methodology]) => {
@@ -2385,22 +3107,12 @@
             document.getElementById('meetingTitle').textContent = `${methodology.meetings[0]} - ${methodology.name}`;
             document.getElementById('meetingType').textContent = methodology.meetings[0];
             
-            // Initialize 3D Workspace
-            initializeWorkspace3D();
+            // Load team into 3D environment
+            if (GameState.selectedTeam.length > 0) {
+                load3DTeam(GameState.selectedTeam);
+            }
             
             updateNavigationHighlight();
-        }
-
-        function initializeWorkspace3D() {
-            const container = document.getElementById('workspace3DContainer');
-            if (container && typeof Advanced3DWorkspace !== 'undefined') {
-                workspace3D = new Advanced3DWorkspace('workspace3DContainer');
-                
-                // Load current team into 3D workspace
-                if (GameState.selectedTeam.length > 0) {
-                    workspace3D.loadTeam(GameState.selectedTeam);
-                }
-            }
         }
 
         // ==========================================
@@ -2492,10 +3204,11 @@
         function startMeeting() {
             const methodology = GAME_CONTEXTS[GameState.selectedContext].methodologies[GameState.selectedMethodology];
             
-            // Trigger 3D meeting animation
-            if (workspace3D) {
-                workspace3D.startMeeting(methodology.meetings[0]);
-            }
+            // Add 3D meeting effects
+            add3DWorkspaceEffects(methodology.meetings[0]);
+            
+            // Animate camera for dramatic effect
+            animate3DCamera({ x: 0, y: 6, z: 10 }, { x: 0, y: 2, z: 0 });
             
             showMessage(`🎯 ${methodology.meetings[0]} iniciada! A equipe está alinhada e pronta para trabalhar.`, 'success');
         }
@@ -2527,32 +3240,84 @@
         }
 
         function showKanbanBoard() {
-            if (workspace3D) {
-                workspace3D.addMeetingElements('Kanban Board');
-            }
+            // Add Kanban board to 3D scene
+            addScrumVisuals();
+            animate3DCamera({ x: 0, y: 8, z: 8 }, { x: 0, y: 4, z: -8 });
+            
             showMessage('📊 Quadro Kanban atualizado com as tarefas da sprint atual.', 'info');
         }
 
-        function startDevelopmentPhases() {
-            // Transition to comprehensive development game
-            if (typeof gamePhases !== 'undefined') {
-                currentGamePhase = 'development';
-                transitionToScreen('gameContainer');
+        function animate3DCamera(targetPosition, lookAtTarget) {
+            const duration = 2000;
+            const startPos = GameState.camera.position.clone();
+            const targetPos = new THREE.Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
+            const lookAt = new THREE.Vector3(lookAtTarget.x, lookAtTarget.y, lookAtTarget.z);
+            
+            const startTime = Date.now();
+            
+            function updateCamera() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = easeInOutCubic(progress);
                 
-                setTimeout(() => {
-                    gamePhases.startPhase('selection');
-                    
-                    // Pass team data to game phases
-                    if (workspace3D) {
-                        gamePhases.workspace3D = workspace3D;
-                    }
-                }, 500);
-            } else {
-                showMessage('🚀 Sistema de desenvolvimento carregando...', 'info');
-                // Fallback for basic completion
-                setTimeout(() => {
-                    showGameCompletion();
-                }, 2000);
+                GameState.camera.position.lerpVectors(startPos, targetPos, eased);
+                GameState.camera.lookAt(lookAt);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCamera);
+                }
+            }
+            
+            updateCamera();
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        }
+
+        function startDevelopmentPhases() {
+            // Add development visuals to 3D scene
+            addDevelopmentVisuals();
+            
+            // Show development completion message
+            showMessage('🚀 Iniciando fase de desenvolvimento...', 'info');
+            
+            setTimeout(() => {
+                showMessage('💻 Codificando funcionalidades...', 'info');
+            }, 2000);
+            
+            setTimeout(() => {
+                showMessage('🔧 Implementando padrões de design...', 'info');
+            }, 4000);
+            
+            setTimeout(() => {
+                showMessage('✅ Desenvolvimento concluído!', 'success');
+                showGameCompletion();
+            }, 6000);
+        }
+
+        function addDevelopmentVisuals() {
+            // Add code visualization
+            for (let i = 0; i < 15; i++) {
+                const codeGeometry = new THREE.PlaneGeometry(0.5, 0.1);
+                const codeMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x00ff00,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const codeLine = new THREE.Mesh(codeGeometry, codeMaterial);
+                codeLine.position.set(
+                    (Math.random() - 0.5) * 10,
+                    1 + Math.random() * 4,
+                    (Math.random() - 0.5) * 10
+                );
+                codeLine.userData.velocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.02,
+                    Math.random() * 0.01,
+                    (Math.random() - 0.5) * 0.02
+                );
+                codeLine.name = `codeLine_${i}`;
+                GameState.scene.add(codeLine);
             }
         }
 
