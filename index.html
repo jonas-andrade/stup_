@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STUP_ - Software Development Lifecycle Game</title>
+    <title>STUP_ - Simulador Corporativo de Desenvolvimento</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,336 +11,571 @@
 </head>
 <body>
     <div id="game-container">
-        <!-- Initial Screen -->
+        <!-- Tela Inicial -->
         <div id="initial-screen" class="screen active">
-            <div class="title-container">
-                <h1 class="game-title">
-                    <span class="letter">S</span>
-                    <span class="letter">T</span>
-                    <span class="letter">U</span>
-                    <span class="letter">P</span>
-                    <span class="cursor">_</span>
-                </h1>
-                <p class="start-prompt">Press ENTER to start</p>
+            <div class="corporate-header">
+                <div class="company-logo">TECHCORP</div>
+                <div class="title-container">
+                    <h1 class="game-title">
+                        <span class="letter">S</span>
+                        <span class="letter">T</span>
+                        <span class="letter">U</span>
+                        <span class="letter">P</span>
+                        <span class="cursor">_</span>
+                    </h1>
+                    <p class="subtitle">Sistema de Treinamento Unificado de Projetos</p>
+                    <p class="corporate-subtitle">Ambiente Corporativo - TechCorp Solutions</p>
+                </div>
+                <p class="start-prompt">Pressione ENTER para acessar o sistema</p>
             </div>
         </div>
 
-        <!-- Universe Selection Screen -->
-        <div id="universe-screen" class="screen">
+        <!-- Apresentação das Equipes -->
+        <div id="teams-presentation" class="screen">
             <div class="screen-header">
-                <h2>Choose Your Development Universe</h2>
-                <p>Each universe offers unique challenges, team dynamics, and gameplay experiences.</p>
+                <h2>Equipes de Desenvolvimento TechCorp</h2>
+                <p>Conheça os profissionais que farão parte do seu projeto</p>
             </div>
-            <div class="universe-grid">
-                <div class="universe-card" data-universe="corporate">
-                    <div class="universe-icon">🏢</div>
-                    <h3>Corporate Company</h3>
-                    <p>Structured environment with enterprise methodologies and large-scale projects.</p>
+            
+            <div class="teams-showcase">
+                <!-- Equipe de Desenvolvimento -->
+                <div class="team-section" data-team="development">
+                    <h3>🛠️ Equipe de Desenvolvimento</h3>
+                    <div class="team-members">
+                        <div class="member-card" data-member="senior-dev">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjNGE5MGUyIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Carlos Silva">
+                            </div>
+                            <div class="member-info">
+                                <h4>Carlos Silva</h4>
+                                <p class="member-role">Desenvolvedor Sênior Full-Stack</p>
+                                <p class="member-description">15 anos de experiência em Java, Angular e Spring Boot. Especialista em arquiteturas corporativas.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Java</span>
+                                    <span class="skill">Angular</span>
+                                    <span class="skill">Spring</span>
+                                    <span class="skill">Microservices</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="member-card" data-member="frontend-dev">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmY2YjM1Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Ana Costa">
+                            </div>
+                            <div class="member-info">
+                                <h4>Ana Costa</h4>
+                                <p class="member-role">Desenvolvedora Frontend</p>
+                                <p class="member-description">Especialista em interfaces modernas com React e TypeScript. Foco em UX corporativo.</p>
+                                <div class="member-skills">
+                                    <span class="skill">React</span>
+                                    <span class="skill">TypeScript</span>
+                                    <span class="skill">CSS3</span>
+                                    <span class="skill">Figma</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="member-card" data-member="dba">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjNTBlM2MyIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="João Santos">
+                            </div>
+                            <div class="member-info">
+                                <h4>João Santos</h4>
+                                <p class="member-role">Administrador de Banco de Dados</p>
+                                <p class="member-description">Especialista em Oracle e SQL Server. Responsável pela arquitetura e performance dos dados.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Oracle</span>
+                                    <span class="skill">SQL Server</span>
+                                    <span class="skill">PostgreSQL</span>
+                                    <span class="skill">Performance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="startup">
-                    <div class="universe-icon">🚀</div>
-                    <h3>Startup</h3>
-                    <p>Fast-paced, agile environment with limited resources and high innovation demands.</p>
+
+                <!-- Equipe de QA -->
+                <div class="team-section" data-team="qa">
+                    <h3>🧪 Equipe de Qualidade (QA)</h3>
+                    <div class="team-members">
+                        <div class="member-card" data-member="qa-lead">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZjVhNjIzIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Maria Oliveira">
+                            </div>
+                            <div class="member-info">
+                                <h4>Maria Oliveira</h4>
+                                <p class="member-role">QA Lead</p>
+                                <p class="member-description">10 anos em testes automatizados e manuais. Especialista em processos de qualidade corporativa.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Selenium</span>
+                                    <span class="skill">JUnit</span>
+                                    <span class="skill">TestNG</span>
+                                    <span class="skill">JIRA</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="member-card" data-member="automation-tester">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjYmQxMGUwIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Pedro Almeida">
+                            </div>
+                            <div class="member-info">
+                                <h4>Pedro Almeida</h4>
+                                <p class="member-role">Engenheiro de Automação</p>
+                                <p class="member-description">Especialista em testes automatizados e integração contínua para ambientes corporativos.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Cypress</span>
+                                    <span class="skill">Jenkins</span>
+                                    <span class="skill">Robot Framework</span>
+                                    <span class="skill">API Testing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="opensource">
-                    <div class="universe-icon">🌐</div>
-                    <h3>Open Source Community</h3>
-                    <p>Collaborative development with global contributors and community-driven decisions.</p>
+
+                <!-- Equipe de DevOps -->
+                <div class="team-section" data-team="devops">
+                    <h3>⚙️ Equipe DevOps</h3>
+                    <div class="team-members">
+                        <div class="member-card" data-member="devops-lead">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjN2VkMzIxIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Roberto Lima">
+                            </div>
+                            <div class="member-info">
+                                <h4>Roberto Lima</h4>
+                                <p class="member-role">DevOps Engineer</p>
+                                <p class="member-description">Especialista em infraestrutura AWS e pipelines CI/CD para aplicações enterprise.</p>
+                                <div class="member-skills">
+                                    <span class="skill">AWS</span>
+                                    <span class="skill">Docker</span>
+                                    <span class="skill">Kubernetes</span>
+                                    <span class="skill">Terraform</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="hobbyist">
-                    <div class="universe-icon">💻</div>
-                    <h3>Hobbyist (Solo Developer)</h3>
-                    <p>Personal projects with complete creative freedom and self-directed learning.</p>
+
+                <!-- Equipe de Design -->
+                <div class="team-section" data-team="design">
+                    <h3>🎨 Equipe de Design</h3>
+                    <div class="team-members">
+                        <div class="member-card" data-member="ux-designer">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmYxNzQ0Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Beatriz Ferreira">
+                            </div>
+                            <div class="member-info">
+                                <h4>Beatriz Ferreira</h4>
+                                <p class="member-role">UX/UI Designer</p>
+                                <p class="member-description">Especialista em experiência do usuário para sistemas corporativos e interfaces complexas.</p>
+                                <div class="member-skills">
+                                    <span class="skill">Figma</span>
+                                    <span class="skill">Adobe XD</span>
+                                    <span class="skill">Sketch</span>
+                                    <span class="skill">User Research</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="freelancer">
-                    <div class="universe-icon">🎯</div>
-                    <h3>Freelancer</h3>
-                    <p>Client-based work with diverse projects and direct customer relationships.</p>
+
+                <!-- Equipe de Gestão -->
+                <div class="team-section" data-team="management">
+                    <h3>📊 Equipe de Gestão</h3>
+                    <div class="team-members">
+                        <div class="member-card" data-member="project-manager">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjNzk1NTQ4Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Luiz Gomes">
+                            </div>
+                            <div class="member-info">
+                                <h4>Luiz Gomes</h4>
+                                <p class="member-role">Gerente de Projetos</p>
+                                <p class="member-description">PMP certificado com 12 anos em gestão de projetos de software corporativo.</p>
+                                <div class="member-skills">
+                                    <span class="skill">PMP</span>
+                                    <span class="skill">Scrum</span>
+                                    <span class="skill">Jira</span>
+                                    <span class="skill">MS Project</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="member-card" data-member="business-analyst">
+                            <div class="member-photo">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjOTAxM2ZlIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjE1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgODBjMC0xNSAxMy01MCAzMC01MHMzMCAzNSAzMCA1MCIgZmlsbD0id2hpdGUiLz4KPHN2Zz4=" alt="Fernanda Ribeiro">
+                            </div>
+                            <div class="member-info">
+                                <h4>Fernanda Ribeiro</h4>
+                                <p class="member-role">Analista de Negócios</p>
+                                <p class="member-description">Especialista em levantamento de requisitos e análise de processos corporativos.</p>
+                                <div class="member-skills">
+                                    <span class="skill">BPMN</span>
+                                    <span class="skill">UML</span>
+                                    <span class="skill">Bizagi</span>
+                                    <span class="skill">Confluence</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="consultancy">
-                    <div class="universe-icon">🤝</div>
-                    <h3>Consultancy</h3>
-                    <p>Expert advisory role with multiple clients and specialized knowledge domains.</p>
+            </div>
+
+            <div class="proceed-section">
+                <button id="continue-to-projects" class="primary-btn">Continuar para Seleção de Projetos</button>
+            </div>
+        </div>
+
+        <!-- Seleção de Projetos -->
+        <div id="project-selection" class="screen">
+            <div class="screen-header">
+                <h2>Seleção de Projetos TechCorp</h2>
+                <p>Escolha o projeto que sua equipe irá desenvolver</p>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card" data-project="erp-module">
+                    <div class="project-icon">🏢</div>
+                    <h3>Módulo ERP Financeiro</h3>
+                    <div class="project-complexity">
+                        <span class="complexity-level high">Alta Complexidade</span>
+                    </div>
+                    <p class="project-description">
+                        Sistema de gestão financeira integrado ao ERP corporativo. 
+                        Inclui contas a pagar/receber, fluxo de caixa e relatórios gerenciais.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="label">Prazo:</span>
+                            <span class="value">6 meses</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Equipe:</span>
+                            <span class="value">8 profissionais</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Tecnologias:</span>
+                            <span class="value">Java, Oracle, Angular</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="student">
-                    <div class="universe-icon">🎓</div>
-                    <h3>Student</h3>
-                    <p>Academic environment focusing on learning fundamentals and theoretical concepts.</p>
+
+                <div class="project-card" data-project="portal-cliente">
+                    <div class="project-icon">🌐</div>
+                    <h3>Portal do Cliente</h3>
+                    <div class="project-complexity">
+                        <span class="complexity-level medium">Média Complexidade</span>
+                    </div>
+                    <p class="project-description">
+                        Portal web para clientes acessarem serviços, consultarem extratos 
+                        e solicitarem produtos da empresa.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="label">Prazo:</span>
+                            <span class="value">4 meses</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Equipe:</span>
+                            <span class="value">6 profissionais</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Tecnologias:</span>
+                            <span class="value">React, Node.js, PostgreSQL</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="hackathon">
-                    <div class="universe-icon">⚡</div>
-                    <h3>Hackathon</h3>
-                    <p>Intense 24-48 hour development sprints with competitive innovation challenges.</p>
+
+                <div class="project-card" data-project="app-mobile">
+                    <div class="project-icon">📱</div>
+                    <h3>App Mobile Corporativo</h3>
+                    <div class="project-complexity">
+                        <span class="complexity-level medium">Média Complexidade</span>
+                    </div>
+                    <p class="project-description">
+                        Aplicativo mobile para funcionários acessarem sistemas internos, 
+                        marcarem ponto e receberem notificações corporativas.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="label">Prazo:</span>
+                            <span class="value">5 meses</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Equipe:</span>
+                            <span class="value">5 profissionais</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Tecnologias:</span>
+                            <span class="value">React Native, Firebase</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="indie-game">
-                    <div class="universe-icon">🎮</div>
-                    <h3>Indie Game Development</h3>
-                    <p>Creative game development with artistic vision and independent publishing.</p>
+
+                <div class="project-card" data-project="bi-dashboard">
+                    <div class="project-icon">📊</div>
+                    <h3>Dashboard BI Executivo</h3>
+                    <div class="project-complexity">
+                        <span class="complexity-level high">Alta Complexidade</span>
+                    </div>
+                    <p class="project-description">
+                        Sistema de Business Intelligence com dashboards executivos, 
+                        relatórios automatizados e análise de dados em tempo real.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="label">Prazo:</span>
+                            <span class="value">7 meses</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Equipe:</span>
+                            <span class="value">7 profissionais</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Tecnologias:</span>
+                            <span class="value">Power BI, SQL Server, Python</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="universe-card" data-universe="unemployed">
-                    <div class="universe-icon">🏠</div>
-                    <h3>Unemployed Programmer</h3>
-                    <p>Self-directed skill building and portfolio development while job searching.</p>
+
+                <div class="project-card" data-project="api-integration">
+                    <div class="project-icon">🔗</div>
+                    <h3>API de Integração</h3>
+                    <div class="project-complexity">
+                        <span class="complexity-level low">Baixa Complexidade</span>
+                    </div>
+                    <p class="project-description">
+                        API REST para integração entre sistemas legados e novas aplicações, 
+                        com foco em performance e segurança.
+                    </p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <span class="label">Prazo:</span>
+                            <span class="value">3 meses</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Equipe:</span>
+                            <span class="value">4 profissionais</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Tecnologias:</span>
+                            <span class="value">Spring Boot, Redis, Docker</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Role Selection Screen -->
-        <div id="role-screen" class="screen">
+        <!-- Seleção de Metodologia -->
+        <div id="methodology-selection" class="screen">
             <div class="screen-header">
-                <h2>Choose Your Role</h2>
-                <p id="universe-description">Select your role in the development team.</p>
+                <h2>Escolha da Metodologia</h2>
+                <p>Selecione a metodologia que será utilizada no projeto</p>
             </div>
-            <div class="team-sections">
-                <div class="team-section">
-                    <h3>Development Team</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="frontend">
-                            <div class="character-sprite frontend-dev"></div>
-                            <h4>Frontend Developer</h4>
-                            <p>UI/UX implementation and user experience</p>
-                        </div>
-                        <div class="role-card" data-role="backend">
-                            <div class="character-sprite backend-dev"></div>
-                            <h4>Backend Developer</h4>
-                            <p>API development and business logic</p>
-                        </div>
-                        <div class="role-card" data-role="fullstack">
-                            <div class="character-sprite fullstack-dev"></div>
-                            <h4>Full Stack Developer</h4>
-                            <p>Complete application development</p>
-                        </div>
-                        <div class="role-card" data-role="dba">
-                            <div class="character-sprite dba"></div>
-                            <h4>Database Administrator</h4>
-                            <p>Database design and optimization</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="team-section">
-                    <h3>Quality Assurance</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="manual-tester">
-                            <div class="character-sprite manual-tester"></div>
-                            <h4>Manual Tester</h4>
-                            <p>User experience and functional testing</p>
-                        </div>
-                        <div class="role-card" data-role="automation-engineer">
-                            <div class="character-sprite automation-engineer"></div>
-                            <h4>Automation Engineer</h4>
-                            <p>Test automation and CI/CD integration</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-section">
-                    <h3>DevOps Team</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="cicd-engineer">
-                            <div class="character-sprite cicd-engineer"></div>
-                            <h4>CI/CD Engineer</h4>
-                            <p>Pipeline automation and deployment</p>
-                        </div>
-                        <div class="role-card" data-role="infrastructure-engineer">
-                            <div class="character-sprite infrastructure-engineer"></div>
-                            <h4>Infrastructure Engineer</h4>
-                            <p>System architecture and scalability</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-section">
-                    <h3>Design Team</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="ux-designer">
-                            <div class="character-sprite ux-designer"></div>
-                            <h4>UX Designer</h4>
-                            <p>User research and experience design</p>
-                        </div>
-                        <div class="role-card" data-role="ui-designer">
-                            <div class="character-sprite ui-designer"></div>
-                            <h4>UI Designer</h4>
-                            <p>Interface design and visual aesthetics</p>
-                        </div>
-                        <div class="role-card" data-role="graphic-artist">
-                            <div class="character-sprite graphic-artist"></div>
-                            <h4>Graphic Artist</h4>
-                            <p>Visual assets and brand elements</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-section">
-                    <h3>Security Team</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="red-team">
-                            <div class="character-sprite red-team"></div>
-                            <h4>Red Team (Offensive)</h4>
-                            <p>Penetration testing and vulnerability assessment</p>
-                        </div>
-                        <div class="role-card" data-role="blue-team">
-                            <div class="character-sprite blue-team"></div>
-                            <h4>Blue Team (Defensive)</h4>
-                            <p>Security monitoring and incident response</p>
-                        </div>
-                        <div class="role-card" data-role="gray-team">
-                            <div class="character-sprite gray-team"></div>
-                            <h4>Gray Team (Hybrid)</h4>
-                            <p>Balanced offensive and defensive security</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-section">
-                    <h3>Product & Management</h3>
-                    <div class="role-grid">
-                        <div class="role-card" data-role="product-owner">
-                            <div class="character-sprite product-owner"></div>
-                            <h4>Product Owner</h4>
-                            <p>Requirements and stakeholder management</p>
-                        </div>
-                        <div class="role-card" data-role="scrum-master">
-                            <div class="character-sprite scrum-master"></div>
-                            <h4>Scrum Master</h4>
-                            <p>Process facilitation and team coaching</p>
-                        </div>
-                        <div class="role-card" data-role="project-manager">
-                            <div class="character-sprite project-manager"></div>
-                            <h4>Project Manager</h4>
-                            <p>Timeline and resource coordination</p>
-                        </div>
-                        <div class="role-card" data-role="tech-lead">
-                            <div class="character-sprite tech-lead"></div>
-                            <h4>Technical Lead</h4>
-                            <p>Technical guidance and architecture decisions</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Methodology Selection Screen -->
-        <div id="methodology-screen" class="screen">
-            <div class="screen-header">
-                <h2>Choose Your Development Methodology</h2>
-                <p>Select methodologies that will guide your development process.</p>
-            </div>
-            <div class="methodology-grid">
-                <div class="methodology-card" data-methodology="scrum">
-                    <h3>Scrum</h3>
-                    <p>Iterative development with sprints, daily standups, and retrospectives.</p>
-                </div>
-                <div class="methodology-card" data-methodology="kanban">
-                    <h3>Kanban</h3>
-                    <p>Visual workflow management with continuous delivery.</p>
-                </div>
-                <div class="methodology-card" data-methodology="xp">
-                    <h3>Extreme Programming (XP)</h3>
-                    <p>Engineering practices focused on code quality and customer collaboration.</p>
-                </div>
+            <div class="methodologies-grid">
                 <div class="methodology-card" data-methodology="waterfall">
-                    <h3>Waterfall</h3>
-                    <p>Sequential development phases with formal documentation.</p>
+                    <h3>🏗️ Waterfall</h3>
+                    <p class="methodology-description">
+                        Metodologia sequencial ideal para projetos com requisitos bem definidos 
+                        e pouca probabilidade de mudanças. Amplamente utilizada em ambientes corporativos.
+                    </p>
+                    <div class="methodology-phases">
+                        <span class="phase">Análise</span>
+                        <span class="phase">Design</span>
+                        <span class="phase">Implementação</span>
+                        <span class="phase">Testes</span>
+                        <span class="phase">Deployment</span>
+                    </div>
                 </div>
-                <div class="methodology-card" data-methodology="lean">
-                    <h3>Lean</h3>
-                    <p>Waste elimination and continuous improvement focus.</p>
+
+                <div class="methodology-card" data-methodology="scrum">
+                    <h3>🏃‍♂️ Scrum</h3>
+                    <p class="methodology-description">
+                        Framework ágil com sprints de 2-4 semanas, ideal para projetos que 
+                        necessitam de flexibilidade e entregas frequentes.
+                    </p>
+                    <div class="methodology-phases">
+                        <span class="phase">Sprint Planning</span>
+                        <span class="phase">Daily Scrum</span>
+                        <span class="phase">Sprint Review</span>
+                        <span class="phase">Retrospective</span>
+                    </div>
                 </div>
-                <div class="methodology-card" data-methodology="safe">
-                    <h3>SAFe</h3>
-                    <p>Scaled Agile Framework for enterprise-level coordination.</p>
-                </div>
-                <div class="methodology-card" data-methodology="devops">
-                    <h3>DevOps</h3>
-                    <p>Development and operations integration with automation.</p>
-                </div>
-                <div class="methodology-card" data-methodology="tdd">
-                    <h3>Test-Driven Development</h3>
-                    <p>Tests written before implementation code.</p>
+
+                <div class="methodology-card" data-methodology="kanban">
+                    <h3>📋 Kanban</h3>
+                    <p class="methodology-description">
+                        Sistema visual de fluxo contínuo, ideal para manutenção de sistemas 
+                        e projetos com demandas variáveis.
+                    </p>
+                    <div class="methodology-phases">
+                        <span class="phase">To Do</span>
+                        <span class="phase">In Progress</span>
+                        <span class="phase">Review</span>
+                        <span class="phase">Done</span>
+                    </div>
                 </div>
             </div>
-            <button id="start-game-btn" class="primary-btn">Start Development Cycle</button>
         </div>
 
-        <!-- Game Phase Screen -->
-        <div id="game-screen" class="screen">
+        <!-- Configuração de Ferramentas -->
+        <div id="tools-setup" class="screen">
+            <div class="screen-header">
+                <h2>Configuração de Ferramentas</h2>
+                <p>Configure as ferramentas que cada equipe utilizará</p>
+            </div>
+
+            <div class="tools-configuration">
+                <div class="team-tools-section" data-team="development">
+                    <h3>🛠️ Ferramentas - Desenvolvimento</h3>
+                    <div class="tools-categories">
+                        <div class="tool-category">
+                            <h4>IDEs & Editores</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="dev-ide" value="intellij">
+                                    <span>IntelliJ IDEA Ultimate</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="dev-ide" value="vscode">
+                                    <span>Visual Studio Code</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="dev-ide" value="eclipse">
+                                    <span>Eclipse IDE</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tool-category">
+                            <h4>Versionamento</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="dev-version" value="git">
+                                    <span>Git + GitLab Enterprise</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="dev-version" value="svn">
+                                    <span>Apache Subversion</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-tools-section" data-team="qa">
+                    <h3>🧪 Ferramentas - QA</h3>
+                    <div class="tools-categories">
+                        <div class="tool-category">
+                            <h4>Testes Automatizados</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="qa-auto" value="selenium">
+                                    <span>Selenium WebDriver</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="qa-auto" value="cypress">
+                                    <span>Cypress.io</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="qa-auto" value="testng">
+                                    <span>TestNG Framework</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tool-category">
+                            <h4>Gestão de Testes</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="qa-mgmt" value="jira">
+                                    <span>JIRA + Zephyr</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="qa-mgmt" value="testlink">
+                                    <span>TestLink</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-tools-section" data-team="design">
+                    <h3>🎨 Ferramentas - Design</h3>
+                    <div class="tools-categories">
+                        <div class="tool-category">
+                            <h4>Design de Interface</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="design-ui" value="figma">
+                                    <span>Figma Enterprise</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="design-ui" value="sketch">
+                                    <span>Sketch + Abstract</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="design-ui" value="adobexd">
+                                    <span>Adobe XD</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tool-category">
+                            <h4>Design Gráfico</h4>
+                            <div class="tools-options">
+                                <label class="tool-option">
+                                    <input type="checkbox" name="design-graphic" value="photoshop">
+                                    <span>Adobe Photoshop</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" name="design-graphic" value="gimp">
+                                    <span>GIMP</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-actions">
+                <button id="start-project" class="primary-btn">Iniciar Projeto</button>
+            </div>
+        </div>
+
+        <!-- Interface Principal do Jogo -->
+        <div id="main-game" class="screen">
+            <!-- Header de Navegação -->
             <div class="game-header">
-                <div class="game-status">
-                    <span id="current-universe"></span> | 
-                    <span id="current-role"></span> | 
-                    <span id="current-methodology"></span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="overall-progress"></div>
-                </div>
-            </div>
-
-            <div class="game-content">
-                <div class="phase-header">
-                    <h2 id="current-phase">Planning Phase</h2>
-                    <p id="phase-description">Define project scope and requirements.</p>
-                </div>
-
-                <div class="game-area">
-                    <div class="character-workspace">
-                        <div id="player-character" class="character-sprite"></div>
-                        <div class="workspace-items" id="workspace-items"></div>
-                    </div>
-
-                    <div class="task-panel">
-                        <h3>Current Tasks</h3>
-                        <div id="task-list"></div>
-                    </div>
-
-                    <div class="team-panel">
-                        <h3>Team Members</h3>
-                        <div id="team-members"></div>
+                <div class="project-info">
+                    <h2 id="current-project-name">Projeto Atual</h2>
+                    <div class="project-status">
+                        <span id="project-phase">Fase: Análise</span>
+                        <span id="project-progress">Progresso: 15%</span>
                     </div>
                 </div>
-
-                <div class="action-panel">
-                    <button id="next-task-btn" class="action-btn">Complete Current Task</button>
-                    <button id="team-communication-btn" class="action-btn">Team Communication</button>
-                    <button id="review-progress-btn" class="action-btn">Review Progress</button>
+                
+                <div class="team-navigation">
+                    <button class="team-nav-btn active" data-team="development">
+                        🛠️ Desenvolvimento
+                    </button>
+                    <button class="team-nav-btn" data-team="qa">
+                        🧪 QA
+                    </button>
+                    <button class="team-nav-btn" data-team="devops">
+                        ⚙️ DevOps
+                    </button>
+                    <button class="team-nav-btn" data-team="design">
+                        🎨 Design
+                    </button>
+                    <button class="team-nav-btn" data-team="management">
+                        📊 Gestão
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <!-- End Game Screen -->
-        <div id="end-screen" class="screen">
-            <div class="end-content">
-                <h2>Development Cycle Complete!</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <h3>Team Morale</h3>
-                        <div class="metric-value" id="team-morale">85%</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Code Quality</h3>
-                        <div class="metric-value" id="code-quality">92%</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Customer Satisfaction</h3>
-                        <div class="metric-value" id="customer-satisfaction">88%</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Project Efficiency</h3>
-                        <div class="metric-value" id="project-efficiency">76%</div>
-                    </div>
-                </div>
-                <div class="end-actions">
-                    <button id="restart-btn" class="primary-btn">Play Again</button>
-                    <button id="new-setup-btn" class="secondary-btn">Try Different Setup</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal for mini-games and interactions -->
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <div id="modal-body"></div>
+            <!-- Área de Trabalho da Equipe -->
+            <div class="team-workspace" id="team-workspace">
+                <!-- Conteúdo dinâmico baseado na equipe selecionada -->
             </div>
         </div>
     </div>

@@ -246,279 +246,264 @@ O jogo é totalmente responsivo e funciona em:
 - **Acessibilidade**: Suporte completo a navegação por teclado
 - **Cross-browser**: Compatível com navegadores modernos
 
-# STUP_ - Software Development Lifecycle Educational Game
+# STUP_ - Simulador Corporativo de Desenvolvimento
 
-## 🎯 Overview
+## � Visão Geral
 
-**STUP_** is a comprehensive 2D educational game that simulates the complete software development lifecycle. Players experience realistic software engineering roles, methodologies, and challenges through interactive gameplay and educational mini-games.
+**STUP_** (Sistema de Treinamento Unificado de Projetos) é um simulador educacional 2D focado exclusivamente no **ambiente corporativo de desenvolvimento de software**. O jogo simula a experiência real de gerenciar equipes multidisciplinares em projetos de software empresarial, desde a análise inicial até o deployment.
 
-The game's title features a blinking red underscore cursor (`_`) that mimics a terminal interface, emphasizing the technical nature of software development.
+### 🎯 Objetivo Educational
 
-## 🚀 Features
+- **Compreender** as dinâmicas de equipes corporativas de desenvolvimento
+- **Aprender** sobre metodologias e ferramentas utilizadas em ambiente empresarial
+- **Praticar** a orquestração de projetos complexos com múltiplas equipes
+- **Experimentar** diferentes abordagens metodológicas em cenários reais
 
-### 🌍 Multiple Development Universes
-Choose from diverse software development environments, each with unique challenges and team dynamics:
+## 🎮 Mecânicas do Jogo
 
-- **Corporate Company** - Structured enterprise environment with formal processes
-- **Startup** - Fast-paced, agile environment with limited resources  
-- **Open Source Community** - Collaborative global development with community-driven decisions
-- **Hobbyist (Solo Developer)** - Personal projects with complete creative freedom
-- **Freelancer** - Client-based work with diverse project requirements
-- **Consultancy** - Expert advisory role with multiple clients
-- **Student** - Academic environment focused on learning fundamentals
-- **Hackathon** - Intense 24-48 hour competitive development sprints
-- **Indie Game Development** - Creative game development with artistic vision
-- **Unemployed Programmer** - Self-directed skill building and portfolio development
+### 1. **Apresentação das Equipes Corporativas**
+O jogo apresenta uma estrutura organizacional realista com equipes especializadas:
 
-### 👥 Comprehensive Role System
-Select from detailed professional roles across multiple disciplines:
+#### 🛠️ **Equipe de Desenvolvimento**
+- **Carlos Silva** - Desenvolvedor Sênior Full-Stack (Java, Angular, Spring, Microservices)
+- **Ana Costa** - Desenvolvedora Frontend (React, TypeScript, CSS3, Figma)
+- **João Santos** - DBA (Oracle, SQL Server, PostgreSQL, Performance)
 
-#### Development Team
-- **Frontend Developer** - UI/UX implementation and user experience
-- **Backend Developer** - API development and business logic
-- **Full Stack Developer** - Complete application development
-- **Database Administrator** - Database design and optimization
+#### 🧪 **Equipe de Quality Assurance**
+- **Maria Oliveira** - QA Lead (Selenium, JUnit, TestNG, JIRA)
+- **Pedro Almeida** - Engenheiro de Automação (Cypress, Jenkins, Robot Framework)
 
-#### Quality Assurance
-- **Manual Tester** - User experience and functional testing
-- **Automation Engineer** - Test automation and CI/CD integration
+#### ⚙️ **Equipe DevOps**
+- **Roberto Lima** - DevOps Engineer (AWS, Docker, Kubernetes, Terraform)
 
-#### DevOps Team
-- **CI/CD Engineer** - Pipeline automation and deployment
-- **Infrastructure Engineer** - System architecture and scalability
+#### 🎨 **Equipe de Design**
+- **Beatriz Ferreira** - UX/UI Designer (Figma, Adobe XD, Sketch, User Research)
 
-#### Design Team
-- **UX Designer** - User research and experience design
-- **UI Designer** - Interface design and visual aesthetics
-- **Graphic Artist** - Visual assets and brand elements
+#### 📊 **Equipe de Gestão**
+- **Luiz Gomes** - Gerente de Projetos (PMP, Scrum, Jira, MS Project)
+- **Fernanda Ribeiro** - Analista de Negócios (BPMN, UML, Bizagi, Confluence)
 
-#### Security Team
-- **Red Team (Offensive)** - Penetration testing and vulnerability assessment
-- **Blue Team (Defensive)** - Security monitoring and incident response
-- **Gray Team (Hybrid)** - Balanced offensive and defensive security
+### 2. **Seleção de Projetos Corporativos**
+Cinco projetos realistas com diferentes complexidades:
 
-#### Product & Management
-- **Product Owner** - Requirements and stakeholder management
-- **Scrum Master** - Process facilitation and team coaching
-- **Project Manager** - Timeline and resource coordination
-- **Technical Lead** - Technical guidance and architecture decisions
+#### 🏢 **Módulo ERP Financeiro** (Alta Complexidade)
+- **Prazo:** 6 meses | **Equipe:** 8 profissionais
+- **Tecnologias:** Java, Oracle, Angular
+- **Desafios:** Integração com sistemas legados, regras complexas
 
-### 🔄 Software Development Methodologies
-Experience various development approaches:
+#### 🌐 **Portal do Cliente** (Média Complexidade)
+- **Prazo:** 4 meses | **Equipe:** 6 profissionais
+- **Tecnologias:** React, Node.js, PostgreSQL
+- **Desafios:** Segurança de dados, performance
 
-- **Scrum** - Iterative development with sprints and ceremonies
-- **Kanban** - Visual workflow management with continuous delivery
-- **Extreme Programming (XP)** - Engineering practices focused on quality
-- **Waterfall** - Sequential development phases with formal documentation
-- **Lean** - Waste elimination and continuous improvement
-- **SAFe** - Scaled Agile Framework for enterprise coordination
-- **DevOps** - Development and operations integration with automation
-- **Test-Driven Development** - Tests written before implementation
+#### 📱 **App Mobile Corporativo** (Média Complexidade)
+- **Prazo:** 5 meses | **Equipe:** 5 profissionais
+- **Tecnologias:** React Native, Firebase
+- **Desafios:** Compatibilidade, sincronização offline
 
-### 🎮 Interactive Game Phases
+#### 📊 **Dashboard BI Executivo** (Alta Complexidade)
+- **Prazo:** 7 meses | **Equipe:** 7 profissionais
+- **Tecnologias:** Power BI, SQL Server, Python
+- **Desafios:** Qualidade dos dados, performance
 
-#### 1. Planning Phase
-- **Tasks**: Create User Stories, Define Architecture, Set Up Project Board, Plan Sprints
-- **Mini-game**: Interactive planning activities with requirement analysis
-- **Learning**: Project scoping, estimation, and resource allocation
+#### � **API de Integração** (Baixa Complexidade)
+- **Prazo:** 3 meses | **Equipe:** 4 profissionais
+- **Tecnologias:** Spring Boot, Redis, Docker
+- **Desafios:** Compatibilidade, latência
 
-#### 2. Design & Architecture
-- **Tasks**: Design System Architecture, Create UI Wireframes, Define API Contracts, Database Schema
-- **Mini-game**: Design pattern selection and application
-- **Learning**: Software architecture principles and design patterns
+### 3. **Metodologias Corporativas**
 
-#### 3. Implementation
-- **Tasks**: Setup Development Environment, Implement Core Features, API Development, Frontend Implementation
-- **Mini-game**: Drag-and-drop code building with realistic code blocks
-- **Learning**: Coding practices, component integration, and development workflows
+#### 🏗️ **Waterfall**
+- **Ideal para:** Projetos com requisitos estáveis, ambientes regulamentados
+- **Fases:** Análise → Design → Implementação → Testes → Deployment
+- **Vantagens:** Estrutura clara, documentação completa
+- **Desvantagens:** Pouca flexibilidade, feedback tardio
 
-#### 4. Testing & QA
-- **Tasks**: Unit Testing, Integration Testing, User Acceptance Testing, Performance Testing
-- **Mini-game**: Test case design and priority management
-- **Learning**: Testing strategies, quality assurance, and bug detection
+#### 🏃‍♂️ **Scrum**
+- **Ideal para:** Projetos inovadores, equipes autônomas
+- **Fases:** Sprint Planning → Daily Scrum → Sprint Review → Retrospective
+- **Vantagens:** Flexibilidade, feedback contínuo
+- **Desvantagens:** Requer experiência, pode ser caótico
 
-#### 5. Deployment
-- **Tasks**: Setup CI/CD Pipeline, Production Deployment, Monitor Systems, Documentation
-- **Mini-game**: Pipeline configuration and deployment automation
-- **Learning**: DevOps practices, monitoring, and production management
+#### 📋 **Kanban**
+- **Ideal para:** Manutenção de sistemas, equipes pequenas
+- **Fases:** To Do → In Progress → Review → Done
+- **Vantagens:** Visualização clara, fluxo contínuo
+- **Desvantagens:** Falta de estrutura, difícil planejamento
 
-## 🎪 Mini-Games & Educational Mechanics
+### 4. **Configuração de Ferramentas por Equipe**
 
-### Planning Mini-Game
-- Select appropriate planning activities
-- Define user requirements and acceptance criteria
-- Estimate effort and identify dependencies
-- Set priority levels for features
+#### 💻 **Desenvolvimento**
+- **IDEs:** IntelliJ IDEA Ultimate, VS Code, Eclipse
+- **Versionamento:** Git + GitLab Enterprise, SVN
+- **Frameworks:** Spring Boot, Angular, React
 
-### Design Mini-Game
-- Choose and apply design patterns
-- Make architectural decisions
-- Balance performance and maintainability
-- Create system blueprints
+#### 🧪 **QA**
+- **Automação:** Selenium WebDriver, Cypress.io, TestNG
+- **Gestão:** JIRA + Zephyr, TestLink
+- **Performance:** JMeter, LoadRunner
 
-### Coding Mini-Game
-- Drag-and-drop code block assembly
-- Build functional implementations
-- Follow coding best practices
-- Integrate different components
+#### 🎨 **Design**
+- **Interface:** Figma Enterprise, Sketch + Abstract, Adobe XD
+- **Gráfico:** Adobe Photoshop, GIMP
+- **Prototipagem:** InVision, Marvel
 
-### Testing Mini-Game
-- Design comprehensive test cases
-- Set testing priorities
-- Cover edge cases and security scenarios
-- Plan automated testing strategies
+#### ⚙️ **DevOps**
+- **Containers:** Docker, Kubernetes
+- **Cloud:** AWS, Azure, Google Cloud
+- **CI/CD:** Jenkins, GitLab CI, Azure DevOps
 
-### Deployment Mini-Game
-- Configure deployment pipelines
-- Execute deployment steps
-- Monitor system health
-- Manage production environments
+#### 📊 **Gestão**
+- **Projetos:** JIRA, MS Project, Trello
+- **Documentação:** Confluence, SharePoint, Notion
+- **Comunicação:** Slack, Microsoft Teams, Zoom
 
-## 🎯 Educational Value
+### 5. **Sistema de Navegação entre Equipes**
+- **Orquestração Total:** O jogador atua como orchestrador geral
+- **Navegação Fluida:** Sistema "Choose Team" para visitar diferentes equipes
+- **Monitoramento:** Interface verbosa com métricas detalhadas por equipe
+- **Interação:** Atribuição de tarefas, reuniões e acompanhamento
 
-### Learning Objectives
-- **Role Understanding**: Experience different software engineering roles and their responsibilities
-- **Methodology Familiarity**: Learn various development methodologies and when to apply them
-- **Process Comprehension**: Understand the complete software development lifecycle
-- **Team Dynamics**: Experience collaborative development in different environments
-- **Technical Skills**: Practice planning, design, coding, testing, and deployment concepts
-- **Decision Making**: Make realistic choices faced by software professionals
+## 🎨 Design Visual
 
-### Skill Development
-- Project management and planning
-- Software architecture and design
-- Coding practices and standards
-- Quality assurance and testing
-- DevOps and deployment
-- Team collaboration and communication
-- Problem-solving and critical thinking
+### **Identidade Corporativa**
+- **Empresa Fictícia:** TechCorp Solutions
+- **Paleta de Cores:** Azul corporativo, verde de destaque, tons profissionais
+- **Tipografia:** Inter (interface) + JetBrains Mono (código)
 
-## 🎨 Visual Design
+### **Animações Elegantes**
+- **Cards de Membros:** Animação de entrada escalonada com efeitos hover
+- **Transições:** Suaves entre telas com feedback visual
+- **Efeitos Visuais:** Glassmorphism, gradientes corporativos
 
-### 2D Modern Interface
-- **Color Scheme**: Monochromatic design with green, blue, and red accents
-- **Typography**: Inter font for UI, JetBrains Mono for code elements
-- **Character Sprites**: Unique visual representations for each role
-- **Animations**: Smooth transitions, hover effects, and progress indicators
-- **Responsive Design**: Optimized for desktop and mobile devices
+### **Interface Responsiva**
+- **Desktop First:** Otimizado para ambientes corporativos
+- **Mobile Friendly:** Adaptável para tablets e smartphones
+- **Acessibilidade:** Navegação por teclado, indicadores de foco
 
-### Terminal Aesthetics
-- Blinking red cursor effect in the title
-- Code-style fonts for technical elements
-- Modern dark theme with subtle lighting effects
-- Glassmorphism effects for enhanced visual appeal
+## 🚀 Como Jogar
 
-## 🎮 How to Play
+### **Controles**
+- **ENTER:** Iniciar o jogo na tela inicial
+- **Mouse:** Navegação principal e seleção
+- **Clique:** Seleção de projetos, metodologias, ferramentas
+- **Navegação:** Botões de equipe no header principal
 
-### 1. Initial Setup
-1. **Start Screen**: Press ENTER when you see the blinking cursor
-2. **Universe Selection**: Choose your development environment
-3. **Role Selection**: Pick your professional role
-4. **Methodology Selection**: Select your development approach
+### **Fluxo do Jogo**
+1. **Tela Inicial:** Apresentação da TechCorp
+2. **Conhecer Equipes:** Visualização detalhada dos profissionais
+3. **Escolher Projeto:** Seleção entre 5 projetos corporativos
+4. **Definir Metodologia:** Escolha da abordagem de desenvolvimento
+5. **Configurar Ferramentas:** Seleção do stack tecnológico
+6. **Gerenciar Projeto:** Navegação entre equipes e orquestração
 
-### 2. Gameplay
-1. **Phase Progression**: Complete tasks in each development phase
-2. **Mini-Games**: Engage with role-specific challenges
-3. **Team Interaction**: Communicate with AI team members
-4. **Progress Tracking**: Monitor your advancement through metrics
+### **Métricas e Acompanhamento**
+- **Produtividade por Membro:** Monitoramento individual
+- **Status em Tempo Real:** Disponível, trabalhando, bloqueado
+- **Progresso de Tarefas:** Barras de progresso visuais
+- **Estatísticas de Equipe:** Visão consolidada por área
 
-### 3. Controls
-- **Keyboard Navigation**: Use arrow keys and ENTER for selection
-- **Mouse Interaction**: Click on cards, buttons, and interactive elements
-- **Drag & Drop**: Use in coding mini-games for building implementations
-- **ESC Key**: Pause game or return to previous screen
+## 🛠️ Tecnologias Utilizadas
 
-## 📊 Scoring & Metrics
+### **Frontend**
+- **HTML5:** Estrutura semântica e acessível
+- **CSS3:** Animações, gradientes, efeitos visuais modernos
+- **JavaScript ES6+:** Lógica do jogo orientada a objetos
 
-### Performance Tracking
-- **Team Morale** - How well you work with your team
-- **Code Quality** - Technical excellence of your implementations
-- **Customer Satisfaction** - Meeting user requirements and expectations
-- **Project Efficiency** - Time management and resource utilization
+### **Recursos Visuais**
+- **SVG Inline:** Avatares gerados dinamicamente
+- **CSS Variables:** Sistema de cores consistente
+- **Animations:** Keyframes CSS para movimento fluido
+- **Responsive Grid:** Layout adaptável
 
-### Progress Indicators
-- Phase completion percentages
-- Task completion tracking
-- Overall project progress
-- Individual skill development
+### **Arquitetura**
+- **Modular:** Classe principal com métodos especializados
+- **State Management:** Gerenciamento centralizdo do estado
+- **Event Driven:** Sistema de eventos para interações
+- **Data Structures:** Objetos estruturados para dados do jogo
 
-## 🎓 Educational Applications
+## � Requisitos Técnicos
 
-### Classroom Use
-- Software engineering courses
-- Project management training
-- Computer science education
-- Professional development workshops
+### **Navegadores Suportados**
+- **Chrome/Chromium:** Versão 88+
+- **Firefox:** Versão 85+
+- **Safari:** Versão 14+
+- **Edge:** Versão 88+
 
-### Self-Learning
-- Career exploration in tech
-- Understanding software roles
-- Learning development methodologies
-- Practicing project management skills
+### **Resolução Recomendada**
+- **Desktop:** 1366x768 ou superior
+- **Tablet:** 768x1024
+- **Mobile:** 375x667 (mínimo)
 
-### Team Training
-- Onboarding new developers
-- Cross-functional team understanding
-- Process improvement exercises
-- Role empathy building
+### **Performance**
+- **Recursos:** Baixo consumo de CPU e memória
+- **Carregamento:** Instantâneo (arquivos locais)
+- **Animações:** 60fps em hardware moderno
 
-## 🔧 Technical Requirements
+## 🎓 Aplicações Educacionais
 
-### Browser Compatibility
-- Modern web browsers (Chrome, Firefox, Safari, Edge)
-- JavaScript enabled
-- Local storage support for progress saving
+### **Ensino Superior**
+- **Engenharia de Software:** Disciplinas de processo e gestão
+- **Sistemas de Informação:** Metodologias e ferramentas
+- **Administração:** Gestão de projetos de TI
 
-### Performance
-- Optimized for 60 FPS animations
-- Responsive design for various screen sizes
-- Efficient memory usage
-- Fast loading times
+### **Treinamento Corporativo**
+- **Onboarding:** Novos funcionários em TI
+- **Capacitação:** Gestores de projetos
+- **Simulação:** Cenários de tomada de decisão
 
-## 🎪 Random Events & Challenges
+### **Certificações**
+- **PMP:** Prática em gestão de projetos
+- **Scrum Master:** Dinâmicas ágeis
+- **DevOps:** Integração de equipes
 
-The game includes realistic scenarios that software teams face:
-- Scope changes and requirement updates
-- Security incidents and vulnerability discoveries
-- Performance issues and optimization needs
-- Team conflicts and communication challenges
-- Technology changes and learning requirements
-- Client feedback and iteration requests
+## 🔧 Instalação e Execução
 
-## 🏆 Achievements & Progression
+### **Método 1: Servidor Local**
+```bash
+# Clone o repositório
+git clone <repository-url>
+cd stup-corporate-game
 
-### Completion Rewards
-- Phase mastery certificates
-- Role-specific achievements
-- Methodology expertise badges
-- Team collaboration awards
+# Inicie um servidor HTTP local
+python -m http.server 8000
+# ou
+npx serve .
 
-### Learning Milestones
-- Understanding of SDLC phases
-- Familiarity with professional roles
-- Knowledge of development methodologies
-- Experience with project challenges
+# Acesse no navegador
+http://localhost:8000
+```
 
-## 🎯 Getting Started
+### **Método 2: Arquivo Local**
+1. Baixe todos os arquivos (`index.html`, `styles.css`, `game.js`)
+2. Abra `index.html` diretamente no navegador
+3. ⚠️ **Nota:** Alguns recursos podem não funcionar devido a CORS
 
-1. **Open** `index.html` in a modern web browser
-2. **Press ENTER** to start your software development journey
-3. **Choose** your universe, role, and methodology
-4. **Complete** tasks and mini-games through each phase
-5. **Learn** about software engineering through interactive gameplay
+## 🔮 Próximas Funcionalidades
 
-## 🌟 Why STUP_?
+### **Fase 2: Interações Avançadas**
+- [ ] **Sistema de Tarefas:** Atribuição e acompanhamento detalhado
+- [ ] **Mini-games:** Atividades específicas por função
+- [ ] **Reuniões Virtuais:** Simulação de dailys e retrospectivas
+- [ ] **Relatórios:** Dashboards gerenciais completos
 
-**STUP_** provides a unique educational experience that:
-- **Demystifies** software development roles and processes
-- **Provides** hands-on experience without real-world risks
-- **Teaches** through interactive engagement rather than passive learning
-- **Prepares** students and newcomers for real software engineering challenges
-- **Builds** empathy and understanding across different roles
-- **Makes** learning about software development fun and engaging
+### **Fase 3: Dinâmicas Corporativas**
+- [ ] **Eventos Aleatórios:** Mudanças de escopo, bugs críticos
+- [ ] **Pressão de Cliente:** Cenários de prazo apertado
+- [ ] **Conflitos de Equipe:** Resolução de problemas humanos
+- [ ] **Aprovações:** Fluxos de approval corporativo
 
-Whether you're a student exploring career options, a professional looking to understand other roles, or an educator seeking engaging teaching tools, **STUP_** offers a comprehensive and enjoyable way to learn about the software development lifecycle.
+### **Fase 4: Multiplayer**
+- [ ] **Colaboração:** Múltiplos jogadores como diferentes gerentes
+- [ ] **Competição:** Rankings entre projetos
+- [ ] **Integração:** APIs para sistemas de RH/LMS
+
+## 📄 Licença
+
+Este projeto é desenvolvido para fins educacionais. Livre para uso em contextos acadêmicos e de treinamento corporativo.
 
 ---
 
-*Start your software engineering journey today with STUP_ - where every underscore represents a new possibility in code!*
+**TechCorp Solutions** - Simulando o futuro do desenvolvimento de software corporativo.
+
+*"Onde cada decisão conta, e cada equipe importa."*
