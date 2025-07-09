@@ -1,1114 +1,330 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stup_ - A Jornada do Desenvolvedor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-black: #0a0a0a;
-            --deep-black: #000000;
-            --charcoal: #1a1a1a;
-            --dark-gray: #2a2a2a;
-            --medium-gray: #4a4a4a;
-            --light-gray: #8a8a8a;
-            --fog-gray: #b0b0b0;
-            --pure-white: #ffffff;
-            --accent-red: #4a1515;
-            --accent-blue: #152a4a;
-            --accent-sepia: #3a2f1a;
-            --highlight-red: #6a2020;
-            --highlight-blue: #2040aa;
-            --mist-opacity: 0.3;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--deep-black);
-            color: var(--fog-gray);
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Atmospheric Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(74, 21, 21, 0.1) 0%, transparent 60%),
-                radial-gradient(circle at 70% 80%, rgba(21, 42, 74, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 50% 50%, rgba(26, 26, 26, 0.6) 0%, transparent 100%);
-            animation: atmosphericShift 30s ease-in-out infinite;
-            z-index: -2;
-        }
-
-        /* Volumetric Light Effects */
-        body::after {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                conic-gradient(from 0deg at 20% 30%, transparent 0deg, rgba(255, 255, 255, 0.02) 45deg, transparent 90deg),
-                conic-gradient(from 180deg at 80% 70%, transparent 0deg, rgba(255, 255, 255, 0.01) 60deg, transparent 120deg);
-            animation: lightShift 60s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @keyframes atmosphericShift {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            33% { transform: scale(1.1) rotate(1deg); }
-            66% { transform: scale(0.9) rotate(-1deg); }
-        }
-
-        @keyframes lightShift {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Fog Effect */
-        .fog-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(180deg, transparent 0%, rgba(26, 26, 26, var(--mist-opacity)) 50%, transparent 100%),
-                linear-gradient(90deg, transparent 0%, rgba(26, 26, 26, 0.1) 50%, transparent 100%);
-            animation: fogDrift 40s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes fogDrift {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(20px) translateY(-10px); }
-        }
-
-        .screen {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            position: relative;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .screen.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Title Screen */
-        .title-screen {
-            text-align: center;
-            animation: fadeInSlow 2s ease-out;
-            position: relative;
-            z-index: 2;
-        }
-
-        .title-screen::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: titleGlow 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from { opacity: 0.3; transform: translateX(-50%) scale(0.8); }
-            to { opacity: 0.6; transform: translateX(-50%) scale(1.2); }
-        }
-
-        .title-screen .logo {
-            font-size: 4rem;
-            font-weight: 300;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--pure-white);
-            text-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
-            animation: logoBreath 6s ease-in-out infinite;
-            margin-bottom: 30px;
-            letter-spacing: 8px;
-        }
-
-        @keyframes logoBreath {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.02); filter: brightness(1.1); }
-        }
-
-        .underscore {
-            color: var(--highlight-red);
-            font-weight: 500;
-            animation: pulse 2s steps(2, start) infinite;
-        }
-
-        @keyframes pulse {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--light-gray);
-            margin-bottom: 60px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            opacity: 0.8;
-        }
-
-        .start-btn {
-            padding: 18px 40px;
-            font-size: 1rem;
-            font-weight: 400;
-            background: transparent;
-            border: 1px solid var(--medium-gray);
-            border-radius: 2px;
-            color: var(--fog-gray);
-            cursor: pointer;
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 1px;
-            backdrop-filter: blur(10px);
-        }
-
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.8s ease;
-        }
-
-        .start-btn:hover::before {
-            left: 100%;
-        }
-
-        .start-btn:hover {
-            border-color: var(--pure-white);
-            color: var(--pure-white);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Screen Titles */
-        .screen-title {
-            color: var(--pure-white);
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 60px;
-            text-align: center;
-            position: relative;
-            letter-spacing: 3px;
-            opacity: 0.9;
-        }
-
-        .screen-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--medium-gray), transparent);
-        }
-
-        /* Grid Layouts */
-        .universe-grid,
-        .team-grid {
-            display: grid;
-            gap: 30px;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            width: 80%;
-            max-width: 1000px;
-            animation: gridRise 1.5s ease-out 0.5s both;
-        }
-
-        @keyframes gridRise {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards */
-        .universe-card,
-        .team-member {
-            background: rgba(26, 26, 26, 0.4);
-            border: 1px solid var(--dark-gray);
-            border-radius: 0;
-            padding: 40px 30px;
-            text-align: center;
-            color: var(--light-gray);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            min-height: 160px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .universe-card::before,
-        .team-member::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .universe-card:hover::before,
-        .team-member:hover::before {
-            opacity: 1;
-        }
-
-        .universe-card:hover,
-        .team-member:hover {
-            transform: translateY(-5px);
-            border-color: var(--medium-gray);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .universe-card.selected,
-        .team-member.selected {
-            border-color: var(--highlight-red);
-            background: rgba(74, 21, 21, 0.2);
-            box-shadow: 0 0 40px rgba(106, 32, 32, 0.4);
-            transform: translateY(-8px);
-        }
-
-        .universe-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            filter: grayscale(100%) brightness(0.8);
-            transition: filter 0.6s ease;
-        }
-
-        .universe-card:hover .universe-icon,
-        .universe-card.selected .universe-icon {
-            filter: grayscale(0%) brightness(1);
-        }
-
-        .member-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--dark-gray), var(--charcoal));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-gray);
-            margin: 0 auto 20px;
-            font-weight: 400;
-            font-size: 1.5rem;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-            transition: all 0.6s ease;
-        }
-
-        .team-member:hover .member-avatar,
-        .team-member.selected .member-avatar {
-            background: linear-gradient(135deg, var(--highlight-red), var(--accent-red));
-            color: var(--pure-white);
-            box-shadow: 0 0 30px rgba(106, 32, 32, 0.6);
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--fog-gray);
-        }
-
-        .card-subtitle {
-            font-size: 0.85rem;
-            color: var(--medium-gray);
-            font-weight: 300;
-            opacity: 0.8;
-        }
-
-        /* Gameplay */
-        .game-header {
-            text-align: center;
-            margin-bottom: 40px;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .game-title {
-            font-size: 1.8rem;
-            font-weight: 300;
-            color: var(--pure-white);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        .progress-bar {
-            background: var(--charcoal);
-            border-radius: 0;
-            overflow: hidden;
-            height: 4px;
-            width: 100%;
-            margin-bottom: 20px;
-            border: 1px solid var(--dark-gray);
-            position: relative;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, var(--highlight-red), var(--accent-red));
-            height: 100%;
-            width: 0%;
-            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            box-shadow: 0 0 20px rgba(106, 32, 32, 0.5);
-        }
-
-        .code-workspace {
-            background: rgba(26, 26, 26, 0.3);
-            border: 1px solid var(--dark-gray);
-            padding: 30px;
-            border-radius: 0;
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            backdrop-filter: blur(5px);
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .code-block {
-            background: rgba(42, 42, 42, 0.6);
-            border: 1px solid var(--medium-gray);
-            border-radius: 0;
-            padding: 12px 20px;
-            cursor: grab;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 400;
-            font-size: 0.9rem;
-            color: var(--light-gray);
-            backdrop-filter: blur(5px);
-            position: relative;
-            user-select: none;
-        }
-
-        .code-block::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .code-block:hover::before {
-            opacity: 1;
-        }
-
-        .code-block:hover {
-            transform: translateY(-3px);
-            background: rgba(74, 74, 74, 0.8);
-            border-color: var(--light-gray);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .code-block:active {
-            cursor: grabbing;
-            transform: translateY(-1px) scale(0.98);
-        }
-
-        .mvp-area {
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px dashed var(--dark-gray);
-            padding: 40px;
-            border-radius: 0;
-            min-height: 160px;
-            color: var(--medium-gray);
-            margin-top: 20px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.6s ease;
-            backdrop-filter: blur(5px);
-            position: relative;
-        }
-
-        .mvp-area::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .mvp-area.drag-over {
-            border-color: var(--highlight-red);
-            background: rgba(74, 21, 21, 0.1);
-            box-shadow: inset 0 0 40px rgba(106, 32, 32, 0.2);
-        }
-
-        .mvp-area.drag-over::before {
-            opacity: 1;
-        }
-
-        .mvp-area .code-block {
-            background: rgba(74, 21, 21, 0.3);
-            border: 1px solid var(--highlight-red);
-            cursor: pointer;
-            color: var(--fog-gray);
-        }
-
-        .mvp-area .code-block:hover {
-            background: rgba(106, 32, 32, 0.5);
-            border-color: var(--highlight-red);
-            color: var(--pure-white);
-        }
-
-        /* Navigation */
-        .nav-buttons {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2px;
-            z-index: 100;
-            background: rgba(26, 26, 26, 0.6);
-            padding: 2px;
-            border-radius: 0;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--dark-gray);
-        }
-
-        .nav-btn {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            border-radius: 0;
-            color: var(--medium-gray);
-            cursor: pointer;
-            transition: all 0.4s ease;
-            font-weight: 400;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .nav-btn.active {
-            background: var(--highlight-red);
-            color: var(--pure-white);
-        }
-
-        .nav-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--light-gray);
-        }
-
-        /* Particle Effects */
-        .particle {
-            position: fixed;
-            width: 1px;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.3);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .title-screen .logo {
-                font-size: 2.8rem;
-                letter-spacing: 4px;
-            }
-
-            .screen-title {
-                font-size: 1.6rem;
-                letter-spacing: 2px;
-            }
-
-            .universe-grid,
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 20px;
-                width: 90%;
-            }
-
-            .code-workspace {
-                padding: 20px;
-            }
-
-            .mvp-area {
-                padding: 30px;
-                min-height: 140px;
-            }
-        }
-
-        /* Animation Keyframes */
-        @keyframes fadeInSlow {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(var(--random-x));
-                opacity: 0;
-            }
-        }
-
-        @keyframes distortionWave {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(2px);
-            }
-        }
-
-        /* Interaction Feedback */
-        .interaction-feedback {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--highlight-red);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: feedbackExpand 0.8s ease-out;
-        }
-
-        @keyframes feedbackExpand {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(20);
-                opacity: 0;
-            }
-        }
-
-        /* Light Ray Effects */
-        .light-ray {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                135deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.01) 30%,
-                transparent 60%
-            );
-            pointer-events: none;
-            animation: rayMove 20s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes rayMove {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100vw) rotate(45deg); }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metrópole Maracanaú - Seu Novo Lar te Espera | Alpha Imobiliária</title>
+    <meta name="description" content="Descubra o Metrópole Maracanaú, o loteamento que une qualidade de vida e localização privilegiada na região metropolitana de Fortaleza. Alpha Imobiliária - Realizando sonhos!">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-    <!-- Atmospheric Effects -->
-    <div class="fog-layer"></div>
-    <div class="light-ray"></div>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <img src="https://via.placeholder.com/120x40/4A90E2/FFFFFF?text=ALPHA" alt="Alpha Imobiliária" class="logo">
+            </div>
+            <div class="nav-contact">
+                <a href="tel:+5585999999999" class="contact-btn">
+                    <i class="fas fa-phone"></i>
+                    (85) 99999-9999
+                </a>
+            </div>
+        </nav>
+    </header>
 
-    <!-- Title Screen -->
-    <div class="screen active" id="titleScreen">
-        <div class="title-screen">
-            <div class="logo">
-                Stup<span class="underscore">_</span>
-            </div>
-            <div class="subtitle">A Jornada do Desenvolvedor</div>
-            <button class="start-btn" onclick="showScreen('universeScreen', event)">
-                Iniciar Jornada
-            </button>
-        </div>
-    </div>
-
-    <!-- Universe Selection -->
-    <div class="screen" id="universeScreen">
-        <h2 class="screen-title">Escolha Seu Universo</h2>
-        <div class="universe-grid">
-            <div class="universe-card" onclick="selectUniverse(this)">
-                <div class="universe-icon">🏢</div>
-                <div class="card-title">Corporativo</div>
-                <div class="card-subtitle">Estrutura & Processos</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
-                <div class="universe-icon">🚀</div>
-                <div class="card-title">Startup</div>
-                <div class="card-subtitle">Agilidade & Inovação</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
-                <div class="universe-icon">🎓</div>
-                <div class="card-title">Academia</div>
-                <div class="card-subtitle">Pesquisa & Ensino</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
-                <div class="universe-icon">🎨</div>
-                <div class="card-title">Indie</div>
-                <div class="card-subtitle">Criatividade & Liberdade</div>
-            </div>
-            <div class="universe-card" onclick="selectUniverse(this)">
-                <div class="universe-icon">🌍</div>
-                <div class="card-title">Open Source</div>
-                <div class="card-subtitle">Colaboração & Comunidade</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Team Selection -->
-    <div class="screen" id="teamScreen">
-        <h2 class="screen-title">Monte Sua Equipe</h2>
-        <div class="team-grid">
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">💻</div>
-                <div class="card-title">Developer</div>
-                <div class="card-subtitle">Código & Lógica</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">🔍</div>
-                <div class="card-title">QA</div>
-                <div class="card-subtitle">Testes & Qualidade</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">⚙️</div>
-                <div class="card-title">DevOps</div>
-                <div class="card-subtitle">Infra & Deploy</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">🎨</div>
-                <div class="card-title">Designer</div>
-                <div class="card-subtitle">UX & Interface</div>
-            </div>
-            <div class="team-member" onclick="selectTeamMember(this)">
-                <div class="member-avatar">📊</div>
-                <div class="card-title">PM</div>
-                <div class="card-subtitle">Gestão & Estratégia</div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="highlight">Metrópole Maracanaú</span><br>
+                    Seu Novo Lar te Espera
+                </h1>
+                <p class="hero-subtitle">
+                    O loteamento que combina <strong>localização privilegiada</strong> com <strong>qualidade de vida</strong> 
+                    no coração da região metropolitana de Fortaleza
+                </p>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Centro de Maracanaú</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-subway"></i>
+                        <span>Próximo ao Metrô</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Área Segura</span>
+                    </div>
+                </div>
+                <button class="cta-button primary" onclick="scrollToForm()">
+                    <i class="fas fa-home"></i>
+                    Quero Conhecer Agora
+                </button>
             </div>
         </div>
-    </div>
+        <div class="hero-image">
+            <img src="https://via.placeholder.com/600x400/E8F4F8/4A90E2?text=Metropole+Maracanau" alt="Metrópole Maracanaú" class="hero-img">
+        </div>
+    </section>
 
-    <!-- Gameplay -->
-    <div class="screen" id="gameplayScreen">
-        <div class="game-header">
-            <h3 class="game-title">Projeto: E-commerce MVP</h3>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Por que Escolher o Metrópole Maracanaú?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3>Localização Estratégica</h3>
+                    <p>No centro de Maracanaú, com fácil acesso a Fortaleza e toda região metropolitana</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <h3>Conexão com Metrô</h3>
+                    <p>Próximo à linha Sul do Metrô de Fortaleza, conectando você a toda cidade</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Comércio e Serviços</h3>
+                    <p>Supermercados, farmácias, escolas e hospitais nas proximidades</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Valorização Garantida</h3>
+                    <p>Região em constante crescimento com grande potencial de valorização</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Qualidade de Vida</h3>
+                    <p>Ambiente tranquilo e familiar, ideal para construir sua história</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Facilidade de Pagamento</h3>
+                    <p>Condições especiais e financiamento facilitado para realizar seu sonho</p>
+                </div>
             </div>
         </div>
-        <div class="code-workspace" id="codeWorkspace">
-            <div class="code-block" draggable="true">Setup Inicial</div>
-            <div class="code-block" draggable="true">Autenticação</div>
-            <div class="code-block" draggable="true">Carrinho</div>
-            <div class="code-block" draggable="true">Pagamento</div>
-            <div class="code-block" draggable="true">Responsivo</div>
-            <div class="code-block" draggable="true">Busca</div>
-            <div class="code-block" draggable="true">Performance</div>
-            <div class="code-block" draggable="true">Notificações</div>
-            <div class="mvp-area" id="mvpArea">
-                Arraste os blocos para aqui e monte seu MVP
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section" id="form-section">
+        <div class="container">
+            <div class="form-content">
+                <div class="form-text">
+                    <h2>Garanta Sua Consulta Gratuita</h2>
+                    <p>Preencha o formulário e receba:</p>
+                    <ul class="form-benefits">
+                        <li><i class="fas fa-check"></i> Planta e localização do loteamento</li>
+                        <li><i class="fas fa-check"></i> Tabela de preços atualizada</li>
+                        <li><i class="fas fa-check"></i> Condições especiais de pagamento</li>
+                        <li><i class="fas fa-check"></i> Agendamento de visita técnica</li>
+                    </ul>
+                    <div class="urgency-banner">
+                        <i class="fas fa-clock"></i>
+                        <span>Últimas unidades disponíveis!</span>
+                    </div>
+                </div>
+                <form class="lead-form" id="leadForm">
+                    <h3>Solicite Informações Completas</h3>
+                    <div class="input-group">
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="telefone" name="telefone" placeholder="(85) 99999-9999" required>
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="input-group">
+                        <select id="interesse" name="interesse" required>
+                            <option value="">Qual seu interesse?</option>
+                            <option value="compra-vista">Compra à vista</option>
+                            <option value="financiamento">Financiamento</option>
+                            <option value="investimento">Investimento</option>
+                            <option value="informacoes">Apenas informações</option>
+                        </select>
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Receber Informações Grátis
+                    </button>
+                    <p class="privacy-text">
+                        <i class="fas fa-lock"></i>
+                        Seus dados estão seguros conosco
+                    </p>
+                </form>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Navigation Buttons -->
-    <div class="nav-buttons">
-        <button class="nav-btn active" onclick="showScreen('titleScreen', event)">Início</button>
-        <button class="nav-btn" onclick="showScreen('universeScreen', event)">Universo</button>
-        <button class="nav-btn" onclick="showScreen('teamScreen', event)">Equipe</button>
-        <button class="nav-btn" onclick="showScreen('gameplayScreen', event)">Gameplay</button>
-    </div>
-
-    <script>
-        // Enhanced Navigation with Cinematic Transitions
-        function showScreen(id, event) {
-            const currentScreen = document.querySelector('.screen.active');
-            const targetScreen = document.getElementById(id);
-            
-            if (currentScreen === targetScreen) return;
-            
-            // Cinematic Exit
-            if (currentScreen) {
-                currentScreen.style.transform = 'translateY(-50px)';
-                currentScreen.style.opacity = '0';
-                currentScreen.style.filter = 'blur(5px)';
-                setTimeout(() => {
-                    currentScreen.classList.remove('active');
-                    currentScreen.style.transform = '';
-                    currentScreen.style.opacity = '';
-                    currentScreen.style.filter = '';
-                }, 600);
-            }
-            
-            // Cinematic Enter
-            setTimeout(() => {
-                targetScreen.classList.add('active');
-                createParticles();
-            }, 600);
-
-            // Update Navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.target.classList.contains('nav-btn')) {
-                event.target.classList.add('active');
-            }
-        }
-
-        // Universe Selection with Weight and Feedback
-        function selectUniverse(el) {
-            createInteractionFeedback(el);
-            
-            document.querySelectorAll('.universe-card').forEach(card => {
-                card.classList.remove('selected');
-                card.style.transform = '';
-            });
-            
-            el.classList.add('selected');
-            
-            // Weighted animation
-            el.style.animation = 'none';
-            setTimeout(() => {
-                el.style.animation = 'cardSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            }, 10);
-            
-            setTimeout(() => {
-                el.style.animation = '';
-                showScreen('teamScreen');
-            }, 1200);
-        }
-
-        // Team Selection with Realistic Physics
-        function selectTeamMember(el) {
-            createInteractionFeedback(el);
-            
-            el.classList.toggle('selected');
-            
-            // Weight-based animation
-            if (el.classList.contains('selected')) {
-                el.style.animation = 'memberSelect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-            } else {
-                el.style.animation = 'memberDeselect 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-            }
-            
-            setTimeout(() => {
-                el.style.animation = '';
-            }, 600);
-            
-            const selectedMembers = document.querySelectorAll('.team-member.selected');
-            if (selectedMembers.length >= 3) {
-                // Team completion effect
-                selectedMembers.forEach((member, index) => {
-                    setTimeout(() => {
-                        member.style.animation = 'teamComplete 0.8s ease-out';
-                    }, index * 100);
-                });
-                
-                setTimeout(() => {
-                    showScreen('gameplayScreen');
-                }, 1500);
-            }
-        }
-
-        // Enhanced Drag & Drop with Physics
-        const codeBlocks = document.querySelectorAll('.code-block[draggable="true"]');
-        const mvpArea = document.getElementById('mvpArea');
-        const progressFill = document.getElementById('progressFill');
-        let draggedBlock = null;
-
-        codeBlocks.forEach(block => {
-            block.addEventListener('dragstart', e => {
-                draggedBlock = block;
-                block.style.opacity = '0.4';
-                block.style.transform = 'scale(0.9) rotate(2deg)';
-                block.style.filter = 'blur(1px)';
-                
-                // Add distortion effect
-                createDistortionWave(block);
-            });
-            
-            block.addEventListener('dragend', e => {
-                draggedBlock = null;
-                block.style.opacity = '';
-                block.style.transform = '';
-                block.style.filter = '';
-            });
-        });
-
-        mvpArea.addEventListener('dragover', e => {
-            e.preventDefault();
-            mvpArea.classList.add('drag-over');
-        });
-
-        mvpArea.addEventListener('dragleave', e => {
-            mvpArea.classList.remove('drag-over');
-        });
-
-        mvpArea.addEventListener('drop', e => {
-            e.preventDefault();
-            mvpArea.classList.remove('drag-over');
-            
-            if (!draggedBlock) return;
-
-            const clone = draggedBlock.cloneNode(true);
-            clone.removeAttribute('draggable');
-            clone.style.cursor = 'pointer';
-            clone.style.opacity = '1';
-            clone.style.transform = 'scale(1)';
-            clone.style.filter = '';
-            
-            // Landing animation with weight
-            clone.style.animation = 'blockLand 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-
-            clone.addEventListener('click', () => {
-                createInteractionFeedback(clone);
-                clone.style.animation = 'blockRemove 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                setTimeout(() => {
-                    clone.remove();
-                    updateProgress();
-                }, 600);
-            });
-
-            if (mvpArea.textContent.includes('Arraste os blocos')) {
-                mvpArea.textContent = '';
-            }
-
-            mvpArea.appendChild(clone);
-            updateProgress();
-            
-            // Create particles on drop
-            createDropParticles(clone);
-        });
-
-        // Progress Update with Cinematic Effects
-        function updateProgress() {
-            const totalBlocks = codeBlocks.length;
-            const selectedBlocks = mvpArea.querySelectorAll('.code-block').length;
-            let progress = (selectedBlocks / totalBlocks) * 100;
-            
-            if (progress > 100) progress = 100;
-            
-            progressFill.style.width = progress + '%';
-            
-            // Completion effect
-            if (progress === 100) {
-                progressFill.style.animation = 'progressComplete 2s ease-in-out';
-                setTimeout(() => {
-                    createCompletionEffect();
-                }, 1000);
-            }
-
-            if (selectedBlocks === 0) {
-                mvpArea.textContent = 'Arraste os blocos para aqui e monte seu MVP';
-            }
-        }
-
-        // Particle System
-        function createParticles() {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + 'vw';
-                    particle.style.setProperty('--random-x', (Math.random() - 0.5) * 200 + 'px');
-                    particle.style.animation = `particleFloat ${Math.random() * 10 + 10}s linear`;
+    <!-- Location Section -->
+    <section class="location">
+        <div class="container">
+            <h2 class="section-title">Localização Privilegiada</h2>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>Maracanaú: O Futuro Chegou</h3>
+                    <p>Maracanaú é uma das cidades que mais cresce na região metropolitana de Fortaleza, 
+                    oferecendo todas as vantagens de uma cidade em desenvolvimento com a proximidade 
+                    da capital cearense.</p>
                     
-                    document.body.appendChild(particle);
-                    
-                    setTimeout(() => {
-                        particle.remove();
-                    }, 20000);
-                }, i * 200);
-            }
-        }
+                    <div class="location-features">
+                        <div class="location-feature">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>15 minutos</strong>
+                                <span>do centro de Fortaleza</span>
+                            </div>
+                        </div>
+                        <div class="location-feature">
+                            <i class="fas fa-plane"></i>
+                            <div>
+                                <strong>30 minutos</strong>
+                                <span>do Aeroporto Internacional</span>
+                            </div>
+                        </div>
+                        <div class="location-feature">
+                            <i class="fas fa-shopping-bag"></i>
+                            <div>
+                                <strong>5 minutos</strong>
+                                <span>de shoppings e comércios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-map">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Localização Estratégica<br>Centro de Maracanaú</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Interaction Feedback
-        function createInteractionFeedback(element) {
-            const rect = element.getBoundingClientRect();
-            const feedback = document.createElement('div');
-            feedback.className = 'interaction-feedback';
-            feedback.style.left = rect.left + rect.width / 2 + 'px';
-            feedback.style.top = rect.top + rect.height / 2 + 'px';
-            
-            document.body.appendChild(feedback);
-            
-            setTimeout(() => {
-                feedback.remove();
-            }, 800);
-        }
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">O que Nossos Clientes Dizem</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Excelente atendimento da Alpha Imobiliária. Consegui meu lote no Metrópole Maracanaú 
+                    com condições muito boas. Recomendo!"</p>
+                    <div class="testimonial-author">
+                        <strong>Maria Silva</strong>
+                        <span>Cliente satisfeita</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Localização perfeita! Próximo de tudo que preciso. A equipe da Alpha foi muito profissional 
+                    em todo o processo."</p>
+                    <div class="testimonial-author">
+                        <strong>João Santos</strong>
+                        <span>Investidor</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Realizei o sonho da casa própria! O Metrópole Maracanaú superou minhas expectativas. 
+                    Muito obrigada, Alpha!"</p>
+                    <div class="testimonial-author">
+                        <strong>Ana Costa</strong>
+                        <span>Nova moradora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Distortion Wave Effect
-        function createDistortionWave(element) {
-            element.style.animation = 'distortionWave 0.3s ease-in-out';
-            setTimeout(() => {
-                element.style.animation = '';
-            }, 300);
-        }
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Não Perca Esta Oportunidade Única!</h2>
+                <p>O Metrópole Maracanaú está se esgotando rapidamente. 
+                Garante sua consulta gratuita agora mesmo!</p>
+                <div class="cta-buttons">
+                    <button class="cta-button secondary" onclick="scrollToForm()">
+                        <i class="fas fa-file-alt"></i>
+                        Solicitar Informações
+                    </button>
+                    <a href="tel:+5585999999999" class="cta-button primary">
+                        <i class="fas fa-phone"></i>
+                        Ligar Agora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Drop Particles
-        function createDropParticles(element) {
-            const rect = element.getBoundingClientRect();
-            for (let i = 0; i < 3; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = rect.left + rect.width / 2 + 'px';
-                particle.style.top = rect.top + rect.height / 2 + 'px';
-                particle.style.setProperty('--random-x', (Math.random() - 0.5) * 50 + 'px');
-                particle.style.animation = `particleFloat ${Math.random() * 3 + 2}s linear`;
-                
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 5000);
-            }
-        }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="https://via.placeholder.com/150x50/FFFFFF/4A90E2?text=ALPHA" alt="Alpha Imobiliária" class="footer-logo">
+                    <p>Realizando sonhos, construindo o futuro.</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <p><i class="fas fa-phone"></i> (85) 99999-9999</p>
+                    <p><i class="fas fa-envelope"></i> contato@alphaimobiliaria.com.br</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Maracanaú, CE</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Alpha Imobiliária. Todos os direitos reservados. | CRECI: 12345-CE</p>
+            </div>
+        </div>
+    </footer>
 
-        // Completion Effect
-        function createCompletionEffect() {
-            // Screen flash effect
-            const flash = document.createElement('div');
-            flash.style.position = 'fixed';
-            flash.style.top = '0';
-            flash.style.left = '0';
-            flash.style.right = '0';
-            flash.style.bottom = '0';
-            flash.style.background = 'rgba(255, 255, 255, 0.1)';
-            flash.style.pointerEvents = 'none';
-            flash.style.animation = 'flashEffect 1s ease-out';
-            
-            document.body.appendChild(flash);
-            
-            setTimeout(() => {
-                flash.remove();
-            }, 1000);
-        }
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5585999999999?text=Olá! Gostaria de saber mais sobre o Metrópole Maracanaú" 
+       class="whatsapp-float" target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-        // Dynamic Animation Styles
-        const dynamicStyles = document.createElement('style');
-        dynamicStyles.textContent = `
-            @keyframes cardSettle {
-                0% { transform: translateY(-10px) scale(1.05); }
-                50% { transform: translateY(5px) scale(0.98); }
-                100% { transform: translateY(-8px) scale(1.05); }
-            }
-            
-            @keyframes memberSelect {
-                0% { transform: scale(1); }
-                30% { transform: scale(1.1) translateY(-5px); }
-                60% { transform: scale(0.95) translateY(2px); }
-                100% { transform: scale(1.05) translateY(-8px); }
-            }
-            
-            @keyframes memberDeselect {
-                0% { transform: scale(1.05) translateY(-8px); }
-                50% { transform: scale(0.9) translateY(3px); }
-                100% { transform: scale(1); }
-            }
-            
-            @keyframes teamComplete {
-                0% { transform: scale(1.05) translateY(-8px); }
-                50% { transform: scale(1.15) translateY(-15px); }
-                100% { transform: scale(1.05) translateY(-8px); }
-            }
-            
-            @keyframes blockLand {
-                0% { transform: translateY(-20px) scale(0.9); opacity: 0.5; }
-                50% { transform: translateY(3px) scale(1.05); opacity: 0.8; }
-                100% { transform: translateY(0) scale(1); opacity: 1; }
-            }
-            
-            @keyframes blockRemove {
-                0% { transform: scale(1); opacity: 1; }
-                50% { transform: scale(0.8) translateY(-10px); opacity: 0.5; }
-                100% { transform: scale(0.5) translateY(-20px); opacity: 0; }
-            }
-            
-            @keyframes progressComplete {
-                0% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
-                50% { box-shadow: 0 0 40px rgba(106, 32, 32, 0.8); }
-                100% { box-shadow: 0 0 20px rgba(106, 32, 32, 0.5); }
-            }
-            
-            @keyframes flashEffect {
-                0% { opacity: 0; }
-                50% { opacity: 1; }
-                100% { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(dynamicStyles);
-
-        // Initialize particle system
-        createParticles();
-        setInterval(createParticles, 15000);
-    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>
